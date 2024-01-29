@@ -4,7 +4,7 @@
 Specified in pom.xml
 
 ## Contributors
-YOUR_NAME, YOUR_NAME, YOUR_NAME
+Nathan Adler, YOUR_NAME, YOUR_NAME
 
 ## Team Member's Engineering Notebooks (one per person)
 - NAME: LINK
@@ -16,7 +16,7 @@ YOUR_NAME, YOUR_NAME, YOUR_NAME
 
 | Developer | Style Check | Principle Check | Pattern Check | A Feature (optional) |
 |:----------|:------------|:----------------|:--------------|:---------------------|
+| Nathan    |             |                 |               |                      |
 | NAME      |             |                 |               |                      |
 | NAME      |             |                 |               |                      |
-| NAME      |             |                 |               |                      |
-
+|           |             |                 |               |                      |
