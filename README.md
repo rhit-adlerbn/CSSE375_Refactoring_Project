@@ -4,7 +4,7 @@
 Specified in pom.xml
 
 ## Contributors
-Nathan Adler, Adam Field, Evan Chung
+Nathan Adler, Adam Field, Evan Chung, Deniz Taskan
 
 ## Team Member's Engineering Notebooks (one per person)
 - NAME: LINK
