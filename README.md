@@ -4,7 +4,7 @@
 Specified in pom.xml
 
 ## Contributors
-Nathan Adler, YOUR_NAME, YOUR_NAME
+Nathan Adler, Adam Field, YOUR_NAME
 
 ## Team Member's Engineering Notebooks (one per person)
 - NAME: LINK
