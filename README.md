@@ -4,7 +4,7 @@
 Specified in pom.xml
 
 ## Contributors
-Nathan Adler, Adam Field, YOUR_NAME
+Nathan Adler, Adam Field, Evan Chung
 
 ## Team Member's Engineering Notebooks (one per person)
 - NAME: LINK
@@ -17,6 +17,6 @@ Nathan Adler, Adam Field, YOUR_NAME
 | Developer | Style Check | Principle Check | Pattern Check | A Feature (optional) |
 |:----------|:------------|:----------------|:--------------|:---------------------|
 | Nathan    |             |                 |               |                      |
-| NAME      |             |                 |               |                      |
+| Evan      |             |                 |               |                      |
 | NAME      |             |                 |               |                      |
 |           |             |                 |               |                      |
