@@ -16,7 +16,7 @@ Nathan Adler, Adam Field, Evan Chung, Deniz Taskan
 
 | Developer | Style Check | Principle Check | Pattern Check | A Feature (optional) |
 |:----------|:------------|:----------------|:--------------|:---------------------|
-| Nathan    |             |                 |               |                      |
+| Nathan    |Method Naming|                 |               |                      |
 | Evan      |             |                 |               |                      |
 | NAME      |             |                 |               |                      |
 |           |             |                 |               |                      |
