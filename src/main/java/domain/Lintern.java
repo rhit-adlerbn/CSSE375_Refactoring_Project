@@ -1,11 +1,11 @@
 package domain;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,6 +50,11 @@ public class Lintern {
 
             //printMethods(classNode);
             PrintAllVariables(classNode, 8);
+
+
+            checkObserverPattern(classNode);
+
+
         }
     }
 
@@ -62,10 +67,7 @@ public class Lintern {
 
 
     private static void PrintAllVariables(ClassNode classNode, int test){
-        //int gg = 0;
-        //test = gg;
-        //gg = 99;
-        //System.out.println(test);
+
         List<MethodNode> methods = (List<MethodNode>) classNode.methods;
         for (MethodNode method : methods) {
             printVariables(method);
@@ -91,10 +93,11 @@ public class Lintern {
 
         for (int i = 0; i < instructions.size(); i++) {
             AbstractInsnNode insn = instructions.get(i);
+            //System.out.println(insn.getOpcode());
             if (insn.getType() == 2) {
 
                 VarInsnNode varInsn = (VarInsnNode) insn;
-                //System.out.println("Variable name: " + variables.get(varInsn.var)+" " + varInsn.getOpcode());
+               // System.out.println("Variable name: " + variables.get(varInsn.var)+" " + varInsn.getOpcode());
                 if(map.containsKey(varInsn.var)){
                     if(varInsn.getOpcode() != 54) {
                         map.put(varInsn.var, 2);
@@ -112,5 +115,76 @@ public class Lintern {
             }
 
         }
+    }
+
+
+    private static String checkObserverPattern(ClassNode classNode){
+        String returnValue = "Not Observer";
+        if(implementsInterface(classNode, "Subject")) {
+            returnValue = "Subject";
+            ArrayList<String> requiredMethods = new ArrayList<String>();
+            requiredMethods.add("subscribe");
+            requiredMethods.add("unsubscribe");
+            requiredMethods.add("Notify");
+            if(!containsMethods(classNode, requiredMethods)){
+                System.out.println("Attempting to use observer pattern but doesnt have all the required methods.");
+                returnValue = "Failed Subject";
+            }
+            if (!(checkFields(classNode, "Observer"))) {
+                System.out.println("Attempting to use observer pattern but doesnt have a Observer instance.");
+
+            }
+            return returnValue;
+        } else if (implementsInterface(classNode, "Observer")){
+                returnValue = "Observer";
+
+        }
+        return "";
+
+    }
+
+    private static boolean containsMethods(ClassNode classNode, ArrayList<String> Methods){
+        List<MethodNode> methods = (List<MethodNode>) classNode.methods;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        ArrayList<String> unused = new ArrayList<String>();
+        for(MethodNode method: methods){
+            map.put(method.name, 1);
+        }
+        for (String method : Methods) {
+            if(!map.containsKey(method)){
+                unused.add(method);
+            }
+        }
+        for (String needed: unused){
+            System.out.println("Missing Method: " + needed);
+        }
+        return unused.isEmpty();
+    }
+    private static boolean implementsInterface(ClassNode classNode, String interfaceSimpleName) {
+        for (String implementedInterface : classNode.interfaces) {
+            String name = implementedInterface.substring(implementedInterface.indexOf("/")  + 1);
+            //System.out.println(name);
+            if(interfaceSimpleName.equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static boolean checkFields(ClassNode classNode, String fieldName) {
+        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
+
+
+        for (FieldNode field : fields) {
+            Type fieldType = Type.getType(field.desc);
+            String name = fieldType.getClassName();
+            name = name.substring(name.lastIndexOf(".")+1);
+            //System.out.println(name);
+            if(name.equals(fieldName)){
+                return true;
+            }
+        }
+        return false;
     }
 }
