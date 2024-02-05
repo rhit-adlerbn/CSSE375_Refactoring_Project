@@ -48,14 +48,6 @@ public class PatternCheck extends BasicLintern{
 
 
 
-
-
-
-
-
-
-
-
     private static String checkObserverPattern(ClassNode classNode){
         String returnValue = "Not Observer Pattern";
         if(implementsInterface(classNode, "Subject")) {
@@ -70,7 +62,7 @@ public class PatternCheck extends BasicLintern{
             }
             if (!(checkFields(classNode, "Observer"))) {
                 System.out.println("Attempting to use observer pattern as a Subject but doesnt have a Observer instance.");
-
+                returnValue = "Failed Subject";
             }
             return returnValue;
         } else if (implementsInterface(classNode, "Observer")){
