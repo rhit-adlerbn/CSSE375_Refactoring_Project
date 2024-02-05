@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class Lintern {
+public class Lintern extends BasicLintern{
 
     String[] fieldForAnalysisByThisProgram = new String[1];
 
@@ -153,48 +153,5 @@ public class Lintern {
 
     }
 
-    private static boolean containsMethods(ClassNode classNode, ArrayList<String> Methods){
-        List<MethodNode> methods = (List<MethodNode>) classNode.methods;
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        ArrayList<String> unused = new ArrayList<String>();
-        for(MethodNode method: methods){
-            map.put(method.name, 1);
-        }
-        for (String method : Methods) {
-            if(!map.containsKey(method)){
-                unused.add(method);
-            }
-        }
-        for (String needed: unused){
-            System.out.println("Missing Method: " + needed);
-        }
-        return unused.isEmpty();
-    }
-    private static boolean implementsInterface(ClassNode classNode, String interfaceSimpleName) {
-        for (String implementedInterface : classNode.interfaces) {
-            String name = implementedInterface.substring(implementedInterface.indexOf("/")  + 1);
-            //System.out.println(name);
-            if(interfaceSimpleName.equals(name)){
-                return true;
-            }
-        }
-        return false;
-    }
 
-
-    private static boolean checkFields(ClassNode classNode, String fieldName) {
-        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
-
-
-        for (FieldNode field : fields) {
-            Type fieldType = Type.getType(field.desc);
-            String name = fieldType.getClassName();
-            name = name.substring(name.lastIndexOf(".")+1);
-            //System.out.println(name);
-            if(name.equals(fieldName)){
-                return true;
-            }
-        }
-        return false;
-    }
 }
