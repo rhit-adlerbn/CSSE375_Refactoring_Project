@@ -49,7 +49,7 @@ public class Lintern {
             //printFields(classNode);
 
             //printMethods(classNode);
-            PrintAllVariables(classNode, 8);
+            PrintAllVariables(classNode);
 
 
             System.out.println(checkObserverPattern(classNode));
@@ -66,7 +66,7 @@ public class Lintern {
 
 
 
-    private static void PrintAllVariables(ClassNode classNode, int test){
+    private static void PrintAllVariables(ClassNode classNode){
 
         List<MethodNode> methods = (List<MethodNode>) classNode.methods;
         for (MethodNode method : methods) {
