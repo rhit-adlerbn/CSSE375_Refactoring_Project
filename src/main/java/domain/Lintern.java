@@ -52,7 +52,7 @@ public class Lintern {
             PrintAllVariables(classNode, 8);
 
 
-            checkObserverPattern(classNode);
+            System.out.println(checkObserverPattern(classNode));
 
 
         }
@@ -119,7 +119,7 @@ public class Lintern {
 
 
     private static String checkObserverPattern(ClassNode classNode){
-        String returnValue = "Not Observer";
+        String returnValue = "Not Observer Pattern";
         if(implementsInterface(classNode, "Subject")) {
             returnValue = "Subject";
             ArrayList<String> requiredMethods = new ArrayList<String>();
@@ -131,15 +131,25 @@ public class Lintern {
                 returnValue = "Failed Subject";
             }
             if (!(checkFields(classNode, "Observer"))) {
-                System.out.println("Attempting to use observer pattern but doesnt have a Observer instance.");
+                System.out.println("Attempting to use observer pattern as a Subject but doesnt have a Observer instance.");
 
             }
             return returnValue;
         } else if (implementsInterface(classNode, "Observer")){
                 returnValue = "Observer";
+                ArrayList<String> requiredMethods = new ArrayList<String>();
+                requiredMethods.add("update");
+            if(!containsMethods(classNode, requiredMethods)){
+                System.out.println("Attempting to use observer pattern but doesnt have all the required methods.");
+                returnValue = "Failed Observer";
+            }
+            if (!(checkFields(classNode, "Subject"))) {
+                System.out.println("Attempting to use observer pattern as an Observer but doesnt have a Subject instance.");
+                returnValue = "Failed Observer";
+            }
 
         }
-        return "";
+        return returnValue;
 
     }
 
