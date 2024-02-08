@@ -47,7 +47,9 @@ public class linter {
                 // Now we can navigate the classNode and look for things we are interested in.
 //                printClass(classNode);
                 String interfaceCheck = checkInterfaceImplementation(classNode);
+                String templateCheck = checkTemplate(classNode);
                 System.out.println(interfaceCheck);
+                System.out.println(templateCheck);
             }
         }
 
@@ -64,6 +66,9 @@ public class linter {
 
         private static String checkInterfaceImplementation(ClassNode classNode) throws IOException {
             List<MethodNode> classMethods = classNode.methods;
+            if(classNode.interfaces.isEmpty()){
+                return "Interface Check is not applicable here.";
+            }
             String theInterface = classNode.interfaces.get(0);
 
             ClassReader reader = new ClassReader(theInterface);
@@ -102,12 +107,18 @@ public class linter {
         private static String checkTemplate(ClassNode classNode) throws IOException {
             List<MethodNode> classMethods = classNode.methods;
             String abstractClass = classNode.superName;
-            if(abstractClass == null){
+            if(abstractClass.equals("Abstraction")){
                 return "Does not implement template method.";
             }
             List<String> requiredMethods = new ArrayList<>();
             requiredMethods.add("stepIfImplDifferBySubclassM1");
             requiredMethods.add("stepIfImplDifferBySubclassM2");
+            Set<String> classMethodNames = new HashSet<>();
+
+
+            for(MethodNode method: classMethods){
+                classMethodNames.add(method.name);
+            }
 
             ClassReader reader = new ClassReader(abstractClass);
             ClassNode abstractNode = new ClassNode();
@@ -121,17 +132,26 @@ public class linter {
             requiredAbstractMethods.add("stepIfImplCommonToAllSubclass");
             requiredAbstractMethods.add("hookMethod");
 
+            Set<String> abstractMethodNames = new HashSet<>();
+            for(MethodNode method: abstractMethods){
+                abstractMethodNames.add(method.name);
+            }
 
-            if(!classMethods.containsAll(requiredMethods)){
+
+            if(!classMethodNames.containsAll(requiredMethods)){
 
                 return "Does not implement template pattern.";
             }
-            if(!abstractMethods.containsAll(requiredAbstractMethods)){
+            if(!abstractMethodNames.containsAll(requiredAbstractMethods)){
                 return "Does not implement template pattern";
             }
 
 
             return "Correctly implements Template pattern";
+        }
+
+        private static String OCPCheck(){
+           return null;
         }
 
     }
