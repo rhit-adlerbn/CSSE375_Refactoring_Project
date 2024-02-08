@@ -7,6 +7,7 @@ import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,9 +99,39 @@ public class linter {
 
         }
 
-        private static String checkOCP(ClassNode classNode){
-            
-            return null;
+        private static String checkTemplate(ClassNode classNode) throws IOException {
+            List<MethodNode> classMethods = classNode.methods;
+            String abstractClass = classNode.superName;
+            if(abstractClass == null){
+                return "Does not implement template method.";
+            }
+            List<String> requiredMethods = new ArrayList<>();
+            requiredMethods.add("stepIfImplDifferBySubclassM1");
+            requiredMethods.add("stepIfImplDifferBySubclassM2");
+
+            ClassReader reader = new ClassReader(abstractClass);
+            ClassNode abstractNode = new ClassNode();
+            //get methods for the abstract by defining an abstract node
+            reader.accept(abstractNode, ClassReader.EXPAND_FRAMES);
+            List<MethodNode> abstractMethods = abstractNode.methods;
+            List<String> requiredAbstractMethods = new ArrayList<>();
+            requiredAbstractMethods.add("stepIfImplDifferBySubclassM1");
+            requiredAbstractMethods.add("stepIfImplDifferBySubclassM2");
+            requiredAbstractMethods.add("runAlgorithm");
+            requiredAbstractMethods.add("stepIfImplCommonToAllSubclass");
+            requiredAbstractMethods.add("hookMethod");
+
+
+            if(!classMethods.containsAll(requiredMethods)){
+
+                return "Does not implement template pattern.";
+            }
+            if(!abstractMethods.containsAll(requiredAbstractMethods)){
+                return "Does not implement template pattern";
+            }
+
+
+            return "Correctly implements Template pattern";
         }
 
     }
