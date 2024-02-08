@@ -40,7 +40,7 @@ public class PatternCheck extends BasicLintern{
 
 
             System.out.println(checkObserverPattern(classNode));
-
+            System.out.println(checkCoupling(classNode));
 
         }
     }
@@ -83,15 +83,29 @@ public class PatternCheck extends BasicLintern{
 
     }
 
-    private static int checkCoupling(ClassNode classNode){
-        int couplingScore = 0;
+    private static double checkCoupling(ClassNode classNode){
+        double couplingScore = 0;
         List<FieldNode> fields = (List<FieldNode>) classNode.fields;
         HashMap<String, Integer> Primary =  new HashMap<String, Integer>();
-
+        Primary.put("String", 1);
+        Primary.put("int", 1);
+        Primary.put("char", 1);
+        Primary.put("long", 1);
+        Primary.put("double", 1);
         for (FieldNode field : fields) {
-            Type fieldType = Type.getType(field.desc);
+            Type fieldType;
+            if(field.signature == null) {
+                fieldType = Type.getType(field.desc);
+            } else {
+                fieldType = Type.getType(field.signature);
+            }
             String name = fieldType.getClassName();
-            name = name.substring(name.lastIndexOf(".")+1);
+            if(!Primary.containsKey(name)){
+                couplingScore*=1.4;
+                couplingScore++;
+
+            }
+
 
 
         }

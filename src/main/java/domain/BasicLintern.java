@@ -5,7 +5,9 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,11 +48,16 @@ public abstract class BasicLintern {
 
 
         for (FieldNode field : fields) {
-            Type fieldType = Type.getType(field.desc);
+            Type fieldType;
+            if(field.signature == null) {
+                fieldType = Type.getType(field.desc);
+            } else {
+                fieldType = Type.getType(field.signature);
+            }
             String name = fieldType.getClassName();
-            name = name.substring(name.lastIndexOf(".")+1);
-            //System.out.println(name);
-            if(name.equals(fieldName)){
+
+
+            if(name.contains(fieldName)){
                 return true;
             }
         }
