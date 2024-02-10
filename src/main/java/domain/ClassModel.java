@@ -52,6 +52,12 @@ public class ClassModel {
     public boolean isInterface() {
         return isAccessModifier(Opcodes.ACC_INTERFACE);
     }
+    public List<MethodModel> getMethods(){
+        return this.methods;
+    }
+    public List<FieldModel> getFields(){
+        return this.fields;
+    }
     private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
     }
