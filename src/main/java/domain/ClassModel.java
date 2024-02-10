@@ -2,6 +2,7 @@ package domain;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.List;
@@ -9,11 +10,15 @@ import java.util.List;
 public class ClassModel {
     private ClassNode node;
     private List<MethodModel> methods;
+    private List<FieldModel> fields;
 
     public ClassModel(ClassNode node){
         this.node = node;
         for(MethodNode m : node.methods) {
             methods.add(new MethodModel(m));
+        }
+        for(FieldNode f: node.fields){
+            fields.add(new FieldModel(f));
         }
     }
 
