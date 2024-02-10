@@ -28,6 +28,9 @@ public class MethodModel {
     public String getDesc() {
         return node.desc;
     }
+    public InsnList getInstructions(){
+        return node.instructions;
+    }
     public boolean isPublic() {
         return isAccessModifier(Opcodes.ACC_PUBLIC);
     }
