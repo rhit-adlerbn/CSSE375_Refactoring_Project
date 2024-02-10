@@ -2,12 +2,20 @@ package domain;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import java.util.List;
 
 public class ClassModel {
     private ClassNode node;
     private List<MethodModel> methods;
+
+    public ClassModel(ClassNode node){
+        this.node = node;
+        for(MethodNode m : node.methods) {
+            methods.add(new MethodModel(m));
+        }
+    }
 
     public String getName() {
         return node.name;
