@@ -7,6 +7,7 @@ import java.util.List;
 
 public class ClassModel {
     private ClassNode node;
+    private List<MethodModel> methods;
 
     public String getName() {
         return node.name;
@@ -18,27 +19,27 @@ public class ClassModel {
         return node.superName;
     }
     public boolean isPublic() {
-        return isAccessModifer(Opcodes.ACC_PUBLIC);
+        return isAccessModifier(Opcodes.ACC_PUBLIC);
     }
     public boolean isPrivate() {
-        return isAccessModifer(Opcodes.ACC_PRIVATE);
+        return isAccessModifier(Opcodes.ACC_PRIVATE);
     }
     public boolean isProtected() {
-        return isAccessModifer(Opcodes.ACC_PROTECTED);
+        return isAccessModifier(Opcodes.ACC_PROTECTED);
     }
     public boolean isStatic() {
-        return isAccessModifer(Opcodes.ACC_STATIC);
+        return isAccessModifier(Opcodes.ACC_STATIC);
     }
     public boolean isFinal() {
-        return isAccessModifer(Opcodes.ACC_FINAL);
+        return isAccessModifier(Opcodes.ACC_FINAL);
     }
     public boolean isAbstract() {
-        return isAccessModifer(Opcodes.ACC_ABSTRACT);
+        return isAccessModifier(Opcodes.ACC_ABSTRACT);
     }
     public boolean isInterface() {
-        return isAccessModifer(Opcodes.ACC_INTERFACE);
+        return isAccessModifier(Opcodes.ACC_INTERFACE);
     }
-    private boolean isAccessModifer(int opCode){
+    private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
     }
 
