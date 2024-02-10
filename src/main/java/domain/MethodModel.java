@@ -1,6 +1,7 @@
 package domain;
 
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.ParameterNode;
@@ -23,6 +24,9 @@ public class MethodModel {
     }
     public String getName() {
         return node.name;
+    }
+    public String getDesc() {
+        return node.desc;
     }
     public boolean isPublic() {
         return isAccessModifier(Opcodes.ACC_PUBLIC);

@@ -13,6 +13,9 @@ public class FieldModel {
     public String getName() {
         return node.name;
     }
+    public String getDesc(){
+        return node.desc;
+    }
     public boolean isPublic() {
         return isAccessModifier(Opcodes.ACC_PUBLIC);
     }
