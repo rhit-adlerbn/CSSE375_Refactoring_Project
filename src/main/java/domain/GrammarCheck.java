@@ -69,7 +69,6 @@ public class GrammarCheck extends BasicLintern{
 
 
         Type[] argumentTypes = Type.getArgumentTypes(methodNode.desc);
-
         for (int i = 0; i < argumentTypes.length; i++) {
             map.put(i, 1);
             variables.put(i, argumentTypes[i].getClassName());
