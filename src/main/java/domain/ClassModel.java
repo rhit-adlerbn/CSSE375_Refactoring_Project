@@ -5,20 +5,25 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassModel {
     private ClassNode node;
-    private List<MethodModel> methods;
-    private List<FieldModel> fields;
+    private ArrayList<MethodModel> methods = new ArrayList<MethodModel>();
+    private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();
 
     public ClassModel(ClassNode node){
         this.node = node;
-        for(MethodNode m : node.methods) {
-            methods.add(new MethodModel(m));
+        if(node.methods!=null) {
+            for (MethodNode m : node.methods) {
+                methods.add(new MethodModel(m));
+            }
         }
-        for(FieldNode f: node.fields){
-            fields.add(new FieldModel(f));
+        if(node.fields!=null) {
+            for (FieldNode f : node.fields) {
+                fields.add(new FieldModel(f));
+            }
         }
     }
 

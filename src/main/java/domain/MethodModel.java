@@ -6,20 +6,26 @@ import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.ParameterNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MethodModel {
     private MethodNode node;
-    private List<LocalVarModel> localVars;
-    private List<ParamModel> params;
+    private ArrayList<LocalVarModel> localVars = new ArrayList<LocalVarModel>();
+    private ArrayList<ParamModel> params = new ArrayList<ParamModel>();
 
     public MethodModel(MethodNode node) {
+
         this.node = node;
-        for(LocalVariableNode lv : node.localVariables){
-            localVars.add(new LocalVarModel(lv));
+        if(node.localVariables!=null) {
+            for (LocalVariableNode lv : node.localVariables) {
+                localVars.add(new LocalVarModel(lv));
+            }
         }
-        for(ParameterNode p : node.parameters){
-            params.add(new ParamModel(p));
+        if(node.parameters != null) {
+            for (ParameterNode p : node.parameters) {
+                params.add(new ParamModel(p));
+            }
         }
     }
     public String getName() {
