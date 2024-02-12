@@ -48,6 +48,8 @@ public class linter {
 //                printClass(classNode);
                 String interfaceCheck = checkInterfaceImplementation(classNode);
                 String templateCheck = checkTemplate(classNode);
+                String OCPCheck = OCPCheck(classNode);
+                System.out.println(OCPCheck);
                 System.out.println(interfaceCheck);
                 System.out.println(templateCheck);
             }
@@ -107,7 +109,7 @@ public class linter {
         private static String checkTemplate(ClassNode classNode) throws IOException {
             List<MethodNode> classMethods = classNode.methods;
             String abstractClass = classNode.superName;
-            if(abstractClass.equals("Abstraction")){
+            if(!abstractClass.equals("Abstraction")){
                 return "Does not implement template method.";
             }
             List<String> requiredMethods = new ArrayList<>();
@@ -150,8 +152,24 @@ public class linter {
             return "Correctly implements Template pattern";
         }
 
-        private static String OCPCheck(){
-           return null;
+        private static String OCPCheck(ClassNode classNode){
+            int access = classNode.access;
+            List<MethodNode> classMethods = classNode.methods;
+            for(MethodNode method: classMethods){
+                if((method.access & Opcodes.ACC_FINAL) != 0){
+                    return "Methods are final, so not open for extension. Potential violation of OCP.";
+                }
+            }
+
+//            for (FieldNode field : classNode.fields) {
+//                if ((field.access & (Opcodes.ACC_FINAL)) != 0) {
+//                    return "Methods are final, not open for mod
+//                }
+//            }
+            if ((access & Opcodes.ACC_FINAL) != 0) {
+                return "Class is final, so not open for extension. Potential violation of OCP.";
+            }
+           return "OCP is held up.";
         }
 
     }
