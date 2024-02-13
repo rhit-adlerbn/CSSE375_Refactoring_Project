@@ -43,15 +43,19 @@ public class linter {
                 // Step 3. Tell the Reader to parse the specified class and store its data in our ClassNode.
                 // EXPAND_FRAMES means: I want my code to work. (Always pass this flag.)
                 reader.accept(classNode, ClassReader.EXPAND_FRAMES);
+                ClassModel classModel = new ClassModel(classNode);
 
                 // Now we can navigate the classNode and look for things we are interested in.
 //                printClass(classNode);
-                String interfaceCheck = checkInterfaceImplementation(classNode);
-                String templateCheck = checkTemplate(classNode);
-                String OCPCheck = OCPCheck(classNode);
-                System.out.println(OCPCheck);
-                System.out.println(interfaceCheck);
-                System.out.println(templateCheck);
+                LintCheck interfaceCheck = new InterfaceCheck();
+                LintCheck templateCheck = new TemplateCheck();
+                LintCheck OCPCheck = new OCPCheck();
+
+                List<ClassModel> classes = new ArrayList<>();
+                classes.add(classModel);
+                System.out.println(OCPCheck.runLintCheck(classes));
+                System.out.println(interfaceCheck.runLintCheck(classes));
+                System.out.println(templateCheck.runLintCheck(classes));
             }
         }
 

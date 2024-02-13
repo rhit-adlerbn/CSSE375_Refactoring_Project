@@ -12,15 +12,15 @@ import java.util.Set;
 
 public class InterfaceCheck implements LintCheck{
     @Override
-    public List<String> runLintCheck(List<ClassNode> classes) {
+    public List<String> runLintCheck(List<ClassModel> classes) {
         List<String> returnString = new ArrayList<>();
-        for(ClassNode classNode: classes) {
-            List<MethodNode> classMethods = classNode.methods;
-            if (classNode.interfaces.isEmpty()) {
-                returnString.add("Interface Check is not applicable in class " + classNode.name);
+        for(ClassModel classNode: classes) {
+            List<MethodModel> classMethods = classNode.getMethods();
+            if (classNode.getInterfaces().isEmpty()) {
+                returnString.add("Interface Check is not applicable in class " + classNode.getName());
                 continue;
             }
-            String theInterface = classNode.interfaces.get(0);
+            String theInterface = classNode.getInterfaces().get(0);
 
             ClassReader reader = null;
             try {
@@ -31,19 +31,20 @@ public class InterfaceCheck implements LintCheck{
 
 
             ClassNode interfaceNode = new ClassNode();
+            ClassModel interfaceModel = new ClassModel(interfaceNode);
             //get methods for the interface by defining a interface node
-            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
-            List<MethodNode> interfaceMethods = interfaceNode.methods;
+//            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
+            List<MethodModel> interfaceMethods = interfaceModel.getMethods();
 
             Set<String> classMethodNames = new HashSet<>();
             Set<String> interfaceMethodNames = new HashSet<>();
 
-            for (MethodNode method : classMethods) {
-                classMethodNames.add(method.name);
+            for (MethodModel method : classMethods) {
+                classMethodNames.add(method.getName());
             }
 
-            for (MethodNode method : interfaceMethods) {
-                interfaceMethodNames.add(method.name);
+            for (MethodModel method : interfaceMethods) {
+                interfaceMethodNames.add(method.getName());
             }
 
             boolean allMethodsImplemented = classMethodNames.containsAll(interfaceMethodNames);
@@ -51,10 +52,10 @@ public class InterfaceCheck implements LintCheck{
                 Set<String> missingMethods = new HashSet<>(interfaceMethodNames);
                 missingMethods.removeAll(classMethodNames);
 
-                returnString.add("Fail in " + classNode.name + ". All methods in interface are not implemented. Missing these methods: " + missingMethods);
+                returnString.add("Fail in " + classNode.getName() + ". All methods in interface are not implemented. Missing these methods: " + missingMethods);
             } else {
 
-                returnString.add("Success in "  + classNode.name +  ". All methods implemented from interface.");
+                returnString.add("Success in "  + classNode.getName() +  ". All methods implemented from interface.");
             }
         }
 

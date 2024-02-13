@@ -13,13 +13,13 @@ import java.util.Set;
 public class TemplateCheck implements LintCheck{
 
     @Override
-    public List<String> runLintCheck(List<ClassNode> classes) {
+    public List<String> runLintCheck(List<ClassModel> classes) {
         List<String> returnStrings = new ArrayList<>();
-        for(ClassNode classNode: classes) {
-            List<MethodNode> classMethods = classNode.methods;
-            String abstractClass = classNode.superName;
+        for(ClassModel classNode: classes) {
+            List<MethodModel> classMethods = classNode.getMethods();
+            String abstractClass = classNode.getSuperName();
             if (!abstractClass.equals("Abstraction")) {
-                returnStrings.add("Does not implement template method in class " + classNode.name);
+                returnStrings.add("Does not implement template method in class " + classNode.getName());
                 continue;
             }
             List<String> requiredMethods = new ArrayList<>();
@@ -28,8 +28,8 @@ public class TemplateCheck implements LintCheck{
             Set<String> classMethodNames = new HashSet<>();
 
 
-            for (MethodNode method : classMethods) {
-                classMethodNames.add(method.name);
+            for (MethodModel method : classMethods) {
+                classMethodNames.add(method.getName());
             }
 
             ClassReader reader = null;
@@ -57,14 +57,14 @@ public class TemplateCheck implements LintCheck{
 
             if (!classMethodNames.containsAll(requiredMethods)) {
 
-                returnStrings.add("Does not implement template pattern in class "  + classNode.name);
+                returnStrings.add("Does not implement template pattern in class "  + classNode.getName());
                 continue;
             }
             if (!abstractMethodNames.containsAll(requiredAbstractMethods)) {
-                returnStrings.add("Does not implement template pattern in class "  + classNode.name);
+                returnStrings.add("Does not implement template pattern in class "  + classNode.getName());
                 continue;
             }
-            returnStrings.add("Correctly implements Template pattern in class " + classNode.name);
+            returnStrings.add("Correctly implements Template pattern in class " + classNode.getName());
 
 
         }
