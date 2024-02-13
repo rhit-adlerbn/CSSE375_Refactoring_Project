@@ -2,6 +2,7 @@ package domain;
 
 import org.objectweb.asm.tree.ClassNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,5 +14,5 @@ public interface LintCheck {
      * @param classes a list of class models to lint over
      * @return a list of strings that hold the linting messages
      */
-    List<String> runLintCheck(List<ClassModel> classes);
+    ArrayList<String> runLintCheck(ArrayList<ClassModel> classes);
 }
