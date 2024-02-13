@@ -17,27 +17,19 @@ public class Main {
         // Read the input string provided by the user
         String filePath = scanner.nextLine();
 
-        // Display the input string back to the user
-        System.out.println("You entered: " + filePath);
+        // TODO: generate .class files from given package
 
-
-//        // Prompt the user to input a string
-//        System.out.print("Please enter the check you want to perform: ");
-//
-//        // Read the input string provided by the user
-//        String checkString = scanner.nextLine();
-//
-//        // Display the input string back to the user
-//        System.out.println("You entered: " + checkString);
-
+        // Show user all available lint checks
         HashMap<Integer, LintCheck> checks = new HashMap<Integer, LintCheck>();
-        LintCheck template = new TemplateCheck();
-        checks.put(1, template);
+        checks.put(1, new TemplateCheck());
+        System.out.println("\n\nBelow are the numbers associated with each lint check\n" +
+                "------------------------------------------------------------");
+        System.out.println(checks + "\n");
 
-        System.out.println("1 = " + checks.get(1).toString());
         System.out.print("Please enter the number of the check you want to perform: ");
         String checkNumber = scanner.nextLine();
-        System.out.println("You entered: " + checkNumber);
+
+        // TODO: run specified checks
 
         scanner.close();
 
