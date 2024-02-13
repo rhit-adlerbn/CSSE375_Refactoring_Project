@@ -24,7 +24,7 @@ Package Domain{
 UserInterface --> LintSystem
 
 +class LintSystem{
-
+-adapter: ASMAdapter
 +LintSystem()
 +runAllChecks(classes: List<ClassModel>): List<String>
 +runCheck(check: LintCheck, classes: List<ClassModel>): List<String>
