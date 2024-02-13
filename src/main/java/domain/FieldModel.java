@@ -34,4 +34,8 @@ public class FieldModel {
     private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
     }
+    public String getInstType(){
+        String desc = node.desc;
+        return desc.substring(desc.lastIndexOf('/')+1, desc.indexOf(';'));
+    }
 }
