@@ -17,4 +17,8 @@ public class LocalVarModel {
     public int getIndex(){
         return node.index;
     }
+    public String getInstType(){
+        String desc = node.desc;
+        return desc.substring(desc.lastIndexOf('/')+1, desc.indexOf(';'));
+    }
 }
