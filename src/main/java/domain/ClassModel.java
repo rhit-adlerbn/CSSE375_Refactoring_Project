@@ -28,7 +28,7 @@ public class ClassModel {
     }
 
     public String getName() {
-        return node.name;
+        return node.name.substring(node.name.indexOf("/")+1);
     }
     public List<String> getInterfaces() {
         return node.interfaces;
