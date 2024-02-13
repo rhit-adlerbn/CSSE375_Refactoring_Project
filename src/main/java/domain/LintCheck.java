@@ -9,11 +9,9 @@ import java.util.List;
  */
 interface LintCheck {
     /**
-     * BE AWARE: "classes" will change types to a list of classNodeAdapters in the future
-     * BE AWARE: make sure if you implement this before the change any code that deals with classNodes is easy to change
      * Method to run a lint check on classes
-     * @param classes a list of class nodes to lint over
+     * @param classes a list of class models to lint over
      * @return a list of strings that hold the linting messages
      */
-    List<String> runLintCheck(List<ClassNode> classes);
+    List<String> runLintCheck(List<ClassModel> classes);
 }
