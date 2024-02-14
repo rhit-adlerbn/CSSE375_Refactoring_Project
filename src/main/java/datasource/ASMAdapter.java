@@ -9,13 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ASMAdapter {
-
-    public static void main (String[] args){
-
-
-    }
-
-
+    /**
+     * Parses the .java files in a directory into a list of ClassModels
+     * @param filePath the directory to parse from
+     * @return a list of class models representing the java classes in the directory
+     * @throws IOException if filepath is incorrect
+     */
     public static ArrayList<ClassModel> parseASM(String filePath) throws IOException {
         ArrayList<ClassModel> classes = new ArrayList<ClassModel>();
         File dir = new File(filePath);

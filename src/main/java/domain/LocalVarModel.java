@@ -8,12 +8,23 @@ public class LocalVarModel {
     public LocalVarModel(LocalVariableNode node) {
         this.node = node;
     }
+    /**
+     * @return local variable name
+     */
     public String getName() {
         return node.name;
     }
+
+    /**
+     * @return local variable description
+     */
     public String getDesc() {
         return node.desc;
     }
+
+    /**
+     * @return local variable index
+     */
     public int getIndex(){
         return node.index;
     }

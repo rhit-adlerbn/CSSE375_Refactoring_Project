@@ -6,42 +6,68 @@ import org.objectweb.asm.tree.FieldNode;
 import java.util.List;
 
 public class FieldModel {
-    private FieldNode node;
+    private final FieldNode node;
     public FieldModel(FieldNode node) {
         this.node = node;
     }
+    /**
+     * @return field name
+     */
     public String getName() {
         return node.name;
     }
-    public String getDesc(){
+    /**
+     * @return field description
+     */
+    public String getDesc() {
         return node.desc;
     }
+    /**
+     * Determines this fields type
+     * @return the type of this field
+     */
     public String getType() {
         String desc = node.desc;
         if(desc.contains("/")){
             return desc.substring(desc.lastIndexOf("/")+1, desc.indexOf(";"));
         }
         else return desc;}
+    /**
+     * @return is this field public
+     */
     public boolean isPublic() {
         return isAccessModifier(Opcodes.ACC_PUBLIC);
     }
+    /**
+     * @return is this field private
+     */
     public boolean isPrivate() {
         return isAccessModifier(Opcodes.ACC_PRIVATE);
     }
+    /**
+     * @return is this field protected
+     */
     public boolean isProtected() {
         return isAccessModifier(Opcodes.ACC_PROTECTED);
     }
+    /**
+     * @return is this field static
+     */
     public boolean isStatic() {
         return isAccessModifier(Opcodes.ACC_STATIC);
     }
+    /**
+     * @return is this field final
+     */
     public boolean isFinal() {
         return isAccessModifier(Opcodes.ACC_FINAL);
     }
+    /**
+     * Determines the access modifiers
+     * @param opCode the ASM access flag
+     * @return if the access modifier applies to this classes node
+     */
     private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
-    }
-    public String getInstType(){
-        String desc = node.desc;
-        return desc.substring(desc.lastIndexOf('/')+1, desc.indexOf(';'));
     }
 }
