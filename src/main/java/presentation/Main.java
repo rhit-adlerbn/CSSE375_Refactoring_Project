@@ -19,12 +19,13 @@ public class Main {
         // Read the input string provided by the user
         String filePath = scanner.nextLine();
 
-        // TODO: generate .class files from given package
+        // TODO: generate .class files from given package (need to merge Adapter_and_Model branch)
         List<ClassNode> classes = new ArrayList<>();
 
         // Show user all available lint checks
         HashMap<Integer, LintCheck> checks = new HashMap<Integer, LintCheck>();
         checks.put(1, new TemplateCheck());
+        // TODO: add all checks to hashmap
 
         System.out.println("\n\nBelow are the numbers associated with each lint check\n" +
                 "------------------------------------------------------------");
@@ -34,12 +35,15 @@ public class Main {
         String checkNumber = scanner.nextLine();
         List<Integer> checkCommands = convertInput(checkNumber);
 
+        // TODO: add option to run all checks
 
         for(Integer i : checkCommands) {
-            checks.get(i).runLintCheck(classes);
+            List<String> output = checks.get(i).runLintCheck(classes);
+            for(String s : output) System.out.println(s);
         }
 
-        // TODO: add option to run all checks
+
+
 
         scanner.close();
 
