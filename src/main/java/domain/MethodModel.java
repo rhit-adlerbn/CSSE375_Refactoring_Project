@@ -1,6 +1,7 @@
 package domain;
 
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MethodModel {
     private MethodNode node;
     private ArrayList<LocalVarModel> localVars = new ArrayList<LocalVarModel>();
-    private ArrayList<ParamModel> params = new ArrayList<ParamModel>();
+    ArrayList<String> params = new ArrayList<String>();
 
     public MethodModel(MethodNode node) {
 
@@ -22,17 +23,29 @@ public class MethodModel {
                 localVars.add(new LocalVarModel(lv));
             }
         }
-        if(node.parameters != null) {
-            for (ParameterNode p : node.parameters) {
-                params.add(new ParamModel(p));
+
+        for(Type t: Type.getArgumentTypes(node.desc)){
+            String desc = t.getDescriptor();
+            if(desc.contains("/")){
+                params.add(desc.substring(desc.lastIndexOf("/")+1, desc.indexOf(";")));
             }
+            else params.add(desc);
         }
     }
     public String getName() {
         return node.name;
     }
+
+
     public String getDesc() {
         return node.desc;
+    }
+    public String getReturnType(){
+        String type = Type.getReturnType(node.desc).getClassName();
+        if(type.contains(".")){
+            return type.substring(type.lastIndexOf("."));
+        }
+        else return type;
     }
     public InsnList getInstructions(){
         return node.instructions;
@@ -55,7 +68,7 @@ public class MethodModel {
     public List<LocalVarModel> getLocalVars() {
         return this.localVars;
     }
-    public List<ParamModel> getParams() {
+    public ArrayList<String> getParams() {
         return this.params;
     }
     private boolean isAccessModifier(int opCode){

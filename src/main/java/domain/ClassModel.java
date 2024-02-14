@@ -1,6 +1,7 @@
 package domain;
 
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -12,6 +13,7 @@ public class ClassModel {
     private ClassNode node;
     private ArrayList<MethodModel> methods = new ArrayList<MethodModel>();
     private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();
+    private ArrayList<String> interfaces = new ArrayList<String>();
 
     public ClassModel(ClassNode node){
         this.node = node;
@@ -25,13 +27,20 @@ public class ClassModel {
                 fields.add(new FieldModel(f));
             }
         }
+        for(String i: node.interfaces){
+            if(i.contains("/")){
+                interfaces.add(i.substring(i.lastIndexOf("/")+1));
+            }
+            else interfaces.add(i);
+        }
     }
 
     public String getName() {
         return node.name.substring(node.name.indexOf("/")+1);
     }
     public List<String> getInterfaces() {
-        return node.interfaces;
+
+        return interfaces;
     }
     public String getSuperName() {
         return node.superName;

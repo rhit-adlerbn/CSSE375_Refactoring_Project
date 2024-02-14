@@ -16,6 +16,12 @@ public class FieldModel {
     public String getDesc(){
         return node.desc;
     }
+    public String getType() {
+        String desc = node.desc;
+        if(desc.contains("/")){
+            return desc.substring(desc.lastIndexOf("/")+1, desc.indexOf(";"));
+        }
+        else return desc;}
     public boolean isPublic() {
         return isAccessModifier(Opcodes.ACC_PUBLIC);
     }
