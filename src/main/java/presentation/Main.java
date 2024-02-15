@@ -57,9 +57,15 @@ public class Main {
      * @param s
      * @return
      */
-    private static List<Integer> convertInput(String s) {
-        return Arrays.stream(s.split("\\s+"))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+    private static List<Integer> convertInput(String s) throws IOException {
+        try {
+            return Arrays.stream(s.split("\\s+"))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+        } catch (NumberFormatException e) {
+            System.out.println("Illegal input. Restarting...");
+            main(new String[0]);
+        }
+        return null;
     }
 }
