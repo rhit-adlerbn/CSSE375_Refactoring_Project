@@ -17,7 +17,7 @@ Nathan Adler, Adam Field, Evan Chung, Deniz Taskan
 
 | Developer | Style Check     | Principle Check | Pattern Check    | A Feature (optional) |
 |:----------|:----------------|:----------------|:-----------------|:---------------------|
-| Nathan    |Method Naming    | Delegation      | Facade   Pattern |                      |
+| Nathan    |Method Naming    |Interface/Implemnt|Singleton Pattern|                      |
 | Evan      |Interface Methods| Open/Closed     | Template Method  |                      |
-| Adam      |Private Variables| Least Knowledge | Strategy Pattern |                      |
+| Adam      |Private Variables| Least Knowledge | Strategy Pattern | Privatize Variables  |
 | Deniz     |Unused Variables | Coupling        | Observer Pattern |                      |
