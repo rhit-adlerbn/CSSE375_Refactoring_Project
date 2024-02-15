@@ -1,16 +1,17 @@
 package presentation;
 
+import datasource.ASMAdapter;
+import domain.ClassModel;
 import domain.LintCheck;
 import domain.TemplateCheck;
-import org.objectweb.asm.tree.ClassNode;
 
-import java.text.ParseException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         // Prompt the user to input a string
@@ -20,7 +21,9 @@ public class Main {
         String filePath = scanner.nextLine();
 
         // TODO: generate .class files from given package (need to merge Adapter_and_Model branch)
-        List<ClassNode> classes = new ArrayList<>();
+
+        List<ClassModel> classes = new ArrayList<>();
+        classes = ASMAdapter.parseASM(filePath);
 
         // Show user all available lint checks
         HashMap<Integer, LintCheck> checks = new HashMap<Integer, LintCheck>();

@@ -7,7 +7,7 @@ import java.util.List;
 public class TemplateCheck implements LintCheck{
 
     @Override
-    public List<String> runLintCheck(List<ClassNode> classes) {
+    public List<String> runLintCheck(List<ClassModel> classes) {
         return null;
     }
 
