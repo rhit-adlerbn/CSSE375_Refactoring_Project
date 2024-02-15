@@ -1,3 +1,135 @@
 @startuml
-note "Replace this with your work" as N1
+Package Display{
+
++class UserInterface{
+-sys: LintSystem
++UserInterface()
+
+-displayStart(): void
+-displayFileRequest(): void
++handleFileEntry(String: path): void
+{method} //calls parseAsm to have the adapter process and return the model to lintSystem
+-displayFileSelect(): void
+{method} //displays all files that checks can be run on, can select one or all files
++handleSelctedFile(string: File): void
+-displayCheckSelect(): void
+{method} //displays all checks, can select one or all
++handleSelectedCheck(string: Check): List<String>
+-displayCheckResults(results: List<String>): void
+}
+
+}
+
+Package Domain{
+UserInterface --> LintSystem
+
++class LintSystem{
+-adapter: ASMAdapter
++LintSystem()
++runAllChecks(classes: List<ClassModel>): List<String>
++runCheck(check: LintCheck, classes: List<ClassModel>): List<String>
+}
++abstract LintCheck{
++{abstract}runLintCheck(class: ClassModel): List<String>
+}
++class CheckNamingConv{
+-class: ClassModel
++CheckNamingConv(class: ClassModel)
++runLintCheck(): List<String>
+}
+Package Model{
+
++class ClassModel{
+-node: ClassNode
+-methods: List<MethodModel>
+-fields: List<FieldModel>
++ClassModel(node: ClassNode)
+
++getName(): String
++getInterfaces(): List<String>
++getSuperName(): String
++isPublic(): boolean
++isPrivate(): boolean
++isProtected(): boolean
++isStatic(): boolean
++isFinal(): boolean
++isAbstract(): boolean
++getMethods(): List<MethodModel>
++getFields(): List<FieldModel>
+-isAccessModifier(opCode: int): boolean
+}
++class MethodModel{
+-node: MethodNode
+-localVars: List<LocalVarModel>
+-params: List<ParamModel>
+
++MethodModel(node: MethodNode)
+
++getName(): String
++getDesc(): String
++isPublic(): boolean
++isPrivate(): boolean
++isProtected(): boolean
++isStatic(): boolean
++isFinal(): boolean
+-isAccessModifier(opCode: int): boolean
++getLocalVars():List<LocalVarModel>
++getParams(): List<ParamModel>
+++++++++++getInstructions(): String
+}
++class FieldModel{
+-node: FieldNode
++FieldModel(node: FieldNode)
+
++getName(): String
++getDesc(): String
++isPublic(): boolean
++isPrivate(): boolean
++isProtected(): boolean
++isStatic(): boolean
++isFinal(): boolean
+-isAccessModifier(opCode: int): boolean
+}
++class LocalVarModel{
+-node: LocalVariableNode
++LocalVarModel(node: LocalVariableNode)
+
++getName(): String
++getDesc(): String
++getIndex(): int
+}
++class ParamModel{
+-node: ParameterNode
++ParamNode(node: ParameterNode)
+
++getName(): String
++isPublic(): boolean
++isPrivate(): boolean
++isProtected(): boolean
++isStatic(): boolean
++isFinal(): boolean
+-isAccessModifier(opCode: int): boolean
+}
+LintSystem ..>"*" ClassModel
+ClassModel -->"*" MethodModel
+ClassModel -->"*" FieldModel
+MethodModel -->"*" LocalVarModel
+MethodModel -->"*" ParamModel
+
+}
+
+
+CheckNamingConv -u-|> LintCheck
+LintSystem -->"*" LintCheck
+}
+
+
+Package Data{
+ +class ASMAdapter{
+    +ASMAdapter()
+    +parseClases(files: List<String>): List<ClassModel>
+ }
+}
+ASMAdapter ..> ClassModel
+LintSystem --> ASMAdapter
 @enduml
