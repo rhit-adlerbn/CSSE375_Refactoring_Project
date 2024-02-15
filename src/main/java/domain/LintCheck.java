@@ -14,5 +14,5 @@ public interface LintCheck {
      * @param classes a list of class models to lint over
      * @return a list of strings that hold the linting messages
      */
-    ArrayList<String> runLintCheck(ArrayList<ClassModel> classes);
+    List<String> runLintCheck(List<ClassModel> classes);
 }
