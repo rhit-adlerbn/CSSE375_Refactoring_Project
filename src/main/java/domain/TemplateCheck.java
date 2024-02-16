@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 public class TemplateCheck implements LintCheck{
+    /**
+     * Checks for the template pattern in a given class
+     * @param classes a list of class models to lint over
+     * @return A list of Strings to display to the user whether the check passed.
+     */
 
     @Override
     public List<String> runLintCheck(List<ClassModel> classes) {

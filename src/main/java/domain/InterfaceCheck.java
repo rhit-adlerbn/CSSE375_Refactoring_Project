@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Set;
 
 public class InterfaceCheck implements LintCheck{
+    /**
+     * if an abstract class implements an interface, it checks for if all the methods in the interface get put into
+     * the abstract class.
+     * @param classes a list of class models to lint over
+     * @return A list of Strings to display to the user whether the check passed.
+     */
     @Override
     public List<String> runLintCheck(List<ClassModel> classes) {
         List<String> returnString = new ArrayList<>();
@@ -32,8 +38,6 @@ public class InterfaceCheck implements LintCheck{
 
             ClassNode interfaceNode = new ClassNode();
             ClassModel interfaceModel = new ClassModel(interfaceNode);
-            //get methods for the interface by defining a interface node
-//            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
             List<MethodModel> interfaceMethods = interfaceModel.getMethods();
 
             Set<String> classMethodNames = new HashSet<>();

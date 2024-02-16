@@ -8,22 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OCPCheck implements LintCheck{
+
+    /**
+     * Checks a class to see if the Open-Closed Principle is held up
+     * @param classes a list of class models to lint over
+     * @return A list of Strings to display to the user whether the check passed.
+     */
     @Override
     public List<String> runLintCheck(List<ClassModel> classes) {
         List<String> returnStrings = new ArrayList<>();
         for (ClassModel classNode : classes) {
-//            int access = classNode.getAccess();
+
             List<MethodModel> classMethods = classNode.getMethods();
             for (MethodModel method : classMethods) {
                 if (method.isFinal()) {
                     returnStrings.add("Methods are final, so not open for extension. Potential violation of OCP in class " + classNode.getName());
                 }
             }
-//            for (FieldNode field : classNode.fields) {
-//                if ((field.access & (Opcodes.ACC_FINAL)) != 0) {
-//                    return "Methods are final, not open for mod
-//                }
-//            }
+
             if (classNode.isFinal()) {
                 returnStrings.add("Class is final, so not open for extension. Potential violation of OCP in class " + classNode.getName());
             }
