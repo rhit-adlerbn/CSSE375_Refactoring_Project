@@ -39,6 +39,15 @@ public class NamingConvTest {
     }
     @Test
     public void namingTest_goodConventions_expectNoWarning(){
+        LintCheck check = new NamingConvCheck();
+        ArrayList<ClassModel> classes = new ArrayList<>();
+        classes.add(goodConventions);
 
+        ArrayList<String> expected = new ArrayList<String>(Arrays.asList(
+                "GoodNamingClass is named correctly",
+                "doSomething is named correctly",
+                "varName is named correctly"));
+        ArrayList<String> actual = check.runLintCheck(classes);
+        assertEquals(expected, actual);
     }
 }
