@@ -42,7 +42,7 @@ public class ClassModel {
      * @return a parsed class name
      */
     public String getName() {
-        return node.name.substring(node.name.indexOf("/")+1);
+        return node.name.substring(node.name.lastIndexOf("/")+1);
     }
 
     /**
