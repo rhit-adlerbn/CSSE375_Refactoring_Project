@@ -1,14 +1,5 @@
 package domain;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.LocalVariableNode;
-import org.objectweb.asm.tree.MethodNode;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +25,7 @@ public class PrincipleLeastKnowledgeCheck implements LintCheck {
         for(MethodModel m : methods) {
             List<LocalVarModel> locVars = m.getLocalVars();
             for(LocalVarModel l : locVars) {
-                if(!isAField(l, classes)) violations.add("Potential PLK violation: " + l.getDesc() + " is used but " +
+                if(!isUserDefinedType(l, classes)) violations.add("Potential PLK violation: " + l.getDesc() + " is used but " +
                         "is not a field of " + c.getName() + ".\n");
             }
         }
@@ -42,12 +33,18 @@ public class PrincipleLeastKnowledgeCheck implements LintCheck {
         return violations;
     }
 
-    private boolean isAField(LocalVarModel l, List<ClassModel> classes) {
+    /**
+     * Used to determine if a local variable l is of type c,
+     * where c can be any class in the "classes" list
+     *
+     * @param l the local variable in question
+     * @param classes the list of available classes to examine
+     * @return is l a user-defined type
+     */
+    private boolean isUserDefinedType(LocalVarModel l, List<ClassModel> classes) {
         for(ClassModel c : classes) {
-            // TODO: determine if l is of type c
-            if(true) return true;
+            if(l.getDesc().equals(c.getName())) return true;
         }
-
         return false;
     }
 

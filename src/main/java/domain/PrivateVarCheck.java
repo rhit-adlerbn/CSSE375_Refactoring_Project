@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.StringBufferInputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +38,7 @@ public class PrivateVarCheck implements LintCheck {
         List<FieldModel> fields = subject.getFields();
 
         for(FieldModel f : fields) {
-            if(!f.isPrivate() && !isAccessed(f, allOtherClasses)){
+            if(!f.isPrivate() && !isAccessed(f, subject, allOtherClasses)){
                 violations.add("Field " + f.getName() + " from Class " + subject.getName()
                 + " is not private, but is never accessed by another class.\n");
             }
@@ -51,9 +52,15 @@ public class PrivateVarCheck implements LintCheck {
      * @param allOtherClasses
      * @return true iff the field f is accessed by at least one of allOtherClasses
      */
-    public boolean isAccessed(FieldModel f, List<ClassModel> allOtherClasses) {
+    public boolean isAccessed(FieldModel f, ClassModel subject, List<ClassModel> allOtherClasses) {
         for(ClassModel c : allOtherClasses) {
-            // TODO: find out how to tell if the field is accessed by the class c
+            List<MethodModel> methods = c.getMethods();
+            for(MethodModel m : methods) {
+                List<InsnModel> instructions = m.getInstructions();
+                for(InsnModel i : instructions) {
+                    if(i.matchesField(f, subject)) return true;
+                }
+            }
         }
 
         return false;
