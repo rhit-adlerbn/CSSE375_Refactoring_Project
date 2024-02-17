@@ -25,20 +25,19 @@ public class SingletonCheck implements LintCheck{
         boolean publicGetInst = false;
         String name = classMod.getName();
         for (MethodModel m : classMod.getMethods()) {
-            if ((m.getName().equals("getInstance") || m.getName().equals("getInst")) && m.isPublic())
+            if ((m.getName().equals("getInstance") || m.getName().equals("getInst")) && m.isPublic() && m.isStatic())
                 publicGetInst = true;
             if (m.getName().equals("<init>") && m.isPrivate())
                 privateInit = true;
         }
         for (FieldModel f : classMod.getFields()) {
-            if (f.isPrivate() && typeMatches(f, name) && (f.getName().equals("inst") || f.getName().equals("instance")))
+            if (f.isPrivate() && typeMatches(f, name) && f.isStatic() && (f.getName().equals("inst") || f.getName().equals("instance")))
                 privateInst = true;
         }
         if (privateInit && privateInst && publicGetInst) return name + " is a Singleton";
         else return name + " is not a Singleton";
     }
     private boolean typeMatches(FieldModel field, String className){
-
-        return (field.getInstType().equals(className));
+        return (field.getType().equals(className));
     }
 }
