@@ -56,7 +56,7 @@ public class ClassModel {
      * @return this classes super class
      */
     public String getSuperName() {
-        return node.superName;
+        return node.superName.substring(node.superName.lastIndexOf("/")+1);
     }
     /**
      * @return is this class public

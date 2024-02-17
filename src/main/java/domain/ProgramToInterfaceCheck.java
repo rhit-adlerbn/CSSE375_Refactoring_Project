@@ -9,24 +9,22 @@ public class ProgramToInterfaceCheck implements LintCheck{
     public ArrayList<String> runLintCheck(ArrayList<ClassModel> classes) {
         ArrayList<String> msgs = new ArrayList<String>();
         ArrayList<String> concretes = getConcretes(classes);
-        System.out.println(concretes);
         for (ClassModel c : classes) {
-
             String cName = c.getName();
             for(MethodModel m : c.getMethods()){
                 String name = m.getName();
                 if(concretes.contains(m.getReturnType())){
-                    msgs.add("ISSUE: Method " + name + " in class: " + cName + " returns a concrete implementation");
+                    msgs.add("Issue: Method " + name + " in class: " + cName + " returns a concrete implementation");
                 }
                 for(String p: m.getParams()){
                     if(concretes.contains(p)){
-                        msgs.add("ISSUE: Method " + name + " in class: " + cName + " expects a concrete implementation");
+                        msgs.add("Issue: Method " + name + " in class: " + cName + " expects a concrete implementation");
                     }
                 }
             }
             for(FieldModel f : c.getFields()){
                 if(concretes.contains(f.getType())){
-                    msgs.add("ISSUE: Field " + f.getName() + " in class: " + cName + " is a concrete instance");
+                    msgs.add("Issue: Field " + f.getName() + " in class: " + cName + " is a concrete instance");
                 }
             }
         }
@@ -40,7 +38,6 @@ public class ProgramToInterfaceCheck implements LintCheck{
                 supers.add(c.getName());
             }
         }
-
         for(ClassModel c : classes) {
             if (supers.contains(c.getSuperName()) || containsAny(supers, (ArrayList<String>) c.getInterfaces())) {
                 concretes.add(c.getName());
