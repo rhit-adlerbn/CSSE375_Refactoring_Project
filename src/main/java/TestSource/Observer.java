@@ -1,4 +1,4 @@
-package domain;
+package TestSource;
 
 public interface Observer {
 }

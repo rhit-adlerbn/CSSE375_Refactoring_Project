@@ -14,12 +14,12 @@ import java.util.List;
 public abstract class BasicLintern {
 
 
-    protected static boolean containsMethods(ClassNode classNode, ArrayList<String> Methods){
-        List<MethodNode> methods = (List<MethodNode>) classNode.methods;
+    protected static boolean containsMethods(ClassModel classNode, ArrayList<String> Methods){
+        List<MethodModel> methods =  classNode.getMethods();
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         ArrayList<String> unused = new ArrayList<String>();
-        for(MethodNode method: methods){
-            map.put(method.name, 1);
+        for(MethodModel method: methods){
+            map.put(method.getName(), 1);
         }
         for (String method : Methods) {
             if(!map.containsKey(method)){
@@ -31,8 +31,8 @@ public abstract class BasicLintern {
         }
         return unused.isEmpty();
     }
-    protected static boolean implementsInterface(ClassNode classNode, String interfaceSimpleName) {
-        for (String implementedInterface : classNode.interfaces) {
+    protected static boolean implementsInterface(ClassModel classNode, String interfaceSimpleName) {
+        for (String implementedInterface : classNode.getInterfaces()) {
             String name = implementedInterface.substring(implementedInterface.indexOf("/")  + 1);
             //System.out.println(name);
             if(interfaceSimpleName.equals(name)){
@@ -43,16 +43,16 @@ public abstract class BasicLintern {
     }
 
 
-    protected static boolean checkFields(ClassNode classNode, String fieldName) {
-        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
+    protected static boolean checkFields(ClassModel classNode, String fieldName) {
+        List<FieldModel> fields =  classNode.getFields();
 
 
-        for (FieldNode field : fields) {
+        for (FieldModel field : fields) {
             Type fieldType;
-            if(field.signature == null) {
-                fieldType = Type.getType(field.desc);
+            if(field.getSignature() == null) {
+                fieldType = Type.getType(field.getDesc());
             } else {
-                fieldType = Type.getType(field.signature);
+                fieldType = Type.getType(field.getSignature());
             }
             String name = fieldType.getClassName();
 

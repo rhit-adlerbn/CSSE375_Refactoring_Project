@@ -16,6 +16,8 @@ public class MethodModel {
     private ArrayList<LocalVarModel> localVars = new ArrayList<LocalVarModel>();
     private ArrayList<String> params = new ArrayList<String>();
 
+    private InsnList instructions;
+
     /**
      * Constructor, instantiates LocalVarNodes and a list of method parameters
      * @param node the MethodNode this Model Wraps
@@ -34,6 +36,7 @@ public class MethodModel {
             }
             else params.add(desc);
         }
+        this.instructions = node.instructions;
     }
 
     /**
@@ -61,6 +64,8 @@ public class MethodModel {
         }
         else return type;
     }
+
+    public InstructionModel getInstructions(){return new InstructionModel(this.instructions);}
 
     /**
      * @return is this method public
