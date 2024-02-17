@@ -1,4 +1,4 @@
-package TestSource.ObserverTest;
+package TestSource;
 
 import TestSource.Observer;
 import TestSource.Subject;

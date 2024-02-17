@@ -24,11 +24,19 @@ public class ObserverTests {
 
 
     }
-    public void testObserver() {
 
+    @Test
+    public void testObserver() throws IOException {
+        ArrayList<ClassModel> test = ASMAdapter.parseASM("C:\\Users\\taskand\\IdeaProjects\\project-202420-s3-team15-202420\\src\\main\\java\\ObserverTest");
+        for(ClassModel clas: test){
+
+            Assert.assertEquals("Observer", PatternCheck.checkObserverPattern(clas));
+        }
 
 
     }
+
+
     public void testNonObserver() {
 
 
