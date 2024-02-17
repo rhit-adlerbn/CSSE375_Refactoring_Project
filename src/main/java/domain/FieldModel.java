@@ -70,4 +70,9 @@ public class FieldModel {
     private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
     }
+
+    /**
+     * @return is this field is primitive
+     */
+    private boolean isPrimitive() {return !(node.desc.startsWith("L") || node.desc.startsWith("["));}
 }
