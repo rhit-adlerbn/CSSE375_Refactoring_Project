@@ -3,8 +3,9 @@ package domain;
 import java.util.ArrayList;
 
 public class Test implements Subject{
-    int ll;
-    Observer k;
+    private int ll;
+    ArrayList<String> tester;
+    //Observer k;
     ArrayList<Observer> h;
 
     public static void testFunc(int a, int b){

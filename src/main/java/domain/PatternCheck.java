@@ -41,7 +41,7 @@ public class PatternCheck extends BasicLintern{
 
             System.out.println(checkObserverPattern(classNode));
             System.out.println(checkCoupling(classNode));
-
+            System.out.println(CreateUML(classNode));
         }
     }
 
@@ -110,6 +110,53 @@ public class PatternCheck extends BasicLintern{
 
         }
         return couplingScore;
+    }
+
+    private static String CreateUML(ClassNode classNode){
+        String uml = "";
+        uml += "+class " + classNode.name.substring(classNode.name.lastIndexOf("/") + 1) + "{\n";
+        //List<MethodNode> methods = (List<MethodNode>) classNode.methods;
+
+        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
+        HashMap<String, Integer> Primary =  new HashMap<String, Integer>();
+        Primary.put("String", 1);
+        Primary.put("int", 1);
+        Primary.put("char", 1);
+        Primary.put("long", 1);
+        Primary.put("double", 1);
+        for (FieldNode field : fields) {
+            Type fieldType;
+            if(field.signature == null) {
+                fieldType = Type.getType(field.desc);
+            } else {
+                fieldType = Type.getType(field.signature);
+            }
+            String name = fieldType.getClassName();
+            System.out.println("\n" + name +"\n");
+            if(name.contains("Array")){
+                for(String key: Primary.keySet()){
+                    if(name.contains(key)){
+                        uml += getAccess(field.access) + field.name +  ": List<" + key + ">" + "\n" ;
+                    }
+                }
+            }
+            if(Primary.containsKey(name)){
+                uml += getAccess(field.access) + field.name + ": " + name + "\n" ;
+            }
+        }
+        uml+="}";
+        return uml;
+    }
+
+    private static String getAccess(int acces){
+        switch (acces){
+            case (1):
+                return "+";
+            case (2):
+                return "-";
+
+        }
+        return "-";
     }
 
 }
