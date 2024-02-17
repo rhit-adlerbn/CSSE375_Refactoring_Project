@@ -8,6 +8,7 @@ import org.objectweb.asm.tree.MethodNode;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +44,8 @@ public class PrincipleLeastKnowledgeCheck implements LintCheck {
 
     private boolean isAField(LocalVarModel l, List<ClassModel> classes) {
         for(ClassModel c : classes) {
-
+            // TODO: determine if l is of type c
+            if(true) return true;
         }
 
         return false;
