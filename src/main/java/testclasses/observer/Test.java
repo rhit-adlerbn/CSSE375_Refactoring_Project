@@ -1,7 +1,7 @@
-package SubjectTest;
+package testclasses.observer;
 
-import TestSource.Observer;
-import TestSource.Subject;
+import testclasses.Observer;
+import testclasses.Subject;
 
 import java.util.ArrayList;
 
