@@ -24,7 +24,7 @@ public class TemplateCheck implements LintCheck{
             List<MethodModel> classMethods = classNode.getMethods();
             String abstractClass = classNode.getSuperName();
             if (!abstractClass.equals("Abstraction")) {
-                returnStrings.add("Does not implement template method in class " + classNode.getName() + "Does not extend abstract class Abstraction");
+                returnStrings.add("Does not implement template method in class " + classNode.getName() + ". Does not extend abstract class Abstraction");
                 continue;
             }
             List<String> requiredMethods = new ArrayList<>();
@@ -62,11 +62,11 @@ public class TemplateCheck implements LintCheck{
 
             if (!classMethodNames.containsAll(requiredMethods)) {
 
-                returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + "Does not have all required methods");
+                returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + ". Does not have all required methods");
                 continue;
             }
             if (!abstractMethodNames.containsAll(requiredAbstractMethods)) {
-                returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + "Does not have all required abstract methods");
+                returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + ". Does not have all required abstract methods");
                 continue;
             }
             returnStrings.add("Correctly implements Template pattern in class " + classNode.getName());

@@ -1,11 +1,13 @@
 package domain;
 
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class ClassModel {
     private ArrayList<MethodModel> methods = new ArrayList<MethodModel>();
     private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();
     private ArrayList<String> interfaces = new ArrayList<String>();
+    private ArrayList<String> interfaceMethodNames = new ArrayList<String>();
     /**
      * Constructor, instantiates a list of MethodModels and a list of FieldModels
      * @param node the ClassNode this Model Wraps
@@ -31,11 +34,25 @@ public class ClassModel {
             }
         }
         for(String i: node.interfaces){
+            ClassNode interfaceNode = new ClassNode();
+            //get methods for the interface by defining a interface node
+            ClassReader reader = null;
+            try {
+                reader = new ClassReader(i);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
+            List<MethodNode> interfaceMethods = interfaceNode.methods;
+            for(MethodNode method: interfaceMethods){
+                interfaceMethodNames.add(method.name);
+            }
             if(i.contains("/")){
                 interfaces.add(i.substring(i.lastIndexOf("/")+1));
             }
             else interfaces.add(i);
         }
+        
     }
 
     /**
@@ -50,6 +67,13 @@ public class ClassModel {
      */
     public List<String> getInterfaces() {
         return interfaces;
+    }
+
+    /**
+     * @return this classes interfaces' methods
+     */
+    public List<String> getInterfaceMethods() {
+        return interfaceMethodNames;
     }
 
     /**

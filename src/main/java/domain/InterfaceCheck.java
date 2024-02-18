@@ -26,30 +26,30 @@ public class InterfaceCheck implements LintCheck{
                 returnString.add("Interface Check is not applicable in class " + classNode.getName());
                 continue;
             }
-            String theInterface = classNode.getInterfaces().get(0);
-
-            ClassReader reader = null;
-            try {
-                reader = new ClassReader(theInterface);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            ClassNode interfaceNode = new ClassNode();
-            ClassModel interfaceModel = new ClassModel(interfaceNode);
-            List<MethodModel> interfaceMethods = interfaceModel.getMethods();
+//            String theInterface = classNode.getInterfaces().get(0);
+////            System.out.println();
+//
+//            ClassReader reader;
+//            try {
+//                reader = new ClassReader("Domain." + theInterface);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//
+//            ClassNode interfaceNode = new ClassNode();
+//            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
+//            ClassModel interfaceModel = new ClassModel(interfaceNode);
+//            List<MethodModel> interfaceMethods = interfaceModel.getMethods();
 
             Set<String> classMethodNames = new HashSet<>();
-            Set<String> interfaceMethodNames = new HashSet<>();
+
 
             for (MethodModel method : classMethods) {
                 classMethodNames.add(method.getName());
             }
 
-            for (MethodModel method : interfaceMethods) {
-                interfaceMethodNames.add(method.getName());
-            }
+            Set<String> interfaceMethodNames = new HashSet<>(classNode.getInterfaceMethods());
 
             boolean allMethodsImplemented = classMethodNames.containsAll(interfaceMethodNames);
             if (!allMethodsImplemented) {
