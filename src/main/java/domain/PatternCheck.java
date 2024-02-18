@@ -1,5 +1,6 @@
 package domain;
 
+import datasource.ASMAdapter;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -27,28 +28,24 @@ public class PatternCheck extends BasicLintern{
      */
     public static void main(String[] args) throws IOException {
 
-        for (String className : args) {
+        for (String FilePath : args) {
 
-            ClassReader reader = new ClassReader(className);
-
-
-            ClassNode classNode = new ClassNode();
-
-
-            reader.accept(classNode, ClassReader.EXPAND_FRAMES);
+            ArrayList<ClassModel> classes =  ASMAdapter.parseASM(FilePath);
 
 
 
-            System.out.println(checkObserverPattern(classNode));
-            System.out.println(checkCoupling(classNode));
-            System.out.println(CreateUML(classNode));
+            for (ClassModel clas: classes) {
+                System.out.println(checkObserverPattern(clas));
+                System.out.println(checkCoupling(clas));
+                System.out.println(CreateUML(clas));
+            }
         }
     }
 
 
 
 
-    private static String checkObserverPattern(ClassNode classNode){
+    public static String checkObserverPattern(ClassModel classNode){
         String returnValue = "Not Observer Pattern";
         if(implementsInterface(classNode, "Subject")) {
             returnValue = "Subject";
@@ -83,21 +80,21 @@ public class PatternCheck extends BasicLintern{
 
     }
 
-    private static double checkCoupling(ClassNode classNode){
+    public static double checkCoupling(ClassModel classNode){
         double couplingScore = 0;
-        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
+        List<FieldModel> fields =  classNode.getFields();
         HashMap<String, Integer> Primary =  new HashMap<String, Integer>();
         Primary.put("String", 1);
         Primary.put("int", 1);
         Primary.put("char", 1);
         Primary.put("long", 1);
         Primary.put("double", 1);
-        for (FieldNode field : fields) {
+        for (FieldModel field : fields) {
             Type fieldType;
-            if(field.signature == null) {
-                fieldType = Type.getType(field.desc);
+            if(field.getSignature() == null) {
+                fieldType = Type.getType(field.getDesc());
             } else {
-                fieldType = Type.getType(field.signature);
+                fieldType = Type.getType(field.getSignature());
             }
             String name = fieldType.getClassName();
             if(!Primary.containsKey(name)){
@@ -112,43 +109,43 @@ public class PatternCheck extends BasicLintern{
         return couplingScore;
     }
 
-    private static String CreateUML(ClassNode classNode){
+    public static String CreateUML(ClassModel classNode){
         String uml = "";
-        uml += "+class " + classNode.name.substring(classNode.name.lastIndexOf("/") + 1) + "{\n";
+        uml += "+class " + classNode.getName().substring(classNode.getName().lastIndexOf("/") + 1) + "{\n";
         //List<MethodNode> methods = (List<MethodNode>) classNode.methods;
 
-        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
+        List<FieldModel> fields = classNode.getFields();
         HashMap<String, Integer> Primary =  new HashMap<String, Integer>();
         Primary.put("String", 1);
         Primary.put("int", 1);
         Primary.put("char", 1);
         Primary.put("long", 1);
         Primary.put("double", 1);
-        for (FieldNode field : fields) {
+        for (FieldModel field : fields) {
             Type fieldType;
-            if(field.signature == null) {
-                fieldType = Type.getType(field.desc);
+            if(field.getSignature() == null) {
+                fieldType = Type.getType(field.getDesc());
             } else {
-                fieldType = Type.getType(field.signature);
+                fieldType = Type.getType(field.getSignature());
             }
             String name = fieldType.getClassName();
             System.out.println("\n" + name +"\n");
             if(name.contains("Array")){
                 for(String key: Primary.keySet()){
                     if(name.contains(key)){
-                        uml += getAccess(field.access) + field.name +  ": List<" + key + ">" + "\n" ;
+                        uml += getAccess(field.getAccess()) + field.getName() +  ": List<" + key + ">" + "\n" ;
                     }
                 }
             }
             if(Primary.containsKey(name)){
-                uml += getAccess(field.access) + field.name + ": " + name + "\n" ;
+                uml += getAccess(field.getAccess()) + field.getName() + ": " + name + "\n" ;
             }
         }
         uml+="}";
         return uml;
     }
 
-    private static String getAccess(int acces){
+    public static String getAccess(int acces){
         switch (acces){
             case (1):
                 return "+";

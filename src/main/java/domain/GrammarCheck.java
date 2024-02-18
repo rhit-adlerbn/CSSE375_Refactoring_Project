@@ -1,5 +1,6 @@
 package domain;
 
+import datasource.ASMAdapter;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -27,23 +28,15 @@ public class GrammarCheck extends BasicLintern{
      */
     public static void main(String[] args) throws IOException {
 
-        for (String className : args) {
+        for (String FilePath : args) {
 
-            ClassReader reader = new ClassReader(className);
-
-
-            ClassNode classNode = new ClassNode();
-
-
-            reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-
-
-            PrintAllVariables(classNode);
+            ArrayList<ClassModel> classes =  ASMAdapter.parseASM(FilePath);
 
 
 
-
-
+            for (ClassModel clas: classes) {
+                PrintAllVariables(clas);
+            }
         }
     }
 
@@ -55,43 +48,43 @@ public class GrammarCheck extends BasicLintern{
 
 
 
-    private static void PrintAllVariables(ClassNode classNode){
+    public static void PrintAllVariables(ClassModel classNode){
 
-        List<MethodNode> methods = (List<MethodNode>) classNode.methods;
-        for (MethodNode method : methods) {
+        List<MethodModel> methods = classNode.getMethods();
+        for (MethodModel method : methods) {
             printVariables(method);
         }
     }
-    private static void printVariables(MethodNode methodNode){
-        InsnList instructions = methodNode.instructions;
+    public static void printVariables(MethodModel methodNode){
+        InstructionModel instructions = methodNode.getInstructions();
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
         HashMap<Integer, String> variables = new HashMap<Integer, String>();
 
 
-        Type[] argumentTypes = Type.getArgumentTypes(methodNode.desc);
+        Type[] argumentTypes = Type.getArgumentTypes(methodNode.getDesc());
         for (int i = 0; i < argumentTypes.length; i++) {
             map.put(i, 1);
             variables.put(i, argumentTypes[i].getClassName());
         }
 
-        for (LocalVariableNode localVar : methodNode.localVariables) {
-            variables.put(localVar.index, localVar.name);
+        for (LocalVarModel localVar : methodNode.getLocalVars()) {
+            variables.put(localVar.getIndex(), localVar.getName());
 
         }
 
-        for (int i = 0; i < instructions.size(); i++) {
-            AbstractInsnNode insn = instructions.get(i);
+        for (int i = 0; i < instructions.getSize(); i++) {
+            AbstractInsModel insn = instructions.get(i);
             //System.out.println(insn.getOpcode());
             if (insn.getType() == 2) {
 
-                VarInsnNode varInsn = (VarInsnNode) insn;
+                VarInsModel varInsn = insn.getVar();
                // System.out.println("Variable name: " + variables.get(varInsn.var)+" " + varInsn.getOpcode());
-                if(map.containsKey(varInsn.var)){
-                    if(varInsn.getOpcode() != 54) {
-                        map.put(varInsn.var, 2);
+                if(map.containsKey(varInsn.getVar())){
+                    if(varInsn.getOpCode() != 54) {
+                        map.put(varInsn.getVar(), 2);
                     }
                 } else {
-                    map.put(varInsn.var, 1);
+                    map.put(varInsn.getVar(), 1);
                 }
             }
 
@@ -99,7 +92,7 @@ public class GrammarCheck extends BasicLintern{
 
         for(Integer var: map.keySet()){
             if(map.get(var) == 1){
-                System.out.println("Unused Variable "+ "\""+variables.get(var)+"\"." + " In method " + methodNode.name);
+                System.out.println("Unused Variable "+ "\""+variables.get(var)+"\"." + " In method " + methodNode.getName());
             }
 
         }

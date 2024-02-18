@@ -2,16 +2,25 @@ package domain;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 import static jdk.internal.org.objectweb.asm.Opcodes.*;
+import static jdk.internal.org.objectweb.asm.Opcodes.INVOKESPECIAL;
 
-public class InsnModel {
-    final AbstractInsnNode node;
+public class AbstractInsModel {
 
-    protected InsnModel(AbstractInsnNode node) {
-        this.node = node;
+    private AbstractInsnNode node;
+    public AbstractInsModel(AbstractInsnNode asmNode){
+
+        this.node = asmNode;
     }
+
+    public int getType(){return this.node.getType();}
+
+
+    public VarInsModel getVar(){return new VarInsModel(this.node);}
+    //public int getSize(){return this.node.size();}
 
     /**
      * @param f the field being compared to this insn
@@ -54,7 +63,5 @@ public class InsnModel {
         return (node.getOpcode() == INVOKEVIRTUAL || node.getOpcode() == INVOKESTATIC
                 || node.getOpcode() == INVOKEINTERFACE || node.getOpcode() == INVOKESPECIAL);
     }
-
-
 
 }
