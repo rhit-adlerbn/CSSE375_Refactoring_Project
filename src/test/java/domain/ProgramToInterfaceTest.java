@@ -7,21 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProgramToInterfaceTest {
-    private String filePath = "testclasses/programToInterfaceResources";
-
-    ArrayList<ClassModel> classesUnderTest;
-    {
-        try {
-            classesUnderTest = ASMAdapter.parseASM(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private final String filePath = "src/test/resources/programToInterfaceResources";
+    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
 
     ArrayList<ClassModel> pToImplementation = new ArrayList<>(classesUnderTest);
     ArrayList<ClassModel> pToInterface = new ArrayList<>(classesUnderTest);
