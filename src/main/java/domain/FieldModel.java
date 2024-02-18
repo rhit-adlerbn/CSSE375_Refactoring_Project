@@ -67,6 +67,14 @@ public class FieldModel {
         return this.node.access;
     }
 
+    /**
+     * Changes the access of the node to private
+     */
+    public void privatize() {
+        node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PRIVATE;
+    }
+
     public String getSignature(){return node.signature;}
     /**
      * Determines the access modifiers
@@ -77,9 +85,11 @@ public class FieldModel {
         return (node.access & opCode) != 0;
     }
 
+
     /**
      * @return is this field is primitive
      */
     private boolean isPrimitive() {return !(node.desc.startsWith("L") || node.desc.startsWith("["));}
+
 
 }

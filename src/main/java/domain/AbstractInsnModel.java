@@ -1,9 +1,10 @@
 package domain;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.Opcodes.*;
 
-import static jdk.internal.org.objectweb.asm.Opcodes.*;
-import static jdk.internal.org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.*;
+
 
 public class AbstractInsnModel {
 

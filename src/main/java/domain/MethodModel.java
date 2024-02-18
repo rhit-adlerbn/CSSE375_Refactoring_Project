@@ -60,7 +60,7 @@ public class MethodModel {
     public String getReturnType(){
         String type = Type.getReturnType(node.desc).getClassName();
         if(type.contains(".")){
-            return type.substring(type.lastIndexOf("."));
+            return type.substring(type.lastIndexOf(".")+1);
         }
         else return type;
     }
@@ -116,6 +116,14 @@ public class MethodModel {
      */
     public ArrayList<String> getParams() {
         return this.params;
+    }
+
+    /**
+     * Changes the access of the method to private
+     */
+    public void privatize() {
+        node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PRIVATE;
     }
 
 }
