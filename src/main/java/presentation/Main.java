@@ -1,9 +1,7 @@
 package presentation;
 
 import datasource.ASMAdapter;
-import domain.ClassModel;
-import domain.LintCheck;
-import domain.TemplateCheck;
+import domain.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,6 +24,8 @@ public class Main {
         // Show user all available lint checks
         HashMap<Integer, LintCheck> checks = new HashMap<Integer, LintCheck>();
         checks.put(2, new TemplateCheck());
+        checks.put(3, new OCPCheck());
+        checks.put(4, new InterfaceCheck());
         // TODO: add all checks to hashmap
 
         System.out.println("\n\nBelow are the numbers associated with each lint check\n" +

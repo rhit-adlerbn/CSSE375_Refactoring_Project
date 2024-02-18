@@ -1,6 +1,8 @@
-package domain;
+package domain.EvanTestClasses;
 
-public class ConcreteClassOne extends Abstraction{
+import domain.EvanTestClasses.Abstraction;
+
+public class ConcreteClassOne extends Abstraction {
     public void stepIfImplDifferBySubclassM1(){
         System.out.println("HI");
     }

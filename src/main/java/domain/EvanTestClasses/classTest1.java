@@ -1,6 +1,6 @@
-package domain;
+package domain.EvanTestClasses;
 
-public abstract class classTest1 implements interfaceTest1{
+public abstract class classTest1 implements interfaceTest1 {
     @Override
     public void testMethod1() {
         System.out.println("hello");

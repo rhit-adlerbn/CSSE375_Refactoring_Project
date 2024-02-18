@@ -1,4 +1,4 @@
-package domain;
+package domain.EvanTestClasses;
 
 public abstract class Abstraction {
     final void runAlgorithm(){
