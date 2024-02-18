@@ -1,5 +1,7 @@
 package domain;
 
+import org.objectweb.asm.tree.AbstractInsnNode;
+
 import java.io.StringBufferInputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -59,7 +61,10 @@ public class PrivateVarCheck implements LintCheck {
                 InstructionModel instructions = m.getInstructions();
                 int s = instructions.getSize();
                 for(int i = 0; i < s; i++) {
-                    if(instructions.get(i).matchesField(f, subject)) return true;
+                    AbstractInsnModel insn = instructions.get(i);
+                    if(insn.isFieldInsn() && insn.getFieldInsnModel().matchesField(f, subject)) {
+                        return true;
+                    }
                 }
             }
         }
