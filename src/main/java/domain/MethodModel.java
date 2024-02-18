@@ -60,7 +60,7 @@ public class MethodModel {
     public String getReturnType(){
         String type = Type.getReturnType(node.desc).getClassName();
         if(type.contains(".")){
-            return type.substring(type.lastIndexOf("."));
+            return type.substring(type.lastIndexOf(".")+1);
         }
         else return type;
     }
