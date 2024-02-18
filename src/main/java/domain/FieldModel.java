@@ -77,13 +77,9 @@ public class FieldModel {
         return (node.access & opCode) != 0;
     }
 
-<<<<<<< HEAD
     /**
      * @return is this field is primitive
      */
     private boolean isPrimitive() {return !(node.desc.startsWith("L") || node.desc.startsWith("["));}
-=======
 
-
->>>>>>> main
 }

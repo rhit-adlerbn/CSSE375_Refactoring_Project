@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class StrategyCheck implements LintCheck {
@@ -12,7 +14,21 @@ public class StrategyCheck implements LintCheck {
      */
     @Override
     public List<String> runLintCheck(List<ClassModel> classes) {
-        return null;
+        List<String> violations = new ArrayList<>();
+
+        for(ClassModel c : classes) {
+            violations.addAll(classLevelCheck(c));
+        }
+
+        if(violations.isEmpty()) violations.add("No Strategy Pattern violations detected.\n");
+        return violations;
+    }
+
+    private Collection<String> classLevelCheck(ClassModel c) {
+        List<String> violations = new ArrayList<>();
+
+
+        return violations;
     }
 
 }
