@@ -56,9 +56,10 @@ public class PrivateVarCheck implements LintCheck {
         for(ClassModel c : allOtherClasses) {
             List<MethodModel> methods = c.getMethods();
             for(MethodModel m : methods) {
-                List<InsnModel> instructions = m.getInstructions();
-                for(InsnModel i : instructions) {
-                    if(i.matchesField(f, subject)) return true;
+                InstructionModel instructions = m.getInstructions();
+                int s = instructions.getSize();
+                for(int i = 0; i < s; i++) {
+                    if(instructions.get(i).matchesField(f, subject)) return true;
                 }
             }
         }

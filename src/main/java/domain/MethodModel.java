@@ -13,7 +13,8 @@ public class MethodModel {
     private MethodNode node;
     private ArrayList<LocalVarModel> localVars = new ArrayList<LocalVarModel>();
     private ArrayList<String> params = new ArrayList<String>();
-    private ArrayList<InsnModel> instructions = new ArrayList<>();
+
+    private InsnList instructions;
 
     /**
      * Constructor, instantiates LocalVarNodes, instructions, and a list of method parameters
@@ -34,9 +35,8 @@ public class MethodModel {
             else params.add(desc);
         }
 
-        for(AbstractInsnNode n : node.instructions) {
-            instructions.add(new InsnModel(n));
-        }
+        this.instructions = node.instructions;
+
     }
 
     /**
@@ -64,6 +64,8 @@ public class MethodModel {
         }
         else return type;
     }
+
+    public InstructionModel getInstructions(){return new InstructionModel(this.instructions);}
 
     /**
      * @return is this method public
@@ -115,11 +117,5 @@ public class MethodModel {
     public ArrayList<String> getParams() {
         return this.params;
     }
-
-    /**
-     * @return the method's instructions
-     */
-    public ArrayList<InsnModel> getInstructions() {return this.instructions; }
-
 
 }

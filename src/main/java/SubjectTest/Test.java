@@ -1,8 +1,11 @@
-package domain;
+package SubjectTest;
+
+import TestSource.Observer;
+import TestSource.Subject;
 
 import java.util.ArrayList;
 
-public class Test implements Subject{
+public class Test implements Subject {
     private int ll;
     ArrayList<String> tester;
     //Observer k;
