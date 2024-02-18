@@ -1,4 +1,4 @@
-package TestSource;
+package testclasses;
 
 public interface Subject {
 }
