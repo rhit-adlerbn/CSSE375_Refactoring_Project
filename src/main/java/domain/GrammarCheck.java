@@ -1,9 +1,7 @@
 package domain;
 
 import datasource.ASMAdapter;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +71,7 @@ public class GrammarCheck extends BasicLintern{
         }
 
         for (int i = 0; i < instructions.getSize(); i++) {
-            AbstractInsModel insn = instructions.get(i);
+            AbstractInsnModel insn = instructions.get(i);
             //System.out.println(insn.getOpcode());
             if (insn.getType() == 2) {
 

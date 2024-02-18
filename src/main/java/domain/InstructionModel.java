@@ -12,5 +12,5 @@ public class InstructionModel {
 
     public int getSize(){return this.node.size();}
 
-    public AbstractInsModel get(int index){return new AbstractInsModel(this.node.get(index));}
+    public AbstractInsnModel get(int index){return new AbstractInsnModel(this.node.get(index));}
 }
