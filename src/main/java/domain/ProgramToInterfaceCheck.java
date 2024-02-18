@@ -1,14 +1,15 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProgramToInterfaceCheck implements LintCheck{
     public ProgramToInterfaceCheck(){}
 
-    public ArrayList<String> runLintCheck(ArrayList<ClassModel> classes) {
+    public List<String> runLintCheck(List<ClassModel> classes) {
         ArrayList<String> msgs = new ArrayList<String>();
-        ArrayList<String> concretes = getConcretes(classes);
+        ArrayList<String> concretes = getConcretes((ArrayList<ClassModel>) classes);
         for (ClassModel c : classes) {
             String cName = c.getName();
             for(MethodModel m : c.getMethods()){

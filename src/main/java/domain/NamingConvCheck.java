@@ -1,5 +1,6 @@
 package domain;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class NamingConvCheck implements LintCheck{
@@ -9,7 +10,7 @@ public class NamingConvCheck implements LintCheck{
 
     public NamingConvCheck(){}
 
-    public ArrayList<String> runLintCheck(ArrayList<ClassModel> classes) {
+    public List<String> runLintCheck(List<ClassModel> classes) {
 
         ArrayList<String> msgs = new ArrayList<String>();
         for (ClassModel c : classes) {

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,11 +26,11 @@ public class SingletionTest {
     public void singletonTest_notSingletons(){
         LintCheck check = new SingletonCheck();
 
-        ArrayList<String> expected = new ArrayList<String>(Arrays.asList(
+        List<String> expected = new ArrayList<String>(Arrays.asList(
                 "NotSingleton1 is not a Singleton",
                 "NotSingleton2 is not a Singleton",
                 "NotSingleton3 is not a Singleton"));
-        ArrayList<String> actual = check.runLintCheck(classesUnderTest);
+        List<String> actual = check.runLintCheck(classesUnderTest);
         assertEquals(expected, actual);
     }
     @Test
@@ -38,8 +39,8 @@ public class SingletionTest {
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(singleton);
 
-        ArrayList<String> expected = new ArrayList<String>(Arrays.asList("Singleton is a Singleton"));
-        ArrayList<String> actual = check.runLintCheck(classes);
+        List<String> expected = new ArrayList<String>(Arrays.asList("Singleton is a Singleton"));
+        List<String> actual = check.runLintCheck(classes);
         assertEquals(expected, actual);
     }
 

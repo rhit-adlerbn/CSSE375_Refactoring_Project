@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class SingletonCheck implements LintCheck{
     public SingletonCheck(){}
-    public ArrayList<String> runLintCheck(ArrayList<ClassModel> classes) {
+    public List<String> runLintCheck(List<ClassModel> classes) {
         ArrayList<String> msgs = new ArrayList<String>();
         for (ClassModel c : classes) {
             msgs.add(runStaticCheck(c));
