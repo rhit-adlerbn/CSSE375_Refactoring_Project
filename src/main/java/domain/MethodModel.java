@@ -118,4 +118,12 @@ public class MethodModel {
         return this.params;
     }
 
+    /**
+     * Changes the access of the method to private
+     */
+    public void privatize() {
+        node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PRIVATE;
+    }
+
 }
