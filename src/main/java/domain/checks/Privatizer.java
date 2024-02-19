@@ -1,4 +1,10 @@
-package domain;
+package domain.checks;
+
+import domain.model.ClassModel;
+import domain.model.FieldModel;
+import domain.model.InstructionModel;
+import domain.model.MethodModel;
+import domain.model.AbstractInsnModel;
 
 import java.util.ArrayList;
 import java.util.List;

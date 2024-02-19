@@ -1,4 +1,4 @@
-package domain;
+package domain.checks;
 
 import domain.checks.LintCheck;
 import domain.model.ClassModel;
