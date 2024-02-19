@@ -1,10 +1,11 @@
 package domain;
 
 import datasource.ASMAdapter;
+import domain.checks.LintCheck;
+import domain.checks.NamingConvCheck;
+import domain.model.ClassModel;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
