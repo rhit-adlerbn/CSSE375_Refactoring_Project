@@ -37,36 +37,30 @@ public class TemplateCheck implements LintCheck{
                 classMethodNames.add(method.getName());
             }
 
-            ClassReader reader = null;
-            try {
-                reader = new ClassReader(abstractClass);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            ClassNode abstractNode = new ClassNode();
-            //get methods for the abstract by defining an abstract node
-            reader.accept(abstractNode, ClassReader.EXPAND_FRAMES);
-            List<MethodNode> abstractMethods = abstractNode.methods;
+
             List<String> requiredAbstractMethods = new ArrayList<>();
+            requiredAbstractMethods.add("runAlgorithm");
             requiredAbstractMethods.add("stepIfImplDifferBySubclassM1");
             requiredAbstractMethods.add("stepIfImplDifferBySubclassM2");
-            requiredAbstractMethods.add("runAlgorithm");
+
             requiredAbstractMethods.add("stepIfImplCommonToAllSubclass");
             requiredAbstractMethods.add("hookMethod");
 
+
             Set<String> abstractMethodNames = new HashSet<>();
-            for (MethodNode method : abstractMethods) {
-                abstractMethodNames.add(method.name);
+            List<MethodModel> abstractMethods = classNode.getAbstractMethods();
+            for (MethodModel method : abstractMethods) {
+                abstractMethodNames.add(method.getName());
             }
 
-
+            System.out.println(abstractMethodNames);
             if (!classMethodNames.containsAll(requiredMethods)) {
 
                 returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + ". Does not have all required methods");
                 continue;
             }
             if (!abstractMethodNames.containsAll(requiredAbstractMethods)) {
-                returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + ". Does not have all required abstract methods");
+                returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + ". Does not have all required abstract class methods");
                 continue;
             }
             returnStrings.add("Correctly implements Template pattern in class " + classNode.getName());

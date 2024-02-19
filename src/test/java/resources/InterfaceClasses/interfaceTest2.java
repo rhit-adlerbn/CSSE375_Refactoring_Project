@@ -1,4 +1,4 @@
-package domain.EvanTestClasses;
+package resources.InterfaceClasses;
 
 public interface interfaceTest2 {
     public void newTestMethod1();

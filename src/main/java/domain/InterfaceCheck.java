@@ -23,24 +23,9 @@ public class InterfaceCheck implements LintCheck{
         for(ClassModel classNode: classes) {
             List<MethodModel> classMethods = classNode.getMethods();
             if (classNode.getInterfaces().isEmpty()) {
-                returnString.add("Interface Check is not applicable in class " + classNode.getName());
+                returnString.add("Interface Check is not applicable" + classNode.getName());
                 continue;
             }
-//            String theInterface = classNode.getInterfaces().get(0);
-////            System.out.println();
-//
-//            ClassReader reader;
-//            try {
-//                reader = new ClassReader("Domain." + theInterface);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//
-//            ClassNode interfaceNode = new ClassNode();
-//            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
-//            ClassModel interfaceModel = new ClassModel(interfaceNode);
-//            List<MethodModel> interfaceMethods = interfaceModel.getMethods();
 
             Set<String> classMethodNames = new HashSet<>();
 

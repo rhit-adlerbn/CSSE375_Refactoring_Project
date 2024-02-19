@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ControlLineUserInterface {
+public class CommandLineUserInterface {
 
     static void runLinter() throws IOException {
         Scanner scanner = new Scanner(System.in);

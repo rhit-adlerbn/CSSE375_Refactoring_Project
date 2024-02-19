@@ -17,6 +17,7 @@ public class ClassModel {
     private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();
     private ArrayList<String> interfaces = new ArrayList<String>();
     private ArrayList<String> interfaceMethodNames = new ArrayList<String>();
+    private ArrayList<MethodModel> abstractMethods = new ArrayList<MethodModel>();
     /**
      * Constructor, instantiates a list of MethodModels and a list of FieldModels
      * @param node the ClassNode this Model Wraps
@@ -52,7 +53,22 @@ public class ClassModel {
             }
             else interfaces.add(i);
         }
-        
+
+        if(node.superName.equals("resources/TemplateTests/Abstraction")) {
+            ClassReader reader = null;
+            try {
+                reader = new ClassReader(node.superName);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            ClassNode abstractNode = new ClassNode();
+            //get methods for the abstract by defining an abstract node
+            reader.accept(abstractNode, ClassReader.EXPAND_FRAMES);
+            ClassModel ac = new ClassModel(abstractNode);
+            abstractMethods = (ArrayList<MethodModel>) ac.getMethods();
+
+
+        }
     }
 
     /**
@@ -75,6 +91,8 @@ public class ClassModel {
     public List<String> getInterfaceMethods() {
         return interfaceMethodNames;
     }
+
+    public List<MethodModel> getAbstractMethods(){ return abstractMethods; }
 
     /**
      * @return this classes super class
