@@ -1,7 +1,8 @@
 package presentation;
 
 import datasource.ASMAdapter;
-import domain.*;
+import domain.checks.*;
+import domain.model.ClassModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -104,7 +105,6 @@ public class GraphicsUserInterface {
             for(Integer i : checkCommands) {
                 List<String> output = checks.get(i).runLintCheck(classes);
                 for(String s : output){
-//                    System.out.println(s);
                     JLabel result = new JLabel(s);
                     results2Panel.add(result);
                 }

@@ -1,5 +1,7 @@
-package domain;
+package domain.checks;
 
+import domain.model.ClassModel;
+import domain.model.MethodModel;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;

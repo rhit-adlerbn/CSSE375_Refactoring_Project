@@ -1,6 +1,9 @@
 package domain;
 
 import datasource.ASMAdapter;
+import domain.checks.InterfaceCheck;
+import domain.checks.LintCheck;
+import domain.model.ClassModel;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
