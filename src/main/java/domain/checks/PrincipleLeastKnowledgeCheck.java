@@ -30,7 +30,7 @@ public class PrincipleLeastKnowledgeCheck implements LintCheck {
         for(MethodModel m : methods) {
             List<LocalVarModel> locVars = m.getLocalVars();
             for(LocalVarModel l : locVars) {
-                if(!isUserDefinedType(l, classes)) violations.add("Potential PLK violation: " + l.getDesc() + " is used but " +
+                if(!l.getName().equals("this") && !isUserDefinedType(l, classes)) violations.add("Potential PLK violation: " + l.getName() + " is used but " +
                         "is not a field of " + c.getName() + ".\n");
             }
         }

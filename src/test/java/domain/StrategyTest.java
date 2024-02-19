@@ -16,8 +16,8 @@ public class StrategyTest {
     private final String filePath = "src/test/resources/strategyResources";
     ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
 
-    ClassModel strategyFail = classesUnderTest.get(0);
-    ClassModel strategyPass = classesUnderTest.get(1);
+    ClassModel strategyFail = classesUnderTest.get(2);
+    ClassModel strategyPass = classesUnderTest.get(3);
 
     @Test
     public void strategyTest_Fail(){
@@ -26,7 +26,7 @@ public class StrategyTest {
         classes.add(strategyFail);
 
         List<String> expected = new ArrayList<>(Arrays.asList(
-                "Potential Strategy Pattern violation: doSomething in StrategyFail calls methods on concrete objects\n"));
+                "Potential Strategy Pattern violation: exMethod in StrategyFail calls methods on concrete objects\n"));
         List<String> actual = check.runLintCheck(classes);
         assertEquals(expected, actual);
     }
