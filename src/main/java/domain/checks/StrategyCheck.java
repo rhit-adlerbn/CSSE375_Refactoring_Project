@@ -34,6 +34,7 @@ public class StrategyCheck implements LintCheck {
         List<MethodModel> methods = c.getMethods();
 
         for(MethodModel m : methods) {
+            if(m.getName().equals("<init>")) continue;
             InstructionModel instructions = m.getInstructions();
             if(violatesStrategyPattern(instructions)) {
                 violations.add("Potential Strategy Pattern violation: " +
