@@ -1,0 +1,29 @@
+package datasource;
+
+import domain.ClassModel;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PackageLoader {
+    public static List<byte[]> loadPackage(String packagePath){
+        ArrayList<byte[]> bytes = new ArrayList<>();
+        Path dir = Paths.get(packagePath);
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
+            for (Path path : directoryStream) {
+                bytes.add(Files.readAllBytes(path)); //get the .class bytecode
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+}
