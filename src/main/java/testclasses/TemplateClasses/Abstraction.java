@@ -1,4 +1,4 @@
-package resources.TemplateTests;
+package testclasses.TemplateClasses;
 
 public abstract class Abstraction {
     final void runAlgorithm(){

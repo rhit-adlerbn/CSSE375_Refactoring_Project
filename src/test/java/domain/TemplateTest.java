@@ -3,7 +3,6 @@ package domain;
 import datasource.ASMAdapter;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TemplateTest {
-    private final String filePath = "resources/TemplateTests";
+    private final String filePath = "src/test/resources/TemplateTests";
     ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
 
     ClassModel notWork = classesUnderTest.get(0);

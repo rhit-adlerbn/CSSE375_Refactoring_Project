@@ -1,4 +1,4 @@
-package resources.InterfaceClasses;
+package testclasses.InterfaceTests;
 
 public abstract class classTest1 implements interfaceTest1 {
     @Override

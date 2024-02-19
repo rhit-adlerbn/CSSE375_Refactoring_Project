@@ -1,4 +1,4 @@
-package resources.InterfaceClasses;
+package testclasses.InterfaceTests;
 
 public interface interfaceTest1 {
     public void testMethod1();

@@ -1,6 +1,6 @@
-package resources.OCPTests;
+package testclasses.TemplateClasses;
 
-public class GoodOne {
+public class ConcreteClassOne extends Abstraction {
     public void stepIfImplDifferBySubclassM1(){
         System.out.println("HI");
     }

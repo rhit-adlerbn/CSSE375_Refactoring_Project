@@ -1,4 +1,4 @@
-package resources.OCPTests;
+package testclasses.OCPTests;
 
 public final class BadOne {
 }

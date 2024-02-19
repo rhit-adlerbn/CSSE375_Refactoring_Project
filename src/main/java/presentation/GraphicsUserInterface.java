@@ -20,6 +20,7 @@ public class GraphicsUserInterface {
         JFrame frame = new JFrame();
         frame.setSize(frameWidth, frameHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
 
         frame.setTitle("Linter");
         JButton runLinter = new JButton("Run Linter");
@@ -41,7 +42,13 @@ public class GraphicsUserInterface {
         checks.put(2, new TemplateCheck());
         checks.put(3, new OCPCheck());
         checks.put(4, new InterfaceCheck());
-        // TODO: add all checks to hashmap
+//        checks.put(5, new CouplingCheck());
+//        checks.put(6, new NamingConvCheck());
+//        checks.put(7, new ObserverPatternCheck());
+//        checks.put(8, new ProgramToInterfaceCheck());
+//        checks.put(9, new UnusedVariableCheck());
+//        checks.put(10, new SingletonCheck());
+
 
         JLabel info = new JLabel("\n\nThese are the numbers associated with each lint check\n");
         JLabel runAll = new JLabel("1 = Run All Checks");
@@ -72,11 +79,7 @@ public class GraphicsUserInterface {
             String numbers = runChecks.getText();
 
             List<ClassModel> classes = new ArrayList<>();
-            try {
-                classes = ASMAdapter.parseASM(filePathText);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            classes = ASMAdapter.parseASM(filePathText);
 
             List<Integer> checkCommands = null;
             try {
@@ -100,6 +103,8 @@ public class GraphicsUserInterface {
 
             }
             frame.repaint();
+            frame.revalidate();
+            frame.validate();
         });
 
         frame.setVisible(true);

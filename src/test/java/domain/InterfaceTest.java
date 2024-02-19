@@ -3,7 +3,6 @@ package domain;
 import datasource.ASMAdapter;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InterfaceTest {
-    private final String filePath = "resources/InterfaceClasses";
+    private final String filePath = "InterfaceTests";
     ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
 
     ClassModel implement = classesUnderTest.get(0);
