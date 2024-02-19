@@ -21,100 +21,150 @@ Package Display{
 }
 
 Package Domain{
-UserInterface --> LintSystem
 
-+class LintSystem{
--adapter: ASMAdapter
-+LintSystem()
-+runAllChecks(classes: List<ClassModel>): List<String>
-+runCheck(check: LintCheck, classes: List<ClassModel>): List<String>
++class ASMAdapter{
+    +ASMAdapter()
+    +parseClases(folderPath: String): List<ClassModel>
 }
+
+
+UserInterface --> LintSystem
+Package Check{
 +abstract LintCheck{
-+{abstract}runLintCheck(class: ClassModel): List<String>
++{abstract}runLintCheck(classes: List<ClassModel>): List<String>
 }
-+class CheckNamingConv{
--class: ClassModel
-+CheckNamingConv(class: ClassModel)
-+runLintCheck(): List<String>
++class NamingConvCheck{
+-PASCAL_REGEX: String
+-CAMEL_REGEX: String
+
++class NamingConvCheck()
++runLintCheck(classes: List<ClassModel>): List<String>
+-runNameCheck(pattern: String, name: String): String
+-regexCheck(pattern: String, name: String): boolean
 }
++class ProgramToInterfaceCheck{
++runLintCheck(classes: List<ClassModel>): List<String>
+-getConcretes(classes: List<ClassModel>): List<ClassModel>
+-containsAny(mainList: ArrayList<String>, subList: ArrayList<String>): boolean
+}
++class SingletonCheck{
++runLintCheck(classes: List<ClassModel>): List<String>
+-runStaticCheck(classMod: ClassModel): String
+-typeMatches(field: FieldModel, className: String): boolean
+}
+ProgramToInterfaceCheck ..|> LintCheck
+NamingConvCheck ..|> LintCheck
+SingletonCheck ..|> LintCheck
+}
+
+
 Package Model{
++class AbstractInsnModel{
+    -node: AbstractInsnNode
+    +AbstractInsnModel(asmNode: AbstractInsnModel)
+    +getType(): int
+    +getVar(): VarInsModel
+    +getFieldInsnModel(): FieldInsnModel
+    +getMethodInsnModel(): MethodInsnModel
+    +isFieldInsn(): boolean
+    +isMethodInsn(): boolean
+}
+
 
 +class ClassModel{
--node: ClassNode
--methods: List<MethodModel>
--fields: List<FieldModel>
-+ClassModel(node: ClassNode)
+    -node: ClassNode
+    -methods: List<MethodModel>
+    -fields: List<FieldModel>
+    -interfaces: List<String>
+    +ClassModel(node: ClassNode)
 
-+getName(): String
-+getInterfaces(): List<String>
-+getSuperName(): String
-+isPublic(): boolean
-+isPrivate(): boolean
-+isProtected(): boolean
-+isStatic(): boolean
-+isFinal(): boolean
-+isAbstract(): boolean
-+getMethods(): List<MethodModel>
-+getFields(): List<FieldModel>
--isAccessModifier(opCode: int): boolean
+    +getName(): String
+    +getInterfaces(): List<String>
+    +getSuperName(): String
+    +isPublic(): boolean
+    +isPrivate(): boolean
+    +isProtected(): boolean
+    +isStatic(): boolean
+    +isFinal(): boolean
+    +isAbstract(): boolean
+    +getMethods(): List<MethodModel>
+    +getFields(): List<FieldModel>
+    -isAccessModifier(opCode: int): boolean
 }
-+class MethodModel{
--node: MethodNode
--localVars: List<LocalVarModel>
--params: List<ParamModel>
 
-+MethodModel(node: MethodNode)
-
-+getName(): String
-+getDesc(): String
-+isPublic(): boolean
-+isPrivate(): boolean
-+isProtected(): boolean
-+isStatic(): boolean
-+isFinal(): boolean
--isAccessModifier(opCode: int): boolean
-+getLocalVars():List<LocalVarModel>
-+getParams(): List<ParamModel>
-++++++++++getInstructions(): String
++class FieldInsnModel{
+    -node: AbstractInsnNode
+    +FieldInsnModel(node: AbstractInsnNode)
+    +matchesField(f: FieldModel, owner: ClassModel): boolean
 }
 +class FieldModel{
--node: FieldNode
-+FieldModel(node: FieldNode)
+    -node: FieldNode
+    +FieldModel(node: FieldNode)
 
-+getName(): String
-+getDesc(): String
-+isPublic(): boolean
-+isPrivate(): boolean
-+isProtected(): boolean
-+isStatic(): boolean
-+isFinal(): boolean
--isAccessModifier(opCode: int): boolean
+    +getName(): String
+    +getDesc(): String
+    +getType(): String
+    +isPublic(): boolean
+    +isPrivate(): boolean
+    +isProtected(): boolean
+    +isStatic(): boolean
+    +isFinal(): boolean
+    +privatize(): void
+    +getSignature(): String
+    -isPrimitive(): boolean
+    -isAccessModifier(opCode: int): boolean
 }
++class InstuctionModel{
+    +InstuctionModel(asmNode: InsnList)
+    +getSize(): int
+    +get(index: int): AbstractInsnModel
+}
+
 +class LocalVarModel{
--node: LocalVariableNode
-+LocalVarModel(node: LocalVariableNode)
+    -node: LocalVariableNode
+    +LocalVarModel(node: LocalVariableNode)
 
-+getName(): String
-+getDesc(): String
-+getIndex(): int
+    +getName(): String
+    +getDesc(): String
+    +getIndex(): int
 }
-+class ParamModel{
--node: ParameterNode
-+ParamNode(node: ParameterNode)
 
-+getName(): String
-+isPublic(): boolean
-+isPrivate(): boolean
-+isProtected(): boolean
-+isStatic(): boolean
-+isFinal(): boolean
--isAccessModifier(opCode: int): boolean
++class MethodInsnModel{
+    -node: MethodInsnNode
+    +MethodInsnModel(node: AbstractInsnNode)
+    +matchesMethod(m: MethodModel, owner: ClassModel): boolean
+    +isInterfaceMethod(): boolean
 }
-LintSystem ..>"*" ClassModel
-ClassModel -->"*" MethodModel
-ClassModel -->"*" FieldModel
-MethodModel -->"*" LocalVarModel
-MethodModel -->"*" ParamModel
++class MethodModel{
+    -node: MethodNode
+    -localVars: List<LocalVarModel>
+    -params: List<String>
+    -instructions: InsnList
+
+    +MethodModel(node: MethodNode)
+
+    +getName(): String
+    +getDesc(): String
+    +getReturnType(): String
+    +getInstructions(): InstuctionModel
+    +isPublic(): boolean
+    +isPrivate(): boolean
+    +isProtected(): boolean
+    +isStatic(): boolean
+    +isFinal(): boolean
+    -isAccessModifier(opCode: int): boolean
+    +getLocalVars():List<LocalVarModel>
+    +getParams(): List<String>
+    +getInstructions(): String
+}
++class VarInsModel{
+    -node: VarInsnNode
+    +VarInsModel(asmNode: AbstractInsnNode)
+    +getType(): int
+    +getVar(): int
+    +getOpCode(): int
+}
+
 
 }
 
@@ -125,11 +175,90 @@ LintSystem -->"*" LintCheck
 
 
 Package Data{
- +class ASMAdapter{
-    +ASMAdapter()
-    +parseClases(files: List<String>): List<ClassModel>
- }
+    +class PackageLoader{
+    +LoadPackage(packagePath: String): List<byte[]>
+    }
+}
+Package Java{
+    +class Pattern{
+    }
+    Package ASM{
+        +class Opcodes{
+        }
+        +class AbstractInsnNode{
+        }
+        +class ClassNode{
+        }
+        +class FieldInsnNode{
+        }
+        +class FieldNode{
+        }
+        +class InsnList{
+        }
+        +class MethodInsnNode{
+        }
+        +class MethodNode{
+        }
+        +class VarInsnNode{
+        }
+        +class LocalVariableNode{
+        }
+
+    }
+
+
 }
 ASMAdapter ..> ClassModel
 LintSystem --> ASMAdapter
+LintSystem ..>"*" ClassModel
+
+AbstractInsnModel ..> FieldInsnModel
+AbstractInsnModel ..> MethodInsnModel
+AbstractInsnModel -->"1" AbstractInsnNode
+
+ClassModel -->"1" ClassNode
+ClassModel -->"*" MethodModel
+ClassModel -->"*" FieldModel
+ClassModel ..> Opcodes
+
+FieldInsnModel -->"1" AbstractInsnNode
+FieldInsnModel ..> FieldModel
+FieldInsnModel ..> ClassModel
+FieldInsnModel ..> FieldInsnNode
+
+FieldModel -->"1" FieldNode
+FieldModel ..> Opcodes
+
+InstuctionModel -->"1" InsnList
+InstuctionModel ..> AbstractInsnModel
+
+LocalVarModel -->"1" LocalVariableNode
+
+MethodInsnModel -->"1" MethodInsnNode
+MethodInsnModel ..> AbstractInsnNode
+MethodInsnModel ..> ClassModel
+MethodInsnModel ..> MethodModel
+
+MethodModel -->"1" MethodNode
+MethodModel -->"1" InsnList
+MethodModel -->"*" LocalVarModel
+MethodModel ..> InstuctionModel
+MethodModel ..> Opcodes
+
+VarInsModel -->"1" VarInsnNode
+VarInsModel ..> AbstractInsnNode
+
+
+ProgramToInterfaceCheck ..> FieldModel
+ProgramToInterfaceCheck ..> MethodModel
+ProgramToInterfaceCheck ..> ClassModel
+
+NamingConvCheck ..> FieldModel
+NamingConvCheck ..> MethodModel
+NamingConvCheck ..> ClassModel
+
+SingletonCheck ..> FieldModel
+SingletonCheck ..> MethodModel
+SingletonCheck ..> ClassModel
+
 @enduml
