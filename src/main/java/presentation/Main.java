@@ -1,9 +1,9 @@
 package presentation;
 
 import datasource.ASMAdapter;
-import domain.ClassModel;
-import domain.LintCheck;
-import domain.TemplateCheck;
+import domain.model.ClassModel;
+import domain.checks.LintCheck;
+import domain.checks.TemplateCheck;
 
 import java.io.IOException;
 import java.util.*;
