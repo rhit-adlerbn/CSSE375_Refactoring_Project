@@ -17,8 +17,11 @@ import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class ASMAdapter {
+    public ASMAdapter() {}
+
     /**
      * Parses the .class files in a directory into a list of ClassModels
      * @param folderPath the directory to parse from
@@ -26,21 +29,12 @@ public class ASMAdapter {
      */
     public static ArrayList<ClassModel> parseASM(String folderPath){
         ArrayList<ClassModel> classes = new ArrayList<>();
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(folderPath))) {
-            for (Path path : directoryStream) {
-
-                try {
-                    byte[] bytecode = Files.readAllBytes(path); //get the .class bytecode
-                    ClassReader classReader = new ClassReader(bytecode); //create a class reader for the class
-                    ClassNode classNode = new ClassNode(Opcodes.ASM9); //create a node for the class
-                    classReader.accept(classNode, 0); //read the class into the node
-                    classes.add(new ClassModel(classNode)); //create new model from node
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<byte[]> bytecode = PackageLoader.loadPackage(folderPath);
+        for(byte[] classInst : bytecode) {
+            ClassReader classReader = new ClassReader(classInst); //create a class reader for the class
+            ClassNode classNode = new ClassNode(Opcodes.ASM9); //create a node for the class
+            classReader.accept(classNode, 0); //read the class into the node
+            classes.add(new ClassModel(classNode)); //create new model from node
         }
         return classes;
     }
