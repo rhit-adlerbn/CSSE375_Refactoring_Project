@@ -11,11 +11,6 @@ public class UnusedVariableCheck implements LintCheck{
 
 
 
-
-
-
-
-
     private boolean containsMethods(ClassModel classNode, ArrayList<String> Methods){
         List<MethodModel> methods =  classNode.getMethods();
         HashMap<String, Integer> map = new HashMap<String, Integer>();
