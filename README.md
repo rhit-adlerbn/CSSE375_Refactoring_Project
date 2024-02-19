@@ -16,6 +16,7 @@ Nathan Adler, Adam Field, Evan Chung, Deniz Taskan
 - Nathan: https://rose-hulman.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=917f85d9-c65d-4b36-9f8b-b11b002513b8
 - Deniz: https://youtu.be/rmwY8Rhk1J8
 - Adam: https://rose-hulman.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=514aeaae-0d23-4ae0-b958-b11b0032c7c5
+- Evan: https://rose-hulman.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=1d0b80ee-7436-443a-823d-b11b003fb8d5
 
 ## Features
 | Developer | Style Check     | Principle Check | Pattern Check    | A Feature (optional) |
