@@ -86,4 +86,10 @@ public class FieldModel {
     }
 
 
+    /**
+     * @return is this field is primitive
+     */
+    private boolean isPrimitive() {return !(node.desc.startsWith("L") || node.desc.startsWith("["));}
+
+
 }
