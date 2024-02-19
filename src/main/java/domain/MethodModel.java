@@ -2,11 +2,9 @@ package domain;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.LocalVariableNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.ParameterNode;
+import org.objectweb.asm.tree.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +14,10 @@ public class MethodModel {
     private ArrayList<LocalVarModel> localVars = new ArrayList<LocalVarModel>();
     private ArrayList<String> params = new ArrayList<String>();
 
+    private InsnList instructions;
+
     /**
-     * Constructor, instantiates LocalVarNodes and a list of method parameters
+     * Constructor, instantiates LocalVarNodes, instructions, and a list of method parameters
      * @param node the MethodNode this Model Wraps
      */
     public MethodModel(MethodNode node) {
@@ -34,6 +34,9 @@ public class MethodModel {
             }
             else params.add(desc);
         }
+
+        this.instructions = node.instructions;
+
     }
 
     /**
@@ -57,10 +60,12 @@ public class MethodModel {
     public String getReturnType(){
         String type = Type.getReturnType(node.desc).getClassName();
         if(type.contains(".")){
-            return type.substring(type.lastIndexOf("."));
+            return type.substring(type.lastIndexOf(".")+1);
         }
         else return type;
     }
+
+    public InstructionModel getInstructions(){return new InstructionModel(this.instructions);}
 
     /**
      * @return is this method public
@@ -113,5 +118,12 @@ public class MethodModel {
         return this.params;
     }
 
+    /**
+     * Changes the access of the method to private
+     */
+    public void privatize() {
+        node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PRIVATE;
+    }
 
 }

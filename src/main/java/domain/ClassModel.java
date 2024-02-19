@@ -59,7 +59,7 @@ public class ClassModel {
      * @return a parsed class name
      */
     public String getName() {
-        return node.name.substring(node.name.indexOf("/")+1);
+        return node.name.substring(node.name.lastIndexOf("/")+1);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ClassModel {
      * @return this classes super class
      */
     public String getSuperName() {
-        return node.superName;
+        return node.superName.substring(node.superName.lastIndexOf("/")+1);
     }
     /**
      * @return is this class public

@@ -62,6 +62,20 @@ public class FieldModel {
     public boolean isFinal() {
         return isAccessModifier(Opcodes.ACC_FINAL);
     }
+
+    public int getAccess(){
+        return this.node.access;
+    }
+
+    /**
+     * Changes the access of the node to private
+     */
+    public void privatize() {
+        node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PRIVATE;
+    }
+
+    public String getSignature(){return node.signature;}
     /**
      * Determines the access modifiers
      * @param opCode the ASM access flag
@@ -70,4 +84,6 @@ public class FieldModel {
     private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
     }
+
+
 }
