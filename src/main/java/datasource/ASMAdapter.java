@@ -1,22 +1,11 @@
 package datasource;
 
-import domain.ClassModel;
+import domain.model.ClassModel;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ASMAdapter {
