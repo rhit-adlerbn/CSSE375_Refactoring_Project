@@ -30,7 +30,17 @@ Nathan Adler, Adam Field, Evan Chung, Deniz Taskan
 1. Open package
 2. Navigate to src/main/java/display/main
 3. Run Main.main()
-4. In the command line, enter an absolute file path and press enter
-5. In the command line, select 1 for all checks or enter a custom list of checks to run
+4. Hit Run Commmand Line at bottom of frame that pops up
+5. In the command line, enter an absolute file path and press enter
+6. In the command line, select 1 for all checks or enter a custom list of checks to run
+7. View the output of linter checks
+8. Improve your code
+
+## GUI Config and Run instructions
+1. Open package
+2. Navigate to src/main/java/display/main
+3. Run Main.main()
+4. In the File Path Text Field, enter an absolute file path and press enter
+5. In the Enter a number text Field, select 1 for all checks or enter a custom list of checks to run
 6. View the output of linter checks
 7. Improve your code
