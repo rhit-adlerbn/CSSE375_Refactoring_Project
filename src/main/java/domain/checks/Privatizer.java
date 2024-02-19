@@ -6,6 +6,8 @@ import domain.model.InstructionModel;
 import domain.model.MethodModel;
 import domain.model.AbstractInsnModel;
 
+import domain.model.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

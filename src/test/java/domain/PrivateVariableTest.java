@@ -2,6 +2,7 @@ package domain;
 
 import datasource.ASMAdapter;
 import domain.checks.LintCheck;
+import domain.checks.PrivateVarCheck;
 import domain.checks.StrategyCheck;
 import domain.model.ClassModel;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ public class PrivateVariableTest {
 
     @Test
     public void privVarTest_Fail(){
-        LintCheck check = new StrategyCheck();
+        LintCheck check = new PrivateVarCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(pvFail);
         classes.add(pvPass);
@@ -34,9 +35,8 @@ public class PrivateVariableTest {
 
     @Test
     public void privVarTest_Pass(){
-        LintCheck check = new StrategyCheck();
+        LintCheck check = new PrivateVarCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
-        classes.add(pvFail);
         classes.add(pvPass);
 
         List<String> expected = new ArrayList<>(Arrays.asList(

@@ -15,13 +15,14 @@ Nathan Adler, Adam Field, Evan Chung, Deniz Taskan
 ## Videos
 - Nathan: https://rose-hulman.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=917f85d9-c65d-4b36-9f8b-b11b002513b8
 - Deniz: https://youtu.be/rmwY8Rhk1J8
+- Adam: https://rose-hulman.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=514aeaae-0d23-4ae0-b958-b11b0032c7c5
 
 ## Features
 | Developer | Style Check     | Principle Check | Pattern Check    | A Feature (optional) |
 |:----------|:----------------|:----------------|:-----------------|:---------------------|
 | Nathan    |Method Naming    |Interface/Implemnt|Singleton Pattern|                      |
 | Evan      |Interface Methods| Open/Closed     | Template Method  |  Graphics Interface  |
-| Adam      |Private Variables| Least Knowledge | Strategy Pattern |                      |
+| Adam      |Private Variables| Least Knowledge | Strategy Pattern |      Privatization   |
 | Deniz     |Unused Variables | Coupling        | Observer Pattern |                      |
 
 ## Config and Run instructions
