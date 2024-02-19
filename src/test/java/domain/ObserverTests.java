@@ -1,5 +1,8 @@
 package domain;
 import datasource.ASMAdapter;
+import domain.checks.LintCheck;
+import domain.checks.ObserverPatternCheck;
+import domain.model.ClassModel;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 

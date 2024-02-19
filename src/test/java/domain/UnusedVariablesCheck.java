@@ -1,6 +1,8 @@
 package domain;
-import com.beust.ah.A;
 import datasource.ASMAdapter;
+import domain.checks.LintCheck;
+import domain.checks.UnusedVariableCheck;
+import domain.model.ClassModel;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 

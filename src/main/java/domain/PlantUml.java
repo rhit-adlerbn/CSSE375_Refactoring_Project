@@ -1,13 +1,17 @@
 package domain;
 
+import domain.checks.LintCheck;
+import domain.model.ClassModel;
+import domain.model.FieldModel;
+import domain.model.LocalVarModel;
+import domain.model.MethodModel;
 import org.objectweb.asm.Type;
-import org.testng.internal.junit.ArrayAsserts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PlantUml implements LintCheck{
+public class PlantUml implements LintCheck {
 
     private boolean containsMethods(ClassModel classNode, ArrayList<String> Methods){
         List<MethodModel> methods =  classNode.getMethods();
