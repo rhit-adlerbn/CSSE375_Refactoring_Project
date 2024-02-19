@@ -35,7 +35,7 @@ public class Privatizer {
         }
 
         for(MethodModel m : methods) {
-            if(!m.isPrivate() && !isAccessedField(m, subject, allOtherClasses)) m.privatize();
+            if(!m.isPrivate() && !isAccessedMethod(m, subject, allOtherClasses)) m.privatize();
         }
     }
 
