@@ -46,14 +46,12 @@ public class CommandLineUserInterface {
         System.out.print("Please enter the numbers of the checks you want to perform (separate with spaces): ");
         String checkNumber = scanner.nextLine();
         List<Integer> checkCommands = convertInput(checkNumber);
-        System.out.println(checkCommands);
+//        System.out.println(checkCommands);
         if(checkCommands.get(0) == 1) {
             checkCommands = new ArrayList<>();
             checkCommands.addAll(checks.keySet());
         }
-        System.out.println(classes);
-//C:\Users\chungea\IdeaProjects\project-202420-s3-team15-202420\src\test\resources\CouplingTests
-        System.out.println(checks);
+
         for(Integer i : checkCommands) {
             List<String> output = checks.get(i).runLintCheck(classes);
             for(String s : output) System.out.println(s);
