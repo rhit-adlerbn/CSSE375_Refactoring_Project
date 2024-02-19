@@ -53,7 +53,7 @@ public class TemplateCheck implements LintCheck{
                 abstractMethodNames.add(method.getName());
             }
 
-            System.out.println(abstractMethodNames);
+
             if (!classMethodNames.containsAll(requiredMethods)) {
 
                 returnStrings.add("Does not implement template pattern in class "  + classNode.getName() + ". Does not have all required methods");

@@ -54,7 +54,7 @@ public class ClassModel {
             else interfaces.add(i);
         }
 
-        if(node.superName.equals("resources/TemplateTests/Abstraction")) {
+        if(node.superName.equals("testclasses/TemplateClasses/Abstraction")) {
             ClassReader reader = null;
             try {
                 reader = new ClassReader(node.superName);

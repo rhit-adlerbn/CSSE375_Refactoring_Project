@@ -17,17 +17,25 @@ public class OCPCheck implements LintCheck{
     @Override
     public List<String> runLintCheck(List<ClassModel> classes) {
         List<String> returnStrings = new ArrayList<>();
+        int check = 0;
         for (ClassModel classNode : classes) {
+            check = 0;
 
             List<MethodModel> classMethods = classNode.getMethods();
             for (MethodModel method : classMethods) {
                 if (method.isFinal()) {
                     returnStrings.add("Methods are final, so not open for extension. Potential violation of OCP in class " + classNode.getName());
+                    check = 1;
+                    continue;
                 }
+            }
+            if(check == 1){
+                continue;
             }
 
             if (classNode.isFinal()) {
                 returnStrings.add("Class is final, so not open for extension. Potential violation of OCP in class " + classNode.getName());
+                continue;
             }
             returnStrings.add("OCP is held up in class " + classNode.getName());
         }

@@ -29,7 +29,7 @@ public class OCPTest {
         classes.add(notWork);
 
         List<String> expected = new ArrayList<>();
-        expected.add("Methods are final, so not open for extension. Potential violation of OCP in class AnotherBadOne, OCP is held up in class AnotherBadOne");
+        expected.add("Methods are final, so not open for extension. Potential violation of OCP in class AnotherBadOne");
         List<String> actual = check.runLintCheck(classes);
         Assert.assertEquals(expected, actual);
     }
@@ -41,7 +41,7 @@ public class OCPTest {
         classes.add(notWork2);
 
         List<String> expected = new ArrayList<>(Arrays.asList(
-                "Class is final, so not open for extension. Potential violation of OCP in class BadOne, OCP is held up in class BadOne"));
+                "Class is final, so not open for extension. Potential violation of OCP in class BadOne"));
         List<String> actual = check.runLintCheck(classes);
         Assert.assertEquals(expected, actual);
     }

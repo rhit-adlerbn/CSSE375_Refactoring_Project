@@ -35,6 +35,7 @@ public class InterfaceCheck implements LintCheck{
             }
 
             Set<String> interfaceMethodNames = new HashSet<>(classNode.getInterfaceMethods());
+            System.out.println(interfaceMethodNames);
 
             boolean allMethodsImplemented = classMethodNames.containsAll(interfaceMethodNames);
             if (!allMethodsImplemented) {

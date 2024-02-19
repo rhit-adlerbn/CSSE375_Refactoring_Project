@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        CommandLineUserInterface.runLinter();
-//        GraphicsUserInterface.runGraphics();
+//        CommandLineUserInterface.runLinter();
+        GraphicsUserInterface.runGraphics();
     }
 
 

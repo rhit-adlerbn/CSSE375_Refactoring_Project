@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class GraphicsUserInterface {
 
-    private static final int frameWidth = 1600;
-    private static final int frameHeight = 800;
+    private static final int frameWidth = 2100;
+    private static final int frameHeight = 1000;
     static void runGraphics(){
         JFrame frame = new JFrame();
         frame.setSize(frameWidth, frameHeight);
@@ -31,6 +31,7 @@ public class GraphicsUserInterface {
         JPanel buttonPanel = new JPanel();
         JPanel infoPanel = new JPanel();
         JPanel resultsPanel = new JPanel();
+        JPanel results2Panel = new JPanel();
 
         buttonPanel.add(runLinter);
         buttonPanel.add(useCommandLine);
@@ -42,18 +43,24 @@ public class GraphicsUserInterface {
         checks.put(2, new TemplateCheck());
         checks.put(3, new OCPCheck());
         checks.put(4, new InterfaceCheck());
-//        checks.put(5, new CouplingCheck());
-//        checks.put(6, new NamingConvCheck());
-//        checks.put(7, new ObserverPatternCheck());
-//        checks.put(8, new ProgramToInterfaceCheck());
-//        checks.put(9, new UnusedVariableCheck());
-//        checks.put(10, new SingletonCheck());
+        checks.put(5, new CouplingCheck());
+        checks.put(6, new NamingConvCheck());
+        checks.put(7, new ObserverPatternCheck());
+        checks.put(8, new ProgramToInterfaceCheck());
+        checks.put(9, new UnusedVariableCheck());
+        checks.put(10, new SingletonCheck());
 
 
         JLabel info = new JLabel("\n\nThese are the numbers associated with each lint check\n");
         JLabel runAll = new JLabel("1 = Run All Checks");
-        JLabel checkInfo = new JLabel(checks + "\n");
 
+
+        StringBuilder optionsBuilder = new StringBuilder("<html>Available lint check options:<br>");
+        for (Integer key : checks.keySet()) {
+            optionsBuilder.append(key).append(": ").append(checks.get(key).getClass().getSimpleName()).append("<br>");
+        }
+        optionsBuilder.append("</html>");
+        JLabel checkInfo = new JLabel(optionsBuilder.toString());
         JLabel enter = new JLabel("Please enter the numbers of the checks you want to perform (separate with spaces): ");
         infoPanel.add(info);
         infoPanel.add(runAll);
@@ -62,7 +69,8 @@ public class GraphicsUserInterface {
         frame.add(infoPanel, BorderLayout.NORTH);
         resultsPanel.add(filePath);
         resultsPanel.add(runChecks);
-        frame.add(resultsPanel, BorderLayout.CENTER);
+        frame.add(resultsPanel, BorderLayout.WEST);
+        frame.add(results2Panel, BorderLayout.CENTER);
 
         useCommandLine.addActionListener(e ->{
             frame.dispose();
@@ -74,7 +82,7 @@ public class GraphicsUserInterface {
         });
 
         runLinter.addActionListener(e ->{
-
+            results2Panel.removeAll();
             String filePathText = filePath.getText();
             String numbers = runChecks.getText();
 
@@ -98,10 +106,11 @@ public class GraphicsUserInterface {
                 for(String s : output){
 //                    System.out.println(s);
                     JLabel result = new JLabel(s);
-                    resultsPanel.add(result);
+                    results2Panel.add(result);
                 }
 
             }
+
             frame.repaint();
             frame.revalidate();
             frame.validate();
