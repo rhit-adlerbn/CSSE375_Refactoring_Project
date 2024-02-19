@@ -50,6 +50,9 @@ public class GraphicsUserInterface {
         checks.put(8, new ProgramToInterfaceCheck());
         checks.put(9, new UnusedVariableCheck());
         checks.put(10, new SingletonCheck());
+        checks.put(11, new PrincipleLeastKnowledgeCheck());
+        checks.put(12, new PrivateVarCheck());
+        checks.put(13, new StrategyCheck());
 
 
         JLabel info = new JLabel("\n\nThese are the numbers associated with each lint check\n");
