@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="LinterProject" />
+        <module name="CSSE375_Refactoring_Project" />
       </profile>
     </annotationProcessing>
   </component>
