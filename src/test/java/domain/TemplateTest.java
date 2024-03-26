@@ -14,7 +14,8 @@ import java.util.List;
 
 public class TemplateTest {
     private final String filePath = "src/test/resources/TemplateClasses";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel notWork = classesUnderTest.get(0);
     ClassModel work= classesUnderTest.get(1);

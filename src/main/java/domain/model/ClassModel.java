@@ -17,6 +17,8 @@ public class ClassModel {
     private ArrayList<String> interfaces = new ArrayList<String>();
     private ArrayList<String> interfaceMethodNames = new ArrayList<String>();
     private ArrayList<MethodModel> abstractMethods = new ArrayList<MethodModel>();
+
+    private String stringRepresentation = null;
     /**
      * Constructor, instantiates a list of MethodModels and a list of FieldModels
      * @param node the ClassNode this Model Wraps
@@ -69,6 +71,21 @@ public class ClassModel {
 
         }
     }
+
+    /**
+     * Constructor, see above Constructor
+     * @param node the ClassNode this Model Wraps
+     * @param representation the string representation of the Class
+     */
+    public ClassModel(ClassNode node, String representation) {
+        this(node);
+        this.stringRepresentation = representation;
+    }
+
+    /**
+     * @return the textual representation of a class bytecode
+     */
+    public String toString() { return this.stringRepresentation; }
 
     /**
      * @return a parsed class name

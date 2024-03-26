@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NamingConvTest {
     private final String filePath = "src/test/resources/namingConvResources";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel badConventions = classesUnderTest.get(0);
     ClassModel goodConventions = classesUnderTest.get(1);

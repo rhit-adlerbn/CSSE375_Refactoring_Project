@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InterfaceTest {
     private final String filePath = "src/test/resources/InterfaceTests";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel implement = classesUnderTest.get(0);
     ClassModel notImplement = classesUnderTest.get(1);

@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PrivateVariableTest {
     private final String filePath = "src/test/resources/privVarResources";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel pvFail = classesUnderTest.get(0);
     ClassModel pvPass = classesUnderTest.get(1);
