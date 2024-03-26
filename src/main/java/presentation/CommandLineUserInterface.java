@@ -20,7 +20,8 @@ public class CommandLineUserInterface {
         String filePath = scanner.nextLine();
 
         List<ClassModel> classes = new ArrayList<>();
-        classes = ASMAdapter.parseASM(filePath);
+        ASMAdapter adapter = new ASMAdapter();
+        classes = adapter.parseASM(filePath);
 
         // Show user all available lint checks
         HashMap<Integer, LintCheck> checks = new HashMap<Integer, LintCheck>();

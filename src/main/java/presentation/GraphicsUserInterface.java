@@ -91,7 +91,8 @@ public class GraphicsUserInterface {
             String numbers = runChecks.getText();
 
             List<ClassModel> classes = new ArrayList<>();
-            classes = ASMAdapter.parseASM(filePathText);
+            ASMAdapter adapter = new ASMAdapter();
+            classes = adapter.parseASM(filePathText);
 
             List<Integer> checkCommands = null;
             try {

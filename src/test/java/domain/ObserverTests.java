@@ -15,10 +15,8 @@ public class ObserverTests {
 
     private String filePath = "src/test/resources/ObserverPatternCheck";
 
-    ArrayList<ClassModel> classesUnderTest;
-    {
-        classesUnderTest = ASMAdapter.parseASM(filePath);
-    }
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel subject = classesUnderTest.get(0);
     ClassModel observer = classesUnderTest.get(1);
