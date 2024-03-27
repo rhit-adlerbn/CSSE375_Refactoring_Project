@@ -128,5 +128,12 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+  
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-text</artifactId>
+		<version>1.11.0</version>
+	</dependency>
+
     </dependencies>
 </project>
