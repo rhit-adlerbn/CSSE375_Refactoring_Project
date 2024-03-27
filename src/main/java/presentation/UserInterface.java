@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import org.testng.internal.Systematiser;
 
 import datasource.ASMAdapter;
-import datasource.FileOutput;
 import domain.checks.CouplingCheck;
 import domain.checks.InterfaceCheck;
 import domain.checks.LintCheck;
@@ -69,8 +68,6 @@ public abstract class UserInterface {
         displayResults(results);
 
         close();
-
-        FileOutput.saveResults(results);
 
     }
 
