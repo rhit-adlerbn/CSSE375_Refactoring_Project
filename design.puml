@@ -38,9 +38,9 @@ Package Checks{
 +Interface LintCheck{
 +{abstract}runLintCheck(class: ClassModel): List<String>
 }
-+class CheckNamingConv{
++class NamingConvCheck{
 -class: ClassModel
-+CheckNamingConv(class: ClassModel)
++NamingConvCheck(class: ClassModel)
 +runLintCheck(): List<String>
 }
 
@@ -141,7 +141,7 @@ PLK ..|>LintCheck
 PlantUML ..|>LintCheck
 ObserverPatternCheck ..|>LintCheck
 CouplingCheck ..|>LintCheck
-CheckNamingConv ..|> LintCheck
+NamingConvCheck ..|> LintCheck
 
 
 
@@ -353,9 +353,9 @@ PTI ..> FieldModel
 PTI ..> MethodModel
 PTI ..> ClassModel
 
-CheckNamingConv ..> FieldModel
-CheckNamingConv ..> MethodModel
-CheckNamingConv ..> ClassModel
+NamingConvCheck ..> FieldModel
+NamingConvCheck ..> MethodModel
+NamingConvCheck ..> ClassModel
 
 SingletonCheck ..> FieldModel
 SingletonCheck ..> MethodModel
@@ -375,5 +375,17 @@ PVC ..>ClassModel
 PLK ..>ClassModel
 PlantUML ..>ClassModel
 CouplingCheck ..>ClassModel
-CheckNamingConv ..> ClassModel
+NamingConvCheck ..> ClassModel
+
+PLK -[hidden]-> PVC
+PVC -[hidden]-> PTI
+PTI -[hidden]-> SingletonCheck
+SingletonCheck -[hidden]-> ObserverPatternCheck
+ObserverPatternCheck -[hidden]-> NamingConvCheck
+PLK -[hidden]-> PVC
+PLK -[hidden]-> PVC
+
+
+
+
 @enduml
