@@ -36,40 +36,45 @@ public class ClassModel {
             }
         }
         for(String i: node.interfaces){
-            ClassNode interfaceNode = new ClassNode();
-            //get methods for the interface by defining a interface node
-            ClassReader reader = null;
-            try {
-                reader = new ClassReader(i);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
-            List<MethodNode> interfaceMethods = interfaceNode.methods;
-            for(MethodNode method: interfaceMethods){
-                interfaceMethodNames.add(method.name);
-            }
-            if(i.contains("/")){
-                interfaces.add(i.substring(i.lastIndexOf("/")+1));
-            }
-            else interfaces.add(i);
+           this.addInterface(i);
         }
-
         if(node.superName.equals("testclasses/TemplateClasses/Abstraction")) {
-            ClassReader reader = null;
-            try {
-                reader = new ClassReader(node.superName);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            ClassNode abstractNode = new ClassNode();
-            //get methods for the abstract by defining an abstract node
-            reader.accept(abstractNode, ClassReader.EXPAND_FRAMES);
-            ClassModel ac = new ClassModel(abstractNode);
-            abstractMethods = (ArrayList<MethodModel>) ac.getMethods();
-
-
+            handleAbstractClass();
         }
+    }
+
+    private void addInterface(String i) {
+        ClassNode interfaceNode = new ClassNode();
+        //get methods for the interface by defining a interface node
+        ClassReader reader = null;
+        try {
+            reader = new ClassReader(i);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        reader.accept(interfaceNode, ClassReader.EXPAND_FRAMES);
+        List<MethodNode> interfaceMethods = interfaceNode.methods;
+        for(MethodNode method: interfaceMethods){
+            interfaceMethodNames.add(method.name);
+        }
+        if(i.contains("/")){
+            interfaces.add(i.substring(i.lastIndexOf("/")+1));
+        }
+        else interfaces.add(i);
+    }
+
+    private void handleAbstractClass() {
+        ClassReader reader = null;
+        try {
+            reader = new ClassReader(node.superName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ClassNode abstractNode = new ClassNode();
+        //get methods for the abstract by defining an abstract node
+        reader.accept(abstractNode, ClassReader.EXPAND_FRAMES);
+        ClassModel ac = new ClassModel(abstractNode);
+        abstractMethods = (ArrayList<MethodModel>) ac.getMethods();
     }
 
     /**
