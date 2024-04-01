@@ -1,6 +1,7 @@
 package presentation;
 
 import datasource.ASMAdapter;
+import domain.Result;
 import domain.checks.*;
 import domain.model.ClassModel;
 
@@ -39,9 +40,9 @@ public class CommandLineUserInterface extends UserInterface{
     }
 
     @Override
-    void displayResults(List<String> results) {
-        for(String result : results) {
-            System.out.println(result);
+    void displayResults(List<Result> results) {
+        for(Result result : results) {
+            System.out.println(result.toString());
         }
     }
 

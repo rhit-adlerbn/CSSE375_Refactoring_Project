@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
-
-import org.testng.internal.Systematiser;
-
 import datasource.ASMAdapter;
+import datasource.FileOutput;
+import domain.Result;
 import domain.checks.CouplingCheck;
 import domain.checks.InterfaceCheck;
 import domain.checks.LintCheck;
@@ -19,7 +17,6 @@ import domain.checks.OCPCheck;
 import domain.checks.ObserverPatternCheck;
 import domain.checks.PrincipleLeastKnowledgeCheck;
 import domain.checks.PrivateVarCheck;
-import domain.checks.ProgramToInterfaceCheck;
 import domain.checks.SingletonCheck;
 import domain.checks.StrategyCheck;
 import domain.checks.TemplateCheck;
@@ -40,12 +37,11 @@ public abstract class UserInterface {
         CHECKS.put(5, new CouplingCheck());
         CHECKS.put(6, new NamingConvCheck());
         CHECKS.put(7, new ObserverPatternCheck());
-        CHECKS.put(8, new ProgramToInterfaceCheck());
-        CHECKS.put(9, new UnusedVariableCheck());
-        CHECKS.put(10, new SingletonCheck());
-        CHECKS.put(11, new PrincipleLeastKnowledgeCheck());
-        CHECKS.put(12, new PrivateVarCheck());
-        CHECKS.put(13, new StrategyCheck());
+        CHECKS.put(8, new UnusedVariableCheck());
+        CHECKS.put(9, new SingletonCheck());
+        CHECKS.put(10, new PrincipleLeastKnowledgeCheck());
+        CHECKS.put(11, new PrivateVarCheck());
+        CHECKS.put(12, new StrategyCheck());
     }
     /**
      * Main Function for running a linting UI
@@ -63,9 +59,12 @@ public abstract class UserInterface {
         String checkNumber = getCheckToRun();
         List<Integer> checkCommands = convertInput(checkNumber);
 
-        List<String> results = runChecks(checkCommands,classes);
-
+        List<Result> results = runChecks(checkCommands,classes);
+        
+        
         displayResults(results);
+
+        FileOutput.saveResults(results);
 
         close();
 
@@ -100,7 +99,7 @@ public abstract class UserInterface {
      * Displays the results of the linting checks
      * @param results
      */
-    abstract void displayResults(List<String> results);
+    abstract void displayResults(List<Result> results);
 
     /**
      * Runs after displaying results
@@ -113,18 +112,19 @@ public abstract class UserInterface {
      * @param checkCommands
      * @return
      */
-    private List<String> runChecks(List<Integer> checkCommands, List<ClassModel> classes) {
+    private List<Result> runChecks(List<Integer> checkCommands, List<ClassModel> classes) {
         if(checkCommands.get(0) == 1) {
             checkCommands = new ArrayList<>();
             checkCommands.addAll(CHECKS.keySet());
         }
 
-        List<String> result = new ArrayList<>();
+        List<Result> results = new ArrayList<>();
         for(Integer i : checkCommands) {
-            result.addAll(CHECKS.get(i).runLintCheck(classes));
+            
+            results.addAll(CHECKS.get(i).runLintCheck(classes));
         }
 
-        return result;
+        return results;
     }
 
     /**

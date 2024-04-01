@@ -1,6 +1,9 @@
 package presentation;
 
 import javax.swing.*;
+
+import domain.Result;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
@@ -10,11 +13,11 @@ public class GraphicsUserInterface extends UserInterface {
     private static final int FRAME_WIDTH = 2100;
     private static final int FRAME_HEIGHT = 500;
     private static final CountDownLatch latch = new CountDownLatch(1);
-    static JFrame mainPage;
-    static JTextField filePath;
-    static JTextField checkNums;
-    static JTextArea resultText;
-    static JScrollPane scrollPane;
+    private static JFrame mainPage;
+    private static JTextField filePath;
+    private static JTextField checkNums;
+    private static JTextArea resultText;
+    private static JScrollPane scrollPane;
   
     private static JPanel createResultsPanel() {
         JPanel resultsPanel = new JPanel();
@@ -132,9 +135,9 @@ public class GraphicsUserInterface extends UserInterface {
         return checkNums.getText();
     }
     @Override
-    void displayResults(List<String> results) {
-        for (String result : results) {
-            resultText.append(result + "\n");
+    void displayResults(List<Result> results) {
+        for (Result result : results) {
+            resultText.append(result.toString() + "\n");
         }
         scrollPane.revalidate();
         scrollPane.validate();

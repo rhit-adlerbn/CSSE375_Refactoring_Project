@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import datasource.ASMAdapter;
+import domain.Result;
 import domain.checks.LintCheck;
 import domain.checks.SingletonCheck;
 import domain.model.ClassModel;
@@ -44,7 +45,7 @@ public class WebUserInterface {
         String[] requestLine = requestsLines[0].split(" ");
         String path = requestLine[1];
 
-        List<String> result = new ArrayList<>();
+        List<Result> result = new ArrayList<>();
         //geting data from request
         int queryIndex = path.indexOf('?');
         if (queryIndex != -1) {
@@ -63,10 +64,10 @@ public class WebUserInterface {
         System.out.println(filePath);
         if (Files.exists(filePath)) {
             String contentType = guessContentType(filePath);
-            sendResponse(client, "200 OK", contentType, Files.readAllBytes(filePath),result);
+            sendResponse(client, "200 OK", contentType, Files.readAllBytes(filePath));
         } else {
             byte[] notFoundContent = "<h1>Not found</h1>".getBytes();
-            sendResponse(client, "404 Not Found", "text/html", notFoundContent,result);
+            sendResponse(client, "404 Not Found", "text/html", notFoundContent);
         }
     }
 
@@ -75,7 +76,7 @@ public class WebUserInterface {
         checksToRun = null;
     }
 
-    private static void sendResponse(Socket client, String status, String contentType, byte[] content, List<String> result) throws IOException {    
+    private static void sendResponse(Socket client, String status, String contentType, byte[] content) throws IOException {    
         // Send the response with the updated content
         OutputStream clientOutput = client.getOutputStream();
         clientOutput.write(("HTTP/1.1 " + status + "\r\n").getBytes());
@@ -97,7 +98,7 @@ public class WebUserInterface {
     private static String guessContentType(Path filePath) throws IOException {
         return Files.probeContentType(filePath);
     }
-    private static List<String> runChecks(List<ClassModel> classes) {
+    private static List<Result> runChecks(List<ClassModel> classes) {
         LintCheck single = new SingletonCheck();
         return single.runLintCheck(classes);
     }
