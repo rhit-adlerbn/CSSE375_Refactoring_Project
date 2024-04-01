@@ -1,8 +1,8 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.FieldModel;
-import domain.model.MethodModel;
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
@@ -11,61 +11,11 @@ import java.util.List;
 
 public class CouplingCheck implements LintCheck{
 
-    private boolean containsMethods(ClassModel classNode, ArrayList<String> Methods){
-        List<MethodModel> methods =  classNode.getMethods();
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        ArrayList<String> unused = new ArrayList<String>();
-        for(MethodModel method: methods){
-            map.put(method.getName(), 1);
-        }
-        for (String method : Methods) {
-            if(!map.containsKey(method)){
-                unused.add(method);
-            }
-        }
-        for (String needed: unused){
-            System.out.println("Missing Method: " + needed);
-        }
-        return unused.isEmpty();
-    }
-    private boolean implementsInterface(ClassModel classNode, String interfaceSimpleName) {
-        for (String implementedInterface : classNode.getInterfaces()) {
-            String name = implementedInterface.substring(implementedInterface.indexOf("/")  + 1);
-            //System.out.println(name);
-            if(interfaceSimpleName.equals(name)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    private boolean checkFields(ClassModel classNode, String fieldName) {
-        List<FieldModel> fields =  classNode.getFields();
-
-
-        for (FieldModel field : fields) {
-            Type fieldType;
-            if(field.getSignature() == null) {
-                fieldType = Type.getType(field.getDesc());
-            } else {
-                fieldType = Type.getType(field.getSignature());
-            }
-            String name = fieldType.getClassName();
-
-
-            if(name.contains(fieldName)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public List<String> runLintCheck(List<ClassModel> classes){
-        ArrayList<String> msgs = new ArrayList<String>();
+    public List<Result> runLintCheck(List<ClassModel> classes){
+        ArrayList<Result> msgs = new ArrayList<>();
         for(ClassModel clas: classes){
-            msgs.add(checkCoupling(clas));
+            Result res = new Result(clas.getName(),this.getClass().getSimpleName(),checkCoupling(clas));
+            msgs.add(res);
         }
         return msgs;
     }
