@@ -25,7 +25,10 @@ public class SingletionTest {
                 "NotSingleton1 is not a Singleton",
                 "NotSingleton2 is not a Singleton",
                 "NotSingleton3 is not a Singleton"));
-        List<String> actual = check.runLintCheck(classesUnderTest);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classesUnderTest)){
+            actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
     @Test
@@ -35,7 +38,10 @@ public class SingletionTest {
         classes.add(singleton);
 
         List<String> expected = new ArrayList<>(List.of("Singleton is a Singleton"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 

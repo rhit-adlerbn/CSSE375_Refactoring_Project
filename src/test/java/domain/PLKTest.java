@@ -28,7 +28,10 @@ public class PLKTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Potential PLK violation: p is used but is not a field of PLKFail.\n"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 
@@ -40,7 +43,10 @@ public class PLKTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "No PLK violations detected.\n"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+            actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 }

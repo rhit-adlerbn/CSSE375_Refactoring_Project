@@ -27,7 +27,10 @@ public class StrategyTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Potential Strategy Pattern violation: exMethod in StrategyFail calls methods on concrete objects\n"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+            actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 
@@ -39,7 +42,10 @@ public class StrategyTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "No Strategy Pattern violations detected.\n"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+            actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 }

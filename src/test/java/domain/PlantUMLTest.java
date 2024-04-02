@@ -32,7 +32,10 @@ public class PlantUMLTest {
         LintCheck check = new PlantUml();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(Simple);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
         expected.add("+class Test1{\n-First: int\n-Second: int\n}\n");
@@ -46,7 +49,10 @@ public class PlantUMLTest {
         LintCheck check = new PlantUml();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(second);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
 
         expected.add("+class Test2{\n-name: double\n}\nTest2-->Test1\n");
@@ -60,7 +66,10 @@ public class PlantUMLTest {
         LintCheck check = new PlantUml();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(third);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
 
         expected.add("+class Test3{\n-Method1(arg1):void\n+Method2(arg1,arg2):String\n}\nTest3-->Test2\nTest3-->Test1\n");
