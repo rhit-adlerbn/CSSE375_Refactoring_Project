@@ -133,7 +133,8 @@ public abstract class UserInterface {
      * @return
      */
     private List<ClassModel> getClassesFromFile(String filePath){
-        return ASMAdapter.parseASM(filePath);
+        
+        return new ASMAdapter().parseASM(filePath);
     }
 
      /**

@@ -53,7 +53,7 @@ public class WebUserInterface {
             checksToRun = URLDecoder.decode( path.substring(path.indexOf("=", path.indexOf("=")+1), path.length()),StandardCharsets.UTF_8.toString());
             System.out.println("FilePath:"+dataFilePath);
             System.out.println("Test:" + checksToRun);
-            List<ClassModel> classes = ASMAdapter.parseASM(dataFilePath);
+            List<ClassModel> classes = new ASMAdapter().parseASM(dataFilePath);
             result =  runChecks(classes);
             System.out.println(result);
             path = path.substring(0, queryIndex);

@@ -18,7 +18,7 @@ import domain.model.ClassModel;
 
 public class FileOutTest {
     private final String filePath = "src/test/resources/singletonResources";
-    ArrayList<ClassModel> classesToCheck = ASMAdapter.parseASM(filePath);
+    ArrayList<ClassModel> classesToCheck = new ASMAdapter().parseASM(filePath);
     LintCheck check = new SingletonCheck();
     String path = "files/output.csv";
 

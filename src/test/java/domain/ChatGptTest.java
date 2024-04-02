@@ -22,7 +22,10 @@ public class ChatGptTest {
     @Test
     public void TestCouplingOutput() throws IOException {
         LintCheck check = new ChatGPTCheck();
-        List<String> actual = check.runLintCheck(classesUnderTest);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classesUnderTest)){
+            actual.add(res.toString());
+        } 
 
         // ChatGPT output is nondeterministic, so we can only assert the trivial nonempty case
         // The print statement shows how many responses we received (expect 3, one for each class)
