@@ -17,10 +17,8 @@ public class PlantUMLTest {
 
     private String filePath = "src/test/resources/PlantUML";
 
-    ArrayList<ClassModel> classesUnderTest;
-    {
-        classesUnderTest = ASMAdapter.parseASM(filePath);
-    }
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel Simple = classesUnderTest.get(0);
     ClassModel second = classesUnderTest.get(1);

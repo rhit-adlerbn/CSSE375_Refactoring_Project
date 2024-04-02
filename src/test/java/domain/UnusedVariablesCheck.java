@@ -15,10 +15,8 @@ public class UnusedVariablesCheck {
 
     private String filePath = "src/test/resources/UnusedVariablesTest";
 
-    ArrayList<ClassModel> classesUnderTest;
-    {
-        classesUnderTest = ASMAdapter.parseASM(filePath);
-    }
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel Unused = classesUnderTest.get(0);
     ClassModel Used = classesUnderTest.get(1);

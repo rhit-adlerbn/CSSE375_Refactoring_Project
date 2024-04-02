@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StrategyTest {
     private final String filePath = "src/test/resources/strategyResources";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel strategyFail = classesUnderTest.get(2);
     ClassModel strategyPass = classesUnderTest.get(3);

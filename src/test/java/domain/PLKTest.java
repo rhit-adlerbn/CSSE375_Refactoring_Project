@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PLKTest {
     private final String filePath = "src/test/resources/plkResources";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel plkHelper = classesUnderTest.get(0);
     ClassModel plkFail = classesUnderTest.get(1);

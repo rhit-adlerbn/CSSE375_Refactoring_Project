@@ -15,10 +15,8 @@ public class CouplingTest {
 
     private String filePath = "src/test/resources/CouplingTests";
 
-    ArrayList<ClassModel> classesUnderTest;
-    {
-        classesUnderTest = ASMAdapter.parseASM(filePath);
-    }
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel none = classesUnderTest.get(0);
     ClassModel some = classesUnderTest.get(1);

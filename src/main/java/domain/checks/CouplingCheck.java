@@ -20,9 +20,6 @@ public class CouplingCheck implements LintCheck{
         return msgs;
     }
 
-
-
-
     public String checkCoupling(ClassModel classNode){
         double couplingScore = 0;
         List<FieldModel> fields =  classNode.getFields();
@@ -45,23 +42,7 @@ public class CouplingCheck implements LintCheck{
                 couplingScore++;
 
             }
-
-
-
         }
         return ""+couplingScore;
-    }
-
-
-
-    public static String getAccess(int acces){
-        switch (acces){
-            case (1):
-                return "+";
-            case (2):
-                return "-";
-
-        }
-        return "-";
     }
 }

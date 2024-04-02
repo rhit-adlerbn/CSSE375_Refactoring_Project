@@ -15,7 +15,8 @@ import java.util.List;
 
 public class OCPTest {
     private final String filePath = "src/test/resources/OCPTests";
-    ArrayList<ClassModel> classesUnderTest = ASMAdapter.parseASM(filePath);
+    ASMAdapter asm = new ASMAdapter();
+    ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
     ClassModel notWork = classesUnderTest.get(0);
     ClassModel notWork2 = classesUnderTest.get(1);
