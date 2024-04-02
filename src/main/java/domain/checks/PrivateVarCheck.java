@@ -1,16 +1,13 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.*;
-import org.objectweb.asm.tree.AbstractInsnNode;
-
-import java.io.StringBufferInputStream;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class PrivateVarCheck implements LintCheck {
-
+    private String testName = this.getClass().getSimpleName(); 
     /**
      *
      * @param classes a list of class models to lint over
@@ -18,14 +15,14 @@ public class PrivateVarCheck implements LintCheck {
      * but aren't
      */
     @Override
-    public List<String> runLintCheck(List<ClassModel> classes) {
-        List<String> violations = new ArrayList<>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        List<Result> results = new ArrayList<>();
         for(ClassModel c : classes) {
-            violations.addAll(findViolations(c, classes));
+            results.addAll(findViolations(c, classes));
         }
 
-        if(violations.isEmpty()) violations.add("No private variable violations detected.\n");
-        return violations;
+        if(results.isEmpty()) results.add( new Result("All Classes", testName,"No private variable violations detected.\n"));
+        return results;
     }
 
     /**
@@ -35,15 +32,17 @@ public class PrivateVarCheck implements LintCheck {
      * @return List of strings denoting any non-private variables in c that
      * are not accessed by any other classes
      */
-    private Collection<String> findViolations(ClassModel subject, List<ClassModel> classes) {
-        Collection<String> violations = new ArrayList<>();
+    private Collection<Result> findViolations(ClassModel subject, List<ClassModel> classes) {
+        String className = subject.getName();
+        Collection<Result> violations = new ArrayList<>();
         List<ClassModel> allOtherClasses = new ArrayList<>(classes); allOtherClasses.remove(subject);
         List<FieldModel> fields = subject.getFields();
 
         for(FieldModel f : fields) {
             if(!f.isPrivate() && !isAccessed(f, subject, allOtherClasses)){
-                violations.add("Field " + f.getName() + " from Class " + subject.getName()
-                + " is not private, but is never accessed by another class.\n");
+                String msg = "Field " + f.getName() + " from Class " + subject.getName()
+                + " is not private, but is never accessed by another class.\n";
+                violations.add(new Result(className,testName, msg));
             }
         }
         return violations;

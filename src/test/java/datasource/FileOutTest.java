@@ -1,11 +1,12 @@
 package datasource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import domain.Result;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,20 +24,29 @@ public class FileOutTest {
 
     @Test
     public void namingTest_badConventions_expectWarning(){
-        List<String> result = check.runLintCheck(classesToCheck);
-        FileOutput.saveResults(result);
+        List<Result> results = check.runLintCheck(classesToCheck);
+        FileOutput.saveResults(results);
 
         try (CSVReader actual = new CSVReader(new FileReader(path))) {
 
-            String[] expectedNextLine = {"NotSingleton1 is not a Singleton","NotSingleton2 is not a Singleton","NotSingleton3 is not a Singleton","Singleton is a Singleton"};
-            String[] actualNextLine;
+           List<String[]> expectedLines = new ArrayList<>();
+           expectedLines.add(new String[] {"Class tested","Test ran","Output"});
+           expectedLines.add(new String[] {"NotSingleton1","SingletonCheck","NotSingleton1 is not a Singleton"});
+           expectedLines.add(new String[] {"NotSingleton2","SingletonCheck","NotSingleton2 is not a Singleton"});
+           expectedLines.add(new String[] {"NotSingleton3","SingletonCheck","NotSingleton3 is not a Singleton"});
+           expectedLines.add(new String[] {"Singleton","SingletonCheck","Singleton is a Singleton"});
+            
+            List<String[]> actualLines = actual.readAll();
 
-            for(String expected : expectedNextLine){
-                actualNextLine = actual.readNext();
-                assertTrue(expected.equals(actualNextLine[0]));
+            for(int i = 0; i < 5; i++){
+                for(int j = 0; j < 3; j++){
+                    assertTrue(actualLines.get(i)[j].equals(expectedLines.get(i)[j]));
+                }
             }
+               
         }
         catch(Exception e){
+            e.printStackTrace();
             assertTrue(false);
         }
     }

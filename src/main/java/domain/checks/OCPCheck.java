@@ -1,11 +1,8 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.MethodModel;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodNode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +14,20 @@ public class OCPCheck implements LintCheck{
      * @return A list of Strings to display to the user whether the check passed.
      */
     @Override
-    public List<String> runLintCheck(List<ClassModel> classes) {
-        List<String> returnStrings = new ArrayList<>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        String testName = this.getClass().getSimpleName();
+        List<Result> results = new ArrayList<>();
         int check = 0;
         for (ClassModel classNode : classes) {
+            String className = classNode.getName();
             check = 0;
 
             List<MethodModel> classMethods = classNode.getMethods();
             for (MethodModel method : classMethods) {
                 if (method.isFinal()) {
-                    returnStrings.add("Methods are final, so not open for extension. Potential violation of OCP in class " + classNode.getName());
+                    String result = "Methods are final, so not open for extension. Potential violation of OCP in class " + classNode.getName();
+                    Result res = new Result(className, testName,result);
+                    results.add(res);
                     check = 1;
                     continue;
                 }
@@ -36,12 +37,17 @@ public class OCPCheck implements LintCheck{
             }
 
             if (classNode.isFinal()) {
-                returnStrings.add("Class is final, so not open for extension. Potential violation of OCP in class " + classNode.getName());
+                String result = "Class is final, so not open for extension. Potential violation of OCP in class " + classNode.getName();
+                Result res = new Result(className, testName,result);
+                results.add(res);
                 continue;
             }
-            returnStrings.add("OCP is held up in class " + classNode.getName());
+            String result = "OCP is held up in class " + classNode.getName();
+            Result res = new Result(className, testName,result);
+            results.add(res);
+           
         }
 
-        return returnStrings;
+        return results;
     }
 }

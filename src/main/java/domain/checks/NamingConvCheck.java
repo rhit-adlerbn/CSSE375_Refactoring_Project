@@ -1,4 +1,5 @@
 package domain.checks;
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.FieldModel;
 import domain.model.MethodModel;
@@ -19,21 +20,24 @@ public class NamingConvCheck implements LintCheck{
      * @param classes a list of class models to lint over
      * @return msgs a list of strings
      */
-    public List<String> runLintCheck(List<ClassModel> classes) {
-
-        ArrayList<String> msgs = new ArrayList<String>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        String testName = this.getClass().getSimpleName();
+        ArrayList<Result> results = new ArrayList<>();
         for (ClassModel c : classes) {
-            msgs.add(runNameCheck(PASCAL_REGEX, c.getName()));
+            String cName = c.getName();
+            results.add(new Result(cName,testName,runNameCheck(PASCAL_REGEX, c.getName())));
+
             for (MethodModel m : c.getMethods()) {
                 String name = m.getName();
-                if(!name.equals("<init>")) msgs.add(runNameCheck(CAMEL_REGEX, name));
+                if(!name.equals("<init>")) 
+                    results.add(new Result(cName,testName,runNameCheck(CAMEL_REGEX, name)));
             }
             for (FieldModel f : c.getFields()) {
-                msgs.add(runNameCheck(CAMEL_REGEX, f.getName()));
+                results.add(new Result(cName,testName,runNameCheck(CAMEL_REGEX, f.getName())));
             }
         }
 
-        return msgs;
+        return results;
     }
 
     /**
