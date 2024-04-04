@@ -32,7 +32,10 @@ public class InterfaceTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Fail in classTest2. All methods in interface are not implemented. Missing these methods: [newTestMethod2, newTestMethod1, newTestMethod3]"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
     @Test
@@ -43,7 +46,10 @@ public class InterfaceTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Success in classTest1. All methods implemented from interface."));
-        List<String> actual = check.runLintCheck(classes);
+       List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 }

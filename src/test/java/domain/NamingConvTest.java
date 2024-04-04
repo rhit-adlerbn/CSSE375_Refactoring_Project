@@ -30,7 +30,10 @@ public class NamingConvTest {
                 "Issue: badNamingClass is named incorrectly",
                 "Issue: _do_something is named incorrectly",
                 "Issue: VARNAME is named incorrectly"));
-        List<String> actual = check.runLintCheck(classes);
+       List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
     @Test
@@ -43,7 +46,10 @@ public class NamingConvTest {
                 "GoodNamingClass is named correctly",
                 "doSomething is named correctly",
                 "varName is named correctly"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+            actual.add(res.toString());
+        } 
         assertEquals(expected, actual);
     }
 }

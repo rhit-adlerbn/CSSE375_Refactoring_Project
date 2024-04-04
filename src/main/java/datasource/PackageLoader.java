@@ -18,6 +18,7 @@ public class PackageLoader {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
         return bytes;
     }

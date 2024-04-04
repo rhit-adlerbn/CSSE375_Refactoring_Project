@@ -28,7 +28,10 @@ public class CouplingTest {
         LintCheck check = new CouplingCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(none);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
         expected.add("0.0");
@@ -42,7 +45,10 @@ public class CouplingTest {
         LintCheck check = new CouplingCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(some);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
         expected.add("2.4");
@@ -56,7 +62,10 @@ public class CouplingTest {
         LintCheck check = new CouplingCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(high);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
         expected.add("10.945599999999999");

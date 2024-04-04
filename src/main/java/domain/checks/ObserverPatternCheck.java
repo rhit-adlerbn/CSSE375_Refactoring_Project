@@ -1,5 +1,6 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.FieldModel;
 import domain.model.MethodModel;
@@ -12,9 +13,14 @@ import java.util.List;
 
 public class ObserverPatternCheck implements LintCheck{
 
-
-
-
+    public List<Result> runLintCheck(List<ClassModel> classes){
+        ArrayList<Result> results = new ArrayList<>();
+        for(ClassModel clas: classes){
+            Result res = new Result(clas.getName(), this.getClass().getSimpleName(),checkObserverPattern(clas));
+            results.add(res);
+        }
+        return results;
+    }
 
     private boolean containsMethods(ClassModel classNode, ArrayList<String> Methods){
         List<MethodModel> methods =  classNode.getMethods();
@@ -33,6 +39,7 @@ public class ObserverPatternCheck implements LintCheck{
         //}
         return unused.isEmpty();
     }
+
     private boolean implementsInterface(ClassModel classNode, String interfaceSimpleName) {
         for (String implementedInterface : classNode.getInterfaces()) {
             String name = implementedInterface.substring(implementedInterface.indexOf("/")  + 1);
@@ -43,7 +50,6 @@ public class ObserverPatternCheck implements LintCheck{
         }
         return false;
     }
-
 
     private boolean checkFields(ClassModel classNode, String fieldName) {
         List<FieldModel> fields =  classNode.getFields();
@@ -65,16 +71,6 @@ public class ObserverPatternCheck implements LintCheck{
         }
         return false;
     }
-
-
-    public List<String> runLintCheck(List<ClassModel> classes){
-        ArrayList<String> msgs = new ArrayList<String>();
-        for(ClassModel clas: classes){
-            msgs.add(checkObserverPattern(clas));
-        }
-        return msgs;
-    }
-
 
     public String checkObserverPattern(ClassModel classNode){
         String returnValue = "Not Observer Pattern";

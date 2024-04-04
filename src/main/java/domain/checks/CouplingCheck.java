@@ -1,8 +1,8 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.FieldModel;
-import domain.model.MethodModel;
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
@@ -11,10 +11,11 @@ import java.util.List;
 
 public class CouplingCheck implements LintCheck{
 
-    public List<String> runLintCheck(List<ClassModel> classes){
-        ArrayList<String> msgs = new ArrayList<String>();
+    public List<Result> runLintCheck(List<ClassModel> classes){
+        ArrayList<Result> msgs = new ArrayList<>();
         for(ClassModel clas: classes){
-            msgs.add(checkCoupling(clas));
+            Result res = new Result(clas.getName(),this.getClass().getSimpleName(),checkCoupling(clas));
+            msgs.add(res);
         }
         return msgs;
     }

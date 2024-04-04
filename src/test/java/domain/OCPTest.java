@@ -34,7 +34,10 @@ public class OCPTest {
 
         List<String> expected = new ArrayList<>();
         expected.add("Methods are final, so not open for extension. Potential violation of OCP in class AnotherBadOne");
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         Assert.assertEquals(expected, actual);
     }
 
@@ -46,7 +49,10 @@ public class OCPTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Class is final, so not open for extension. Potential violation of OCP in class BadOne"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         Assert.assertEquals(expected, actual);
     }
     @Test
@@ -57,7 +63,10 @@ public class OCPTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "OCP is held up in class GoodOne"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         Assert.assertEquals(expected, actual);
     }
 }

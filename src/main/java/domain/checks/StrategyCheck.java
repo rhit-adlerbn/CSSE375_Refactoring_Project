@@ -1,5 +1,6 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.InstructionModel;
 import domain.model.MethodInsnModel;
@@ -10,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class StrategyCheck implements LintCheck {
-
+    private String testName = this.getClass().getSimpleName();
     /**
      *
      * @param classes a list of class models to lint over
@@ -18,30 +19,28 @@ public class StrategyCheck implements LintCheck {
      *
      */
     @Override
-    public List<String> runLintCheck(List<ClassModel> classes) {
-        List<String> violations = new ArrayList<>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        List<Result> results = new ArrayList<>();
 
         for(ClassModel c : classes) {
-            violations.addAll(classLevelCheck(c));
+            results.addAll(classLevelCheck(c));
         }
 
-        if(violations.isEmpty()) violations.add("No Strategy Pattern violations detected.\n");
-        return violations;
+        if(results.isEmpty()) results.add(new Result("All classes",testName,"No Strategy Pattern violations detected.\n"));
+        return results;
     }
 
-    private Collection<String> classLevelCheck(ClassModel c) {
-        List<String> violations = new ArrayList<>();
+    private Collection<Result> classLevelCheck(ClassModel c) {
+        List<Result> violations = new ArrayList<>();
         List<MethodModel> methods = c.getMethods();
 
         for(MethodModel m : methods) {
             if(m.getName().equals("<init>")) continue;
             InstructionModel instructions = m.getInstructions();
             if(violatesStrategyPattern(instructions)) {
-                violations.add("Potential Strategy Pattern violation: " +
-                        m.getName() + " in " + c.getName() + " calls methods on concrete objects\n");
+                violations.add(new Result(c.getName(), testName, "Potential Strategy Pattern violation: " +
+                        m.getName() + " in " + c.getName() + " calls methods on concrete objects\n"));
             }
-
-
         }
 
         return violations;

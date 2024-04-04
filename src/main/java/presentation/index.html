@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linter</title>
+</head>
+<body>
+<div class="container">
+    <h1>Linter</h1>
+    <div class="info">
+        <p>These are the numbers associated with each lint check</p>
+        <p>Available lint check options:</p>
+        <p id="lintChecks"></p>
+        <p>Please enter the numbers of the checks you want to perform (separate with spaces):</p>
+        <input type="text" id="filePath" placeholder="Enter File Path">
+        <input type="text" id="checkNums" placeholder="Enter numbers for checks">
+    </div>
+    <div class="buttons">
+        <button onclick="sendText()" id="runLinter">Run Linter</button>
+        <button onclick="startCommandLine()" id="useCommandLine">Use Command Line</button>
+    </div>
+    <div id="results"></div>
+    <script>
+        function sendText() {
+            const files = document.getElementById('filePath').value;
+            const numbers = document.getElementById('checkNums').value;
+
+            const url = `http://localhost:8000/?files=${decodeURIComponent(files)}&numbers=${decodeURIComponent(numbers)}`;
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerText = data.join('\n');
+                
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function startCommandLine(){
+
+        }
+    </script>
+</body>
+</html>

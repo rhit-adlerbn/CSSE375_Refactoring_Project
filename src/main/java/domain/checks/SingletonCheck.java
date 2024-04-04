@@ -1,5 +1,6 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.FieldModel;
 import domain.model.MethodModel;
@@ -16,12 +17,13 @@ public class SingletonCheck implements LintCheck{
      * @param classes a list of class models to lint over
      * @return msgs a list of strings
      */
-    public List<String> runLintCheck(List<ClassModel> classes) {
-        ArrayList<String> msgs = new ArrayList<String>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        String testName = this.getClass().getSimpleName();
+        ArrayList<Result> results = new ArrayList<>();
         for (ClassModel c : classes) {
-            msgs.add(runStaticCheck(c));
+            results.add(new Result(c.getName(),testName,runStaticCheck(c)));
         }
-        return msgs;
+        return results;
     }
 
     /**

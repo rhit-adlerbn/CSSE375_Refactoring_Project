@@ -28,7 +28,10 @@ public class ObserverTests {
         LintCheck check = new ObserverPatternCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(observer);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
         expected.add("Observer");
@@ -41,7 +44,10 @@ public class ObserverTests {
         LintCheck check = new ObserverPatternCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(subject);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         expected.add("Subject");
         //expected.add("Observer");
@@ -54,7 +60,10 @@ public class ObserverTests {
         LintCheck check = new ObserverPatternCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(nothing);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
         //expected.add("Observer");

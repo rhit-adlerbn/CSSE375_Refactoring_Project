@@ -1,6 +1,7 @@
 package domain.checks;
 
 import datasource.ASMAdapter;
+import domain.Result;
 import domain.model.ClassModel;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -25,9 +26,9 @@ public class ChatGPTCheck implements LintCheck{
         List<ClassModel> models = asm.parseASM(
                 "C:\\Users\\garvinac\\CSSE375_Refactoring_Project\\src\\test\\resources\\CouplingTests"
         );
-        List<String> output = gpt.runLintCheck(models);
-        for (String s : output) {
-            System.out.println(s);
+        List<Result> output = gpt.runLintCheck(models);
+        for (Result s : output) {
+            System.out.println(s.toString());
         }
     }
 
@@ -96,18 +97,18 @@ public class ChatGPTCheck implements LintCheck{
     }
 
     @Override
-    public List<String> runLintCheck(List<ClassModel> classes) {
-        ArrayList<String> result = new ArrayList<>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        ArrayList<Result> results = new ArrayList<>();
 
         String query = buildQuery(classes);
         String lintChecks = chatGPT(query);
         String[] splitChecks = lintChecks.split("[{]");
         for (String s: splitChecks) {
             if (!s.isEmpty()) {
-                result.add(s.replace("}", ""));
+                results.add(new Result("All Classes", this.getClass().getSimpleName() ,s.replace("}", "")));
             }
         }
 
-        return result;
+        return results;
     }
 }

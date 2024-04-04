@@ -1,7 +1,7 @@
 package domain.checks;
 
+import domain.Result;
 import domain.model.ClassModel;
-import domain.model.FieldModel;
 import domain.model.LocalVarModel;
 import domain.model.MethodModel;
 
@@ -10,31 +10,28 @@ import java.util.Collection;
 import java.util.List;
 
 public class PrincipleLeastKnowledgeCheck implements LintCheck {
-
-    private List<FieldModel> fields;
+    private String testName = this.getClass().getSimpleName();
     @Override
-    public List<String> runLintCheck(List<ClassModel> classes) {
-        List<String> violations = new ArrayList<>();
+    public List<Result> runLintCheck(List<ClassModel> classes) {
+        List<Result> results = new ArrayList<>();
         for(ClassModel c : classes) {
-            violations.addAll(classLevelCheck(c, classes));
+            results.addAll(classLevelCheck(c, classes));
         }
-
-        if(violations.isEmpty()) violations.add("No PLK violations detected.\n");
-        return violations;
+        if(results.isEmpty()) results.add(new Result("All classes", testName,"No PLK violations detected.\n"));
+        return results;
     }
 
-    private Collection<String> classLevelCheck(ClassModel c, List<ClassModel> classes) {
-        List<String> violations = new ArrayList<>();
-        fields = c.getFields();
+    private Collection<Result> classLevelCheck(ClassModel c, List<ClassModel> classes) {
+        String className = c.getName();
+        List<Result> violations = new ArrayList<>();
         List<MethodModel> methods = c.getMethods();
         for(MethodModel m : methods) {
             List<LocalVarModel> locVars = m.getLocalVars();
             for(LocalVarModel l : locVars) {
-                if(!l.getName().equals("this") && !isUserDefinedType(l, classes)) violations.add("Potential PLK violation: " + l.getName() + " is used but " +
-                        "is not a field of " + c.getName() + ".\n");
+                if(!l.getName().equals("this") && !isUserDefinedType(l, classes)) 
+                violations.add(new Result (className,testName, "Potential PLK violation: " + l.getName() + " is used but " +"is not a field of " + c.getName() + ".\n"));
             }
         }
-
         return violations;
     }
 

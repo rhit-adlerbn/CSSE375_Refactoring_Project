@@ -1,78 +1,24 @@
 package domain.checks;
 
-import domain.checks.LintCheck;
+import domain.Result;
 import domain.model.ClassModel;
 import domain.model.FieldModel;
 import domain.model.LocalVarModel;
 import domain.model.MethodModel;
 import org.objectweb.asm.Type;
 
-import org.testng.internal.junit.ArrayAsserts;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class PlantUml implements LintCheck {
-
-    private boolean containsMethods(ClassModel classNode, ArrayList<String> Methods){
-        List<MethodModel> methods =  classNode.getMethods();
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        ArrayList<String> unused = new ArrayList<String>();
-        for(MethodModel method: methods){
-            map.put(method.getName(), 1);
-        }
-        for (String method : Methods) {
-            if(!map.containsKey(method)){
-                unused.add(method);
-            }
-        }
-        for (String needed: unused){
-            System.out.println("Missing Method: " + needed);
-        }
-        return unused.isEmpty();
-    }
-    private boolean implementsInterface(ClassModel classNode, String interfaceSimpleName) {
-        for (String implementedInterface : classNode.getInterfaces()) {
-            String name = implementedInterface.substring(implementedInterface.indexOf("/")  + 1);
-            //System.out.println(name);
-            if(interfaceSimpleName.equals(name)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    private boolean checkFields(ClassModel classNode, String fieldName) {
-        List<FieldModel> fields =  classNode.getFields();
-
-
-        for (FieldModel field : fields) {
-            Type fieldType;
-            if(field.getSignature() == null) {
-                fieldType = Type.getType(field.getDesc());
-            } else {
-                fieldType = Type.getType(field.getSignature());
-            }
-            String name = fieldType.getClassName();
-
-
-            if(name.contains(fieldName)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public List<String> runLintCheck(List<ClassModel> classes){
-        ArrayList<String> msgs = new ArrayList<String>();
+    public List<Result> runLintCheck(List<ClassModel> classes){
+        String testName = this.getClass().getSimpleName();
+        ArrayList<Result> results = new ArrayList<>();
         for(ClassModel clas: classes){
-            msgs.add(CreateUML(clas));
+            results.add(new Result(clas.getName(), testName, CreateUML(clas)));
         }
-        return msgs;
+        return results;
     }
 
     public String CreateUML(ClassModel classNode){
@@ -145,7 +91,6 @@ public class PlantUml implements LintCheck {
                 return "+";
             case (2):
                 return "-";
-
         }
         return "-";
     }

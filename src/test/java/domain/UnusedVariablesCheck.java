@@ -26,7 +26,10 @@ public class UnusedVariablesCheck {
         LintCheck check = new UnusedVariableCheck();
         ArrayList<ClassModel> classes = new ArrayList<ClassModel>();
         classes.add(Unused);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
 
         expected.add("Unused Variable "+ "\""+"unused"+"\"." + " In method " + "doFunny");
@@ -46,7 +49,10 @@ public class UnusedVariablesCheck {
         LintCheck check = new UnusedVariableCheck();
         ArrayList<ClassModel> classes = new ArrayList<ClassModel>();
         classes.add(Used);
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         List<String> expected = new ArrayList<String>();
 
         expected.add("No unused Vars");

@@ -1,31 +1,52 @@
 @startuml
-Package Display{
+Package Presentation{
 
-+class CommandLineUsername{
-
-
-+{Static} runLintern(): void
--{Static} convertInput(s: String): List<int>
++class CommandLineUserInterface{
+    -{Static} scanner: Scanner>
 }
-
 +class GraphicsUserInterface{
-- {static} width: int
-- {static} length: int
-
--{static} runGraphics(): void
--{Static} convertInput(s: String): List<int>
+    - {static} <u> FRAME_WIDTH: int
+    - {static} <u> FRAME_HEIGHT: int
+    - {static} <u> latch: CountDownLatch
+    - {static} mainPage: JFrame
+    - {static} filePath: JTextField
+    - {static} checkNums: JTextField
+    - {static} resultText: JTextField
+    - {static} scrollPane: JScrollPane
+    - {static} createResultsPanel(): JPanel
+    - {static} createInputPanel(): JPanel
+    - {static} createInfoPanel(): JPanel
+    - {static} createButtonPanel(): JPanel
+    - {static} createRunButton(): JButton
+    - {static} createMainPage(): JFrame
 }
++class WebUserInterface{
+    - {static} <u> PORT: int
+    -handleClient(client: Socket): void
+    -sendResponse(client: Socket, status: String,contentType: String, content: byte[], result: List<String>): void
+}
+WebUserInterface -u-|> UserInterface
 
 +class Main{
 +{static} Main(args: String[]): void
 }
-
-
-
-
-
-
-
++abstract class UserInterface{
+    -<u> CHECKS: Map
+    +runLinter(): void
+    ~{abstract} getCheckToRun(): String
+    ~{abstract} displayChecks(): void
+    ~{abstract} startDisplay(): void
+    ~{abstract} getFilePath(): String
+    ~{abstract} displayResults(results: List<String>): void
+    ~{abstract} close(): void
+    -runChecks(checkCommands: List<Integer>, classes: List<ClassModel>): List<String>
+    -getClassesFromFile(filePath: String): List<ClassModel>
+    -convertInput(s: String): List<Integer>
+    #getChecks(): List<String>
+}
+Main -->UserInterface
+GraphicsUserInterface -u-|> UserInterface
+CommandLineUserInterface -u-|> UserInterface
 
 
 }
@@ -38,9 +59,9 @@ Package Checks{
 +Interface LintCheck{
 +{abstract}runLintCheck(class: ClassModel): List<String>
 }
-+class CheckNamingConv{
++class NamingConvCheck{
 -class: ClassModel
-+CheckNamingConv(class: ClassModel)
++NamingConvCheck(class: ClassModel)
 +runLintCheck(): List<String>
 }
 
@@ -141,7 +162,7 @@ PLK ..|>LintCheck
 PlantUML ..|>LintCheck
 ObserverPatternCheck ..|>LintCheck
 CouplingCheck ..|>LintCheck
-CheckNamingConv ..|> LintCheck
+NamingConvCheck ..|> LintCheck
 
 
 
@@ -186,7 +207,7 @@ Package Model{
 -isAccessModifier(opCode: int): boolean
 +getLocalVars():List<LocalVarModel>
 +getParams(): List<ParamModel>
-++++++++++getInstructions(): String
++getInstructions(): String
 }
 +class FieldModel{
 -node: FieldNode
@@ -279,6 +300,9 @@ Package Data{
  +class PackageLoader{
  +{static} LoadPackages(path: String):List<Byte[]>
  }
+ +class FileOutput{
+    +{static} SaveResults(results: List<String>): void
+ }
 }
 
 Package Java{
@@ -353,19 +377,20 @@ PTI ..> FieldModel
 PTI ..> MethodModel
 PTI ..> ClassModel
 
-CheckNamingConv ..> FieldModel
-CheckNamingConv ..> MethodModel
-CheckNamingConv ..> ClassModel
+NamingConvCheck ..> FieldModel
+NamingConvCheck ..> MethodModel
+NamingConvCheck ..> ClassModel
 
 SingletonCheck ..> FieldModel
 SingletonCheck ..> MethodModel
 SingletonCheck ..> ClassModel
-Main ..>CommandLineUsername
 ASMAdapter ..>PackageLoader
 ASMAdapter ..> ClassModel
 Main ..>GraphicsUserInterface
-GraphicsUserInterface ..>LintCheck
-CommandLineUsername ..>LintCheck
+GraphicsUserInterface ..> CommandLineUserInterface
+UserInterface ..>LintCheck
+UserInterface ..>FileOutput
+UserInterface ..> ASMAdapter 
 UnusedVariablesCheck ..>ClassModel
 TemplateCheck ..>ClassModel
 StrategyCheck ..>ClassModel
@@ -375,5 +400,17 @@ PVC ..>ClassModel
 PLK ..>ClassModel
 PlantUML ..>ClassModel
 CouplingCheck ..>ClassModel
-CheckNamingConv ..> ClassModel
+NamingConvCheck ..> ClassModel
+
+PLK -[hidden]-> PVC
+PVC -[hidden]-> PTI
+
+
+ObserverPatternCheck -d[hidden]-> NamingConvCheck
+NamingConvCheck -d[hidden]-> SingletonCheck
+StrategyCheck -d[hidden]-> PlantUML
+CouplingCheck -d[hidden]-> UnusedVariablesCheck
+
+CommandLineUserInterface ..> FileOutput
+
 @enduml

@@ -1,137 +1,157 @@
 package presentation;
 
-import datasource.ASMAdapter;
-import domain.checks.*;
-import domain.model.ClassModel;
-
 import javax.swing.*;
+
+import domain.Result;
+
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.CountDownLatch;
 
-public class GraphicsUserInterface {
-
-    private static final int frameWidth = 2100;
-    private static final int frameHeight = 1000;
-    static void runGraphics(){
-        JFrame frame = new JFrame();
-        frame.setSize(frameWidth, frameHeight);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-        frame.setTitle("Linter");
-        JButton runLinter = new JButton("Run Linter");
-        JButton useCommandLine = new JButton("Use Command Line");
-        JTextField filePath = new JTextField("Enter File Path");
-        JTextField runChecks = new JTextField("Enter number for checks");
-
-        JPanel buttonPanel = new JPanel();
-        JPanel infoPanel = new JPanel();
+public class GraphicsUserInterface extends UserInterface {
+    private static final int FRAME_WIDTH = 2100;
+    private static final int FRAME_HEIGHT = 500;
+    private static final CountDownLatch latch = new CountDownLatch(1);
+    private static JFrame mainPage;
+    private static JTextField filePath;
+    private static JTextField checkNums;
+    private static JTextArea resultText;
+    private static JScrollPane scrollPane;
+  
+    private static JPanel createResultsPanel() {
         JPanel resultsPanel = new JPanel();
-        JPanel results2Panel = new JPanel();
+
+        resultText = new JTextArea(0, 0);
+        resultText.setEditable(false);
+        resultText.setLineWrap(true);
+        resultText.setPreferredSize(new Dimension(500, 500));
+
+        scrollPane = new JScrollPane(resultText);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        resultsPanel.add(scrollPane, BorderLayout.CENTER);
+
+        return resultsPanel;
+    }
+ 
+    private static JPanel createInputPanel() {
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
+        JLabel info = new JLabel("Please enter the numbers of the checks you want to perform (separate with spaces): ");
+        filePath = new JTextField("Enter File Path");
+        checkNums = new JTextField("Enter numbers for checks");
+
+        inputPanel.add(filePath);
+        inputPanel.add(info);
+        inputPanel.add(checkNums);
+
+        return inputPanel;
+    }
+
+    private static JPanel createInfoPanel() {
+        JPanel infoPanel = new JPanel();
+
+        StringBuilder optionsBuilder = new StringBuilder("<html>Available lint check options:<br>");
+        for (String option : getChecks()) {
+            optionsBuilder.append(option).append("<br>");
+        }
+        optionsBuilder.append("</html>");
+        JLabel checkInfo = new JLabel(optionsBuilder.toString());
+
+        infoPanel.add(checkInfo, BorderLayout.EAST);
+
+        return infoPanel;
+    }
+
+    private static JPanel createButtonPanel() {
+        JButton runLinter = createRunButton();
+        JButton useCommandLine = new JButton("Use Command Line");
+        JPanel buttonPanel = new JPanel();
 
         buttonPanel.add(runLinter);
         buttonPanel.add(useCommandLine);
 
-        frame.add(buttonPanel, BorderLayout.SOUTH);
-
-        // Show user all available lint checks
-        HashMap<Integer, LintCheck> checks = new HashMap<Integer, LintCheck>();
-        checks.put(2, new TemplateCheck());
-        checks.put(3, new OCPCheck());
-        checks.put(4, new InterfaceCheck());
-        checks.put(5, new CouplingCheck());
-        checks.put(6, new NamingConvCheck());
-        checks.put(7, new ObserverPatternCheck());
-        checks.put(8, new ProgramToInterfaceCheck());
-        checks.put(9, new UnusedVariableCheck());
-        checks.put(10, new SingletonCheck());
-        checks.put(11, new PrincipleLeastKnowledgeCheck());
-        checks.put(12, new PrivateVarCheck());
-        checks.put(13, new StrategyCheck());
-
-
-        JLabel info = new JLabel("\n\nThese are the numbers associated with each lint check\n");
-        JLabel runAll = new JLabel("1 = Run All Checks");
-
-
-        StringBuilder optionsBuilder = new StringBuilder("<html>Available lint check options:<br>");
-        for (Integer key : checks.keySet()) {
-            optionsBuilder.append(key).append(": ").append(checks.get(key).getClass().getSimpleName()).append("<br>");
-        }
-        optionsBuilder.append("</html>");
-        JLabel checkInfo = new JLabel(optionsBuilder.toString());
-        JLabel enter = new JLabel("Please enter the numbers of the checks you want to perform (separate with spaces): ");
-        infoPanel.add(info);
-        infoPanel.add(runAll);
-        infoPanel.add(checkInfo);
-        infoPanel.add(enter);
-        frame.add(infoPanel, BorderLayout.NORTH);
-        resultsPanel.add(filePath);
-        resultsPanel.add(runChecks);
-        frame.add(resultsPanel, BorderLayout.WEST);
-        frame.add(results2Panel, BorderLayout.CENTER);
-
-        useCommandLine.addActionListener(e ->{
-            frame.dispose();
+        useCommandLine.addActionListener(e -> {
+            mainPage.dispose();
             try {
-                CommandLineUserInterface.runLinter();
+                CommandLineUserInterface UI = new CommandLineUserInterface();
+                UI.runLinter();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
-        runLinter.addActionListener(e ->{
-            results2Panel.removeAll();
-            String filePathText = filePath.getText();
-            String numbers = runChecks.getText();
+        return buttonPanel;
+    }
 
-            List<ClassModel> classes = new ArrayList<>();
-            ASMAdapter adapter = new ASMAdapter();
-            classes = adapter.parseASM(filePathText);
+    private static JButton createRunButton() {
+        JButton runLinter = new JButton("Run Lint Checks");
 
-            List<Integer> checkCommands = null;
-            try {
-                checkCommands = convertInput(numbers);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            if(checkCommands.get(0) == 1) {
-                checkCommands = new ArrayList<>();
-                checkCommands.addAll(checks.keySet());
-            }
-
-            for(Integer i : checkCommands) {
-                List<String> output = checks.get(i).runLintCheck(classes);
-                for(String s : output){
-                    JLabel result = new JLabel(s);
-                    results2Panel.add(result);
-                }
-
-            }
-
-            frame.repaint();
-            frame.revalidate();
-            frame.validate();
+        runLinter.addActionListener(e -> {
+            resultText.removeAll();
+            latch.countDown();
         });
 
+        return runLinter;
+    }
+
+    private static JFrame createMainPage() {
+        JFrame frame = new JFrame();
+
+        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setTitle("Linter");
+        frame.setLayout(new GridLayout(0, 2));
+
+        return frame;
+    }
+    
+    @Override
+    void startDisplay() {
+        mainPage = createMainPage();
+       
+        mainPage.add(createInfoPanel());
+        mainPage.add(createResultsPanel());
+        mainPage.add(createInputPanel());
+        mainPage.add(createButtonPanel());
+
+        mainPage.setVisible(true);
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    String getFilePath() {
+        return filePath.getText();
+    }
+    @Override
+    String getCheckToRun() {
+        return checkNums.getText();
+    }
+    @Override
+    void displayResults(List<Result> results) {
+        for (Result result : results) {
+            resultText.append(result.toString() + "\n");
+        }
+        scrollPane.revalidate();
+        scrollPane.validate();
+        mainPage.repaint();
+        mainPage.revalidate();
+        mainPage.validate();
+    }
+    @Override
+    void displayChecks() {  
+        // Do nothing, JSwing handles display
+    }
+    @Override
+    void close() {
+        // Do nothing, user can close window
     }
 
-    private static List<Integer> convertInput(String s) throws IOException {
-        try {
-            return Arrays.stream(s.split("\\s+"))
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-        } catch (NumberFormatException e) {
-            System.out.println("Illegal input. Restarting...");
-            runGraphics();
-        }
-        return null;
-    }
 }

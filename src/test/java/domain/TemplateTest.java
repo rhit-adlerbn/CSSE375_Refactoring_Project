@@ -31,7 +31,10 @@ public class TemplateTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Does not implement template method in class Abstraction. Does not extend abstract class Abstraction"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+           actual.add(res.toString());
+        } 
         Assert.assertEquals(expected, actual);
     }
     @Test
@@ -42,7 +45,10 @@ public class TemplateTest {
 
         List<String> expected = new ArrayList<>(Arrays.asList(
                 "Correctly implements Template pattern in class ConcreteClassOne"));
-        List<String> actual = check.runLintCheck(classes);
+        List<String> actual = new ArrayList<>();
+        for(Result res : check.runLintCheck(classes)){
+            actual.add(res.toString());
+        } 
         Assert.assertEquals(expected, actual);
     }
 }
