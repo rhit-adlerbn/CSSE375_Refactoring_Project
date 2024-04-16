@@ -1,5 +1,6 @@
 package domain.model;
 
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MethodModel {
+public class MethodModel extends Model{
     private MethodNode node;
     private ArrayList<LocalVarModel> localVars = new ArrayList<LocalVarModel>();
     private ArrayList<String> params = new ArrayList<String>();
@@ -41,6 +42,7 @@ public class MethodModel {
     /**
      * @return method name
      */
+    @Override
     public String getName() {
         return node.name;
     }
@@ -48,6 +50,7 @@ public class MethodModel {
     /**
      * @return method description
      */
+    @Override
     public String getDesc() {
         return node.desc;
     }
@@ -120,9 +123,50 @@ public class MethodModel {
     /**
      * Changes the access of the method to private
      */
+    @Override
     public void privatize() {
         node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
         node.access |= Opcodes.ACC_PRIVATE;
     }
+    /**
+     * Changes the access of the node to public
+     */
+    @Override
+    public void publicize() {
+        node.access &= ~(Opcodes.ACC_PRIVATE | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PUBLIC;
+    }
 
+    public List<String> getNodeNames(){
+        MethodModelVisitor methodVisitor = new MethodModelVisitor();
+        node.accept(methodVisitor);
+        return methodVisitor.getNames();
+    }
+
+    private class MethodModelVisitor extends MethodVisitor {
+        private final List<String> names = new ArrayList<>();
+
+
+        public MethodModelVisitor() {
+            super(Opcodes.ASM9);
+        }
+
+        @Override
+        public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+            
+            MethodInsnNode methodInsnNode = new MethodInsnNode(opcode, owner, name, descriptor, isInterface);
+            names.add(methodInsnNode.name);
+            
+        }
+
+        @Override
+        public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
+            FieldInsnNode fieldInsnNode = new FieldInsnNode(opcode, owner, name, descriptor);
+            names.add(fieldInsnNode.name);
+            
+        }
+        public List<String> getNames() {
+            return names;
+        }
+    }
 }

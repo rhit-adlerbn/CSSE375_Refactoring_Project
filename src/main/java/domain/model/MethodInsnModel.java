@@ -1,13 +1,12 @@
 package domain.model;
 
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 public class MethodInsnModel {
     private final MethodInsnNode node;
 
-    public MethodInsnModel(AbstractInsnNode node) {
-        this.node = (MethodInsnNode) node;
+    public MethodInsnModel(MethodInsnNode node) {
+        this.node =  node;
     }
 
     /**
@@ -15,11 +14,10 @@ public class MethodInsnModel {
      * @param owner the owner of the method m
      * @return is this insn accessing the method m
      */
-    public boolean matchesMethod(MethodModel m, ClassModel owner) {
-        MethodInsnNode n = (MethodInsnNode) node;
-        return n.owner.equals(owner.getName())
-                && n.name.equals(m.getName())
-                && n.desc.equals(m.getDesc());
+    public boolean matches(Model m, ClassModel owner) {
+        return node.owner.equals(owner.getName())
+                && node.name.equals(m.getName())
+                && node.desc.equals(m.getDesc());
     }
 
     /**

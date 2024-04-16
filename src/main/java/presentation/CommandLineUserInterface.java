@@ -1,13 +1,7 @@
 package presentation;
 
-import datasource.ASMAdapter;
 import domain.Result;
-import domain.checks.*;
-import domain.model.ClassModel;
-
-import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CommandLineUserInterface extends UserInterface{
     static Scanner scanner = new Scanner(System.in);

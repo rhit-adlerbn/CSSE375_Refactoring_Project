@@ -8,13 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
-import datasource.ASMAdapter;
 import domain.Result;
-import domain.checks.LintCheck;
-import domain.checks.SingletonCheck;
 import domain.model.ClassModel;
 public class WebUserInterface {
     private static final int PORT = 8000;
@@ -34,7 +30,7 @@ public class WebUserInterface {
         resetData();
         BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-        //parseing request
+        //parse request
         StringBuilder requestBuilder = new StringBuilder();
         String line;
         while (!(line = br.readLine()).isBlank()) {
@@ -45,92 +41,77 @@ public class WebUserInterface {
         String[] requestLine = requestsLines[0].split(" ");
         String path = requestLine[1];
 
-        List<Result> result = new ArrayList<>();
-        //geting data from request
+        //generate result
         int queryIndex = path.indexOf('?');
         if (queryIndex != -1) {
-            dataFilePath = URLDecoder.decode(path.substring(path.indexOf("=")+1, path.indexOf("&")),StandardCharsets.UTF_8.toString());
-            checksToRun = URLDecoder.decode( path.substring(path.indexOf("=", path.indexOf("=")+1), path.length()),StandardCharsets.UTF_8.toString());
-            System.out.println("FilePath:"+dataFilePath);
-            System.out.println("Test:" + checksToRun);
-            List<ClassModel> classes = new ASMAdapter().parseASM(dataFilePath);
-            result =  runChecks(classes);
-            System.out.println(result);
+            runChecks(path);
             path = path.substring(0, queryIndex);
         }
         
-        //sending response
+        //send response
         Path filePath = getFilePath(path);
         System.out.println(filePath);
         if (Files.exists(filePath)) {
-            String contentType = guessContentType(filePath);
-            sendResponse(client, "200 OK", contentType, Files.readAllBytes(filePath));
+            if ("/result".equals(path)) {
+                sendResponse(client, "302 Found", Files.readAllBytes(filePath), path);
+                return;
+            }
+            sendResponse(client, "200 OK", Files.readAllBytes(filePath), path);
         } else {
             byte[] notFoundContent = "<h1>Not found</h1>".getBytes();
-            sendResponse(client, "404 Not Found", "text/html", notFoundContent);
+            sendResponse(client, "404 Not Found", notFoundContent, "");
         }
     }
 
+    private static void runChecks(String path) throws IOException{
+        List<Result> result;
+        dataFilePath = URLDecoder.decode(path.substring(path.indexOf("=")+1, path.indexOf("&")),StandardCharsets.UTF_8.toString());
+        checksToRun = URLDecoder.decode(path.substring(path.indexOf("=", path.indexOf("=")+1)+1, path.length()),StandardCharsets.UTF_8.toString());
+        
+        List<ClassModel> classes = UserInterface.getClassesFromFile(dataFilePath);
+        List<Integer> checks = UserInterface.convertInput(checksToRun);
+        result = UserInterface.runChecks(checks, classes);
+        generateResultHtml(result);
+       
+        System.out.println(result);
+        System.out.println("FilePath:"+dataFilePath);
+        System.out.println("Test:" + checksToRun);
+    }
+
+    private static void generateResultHtml(List<Result> results) throws IOException {
+        Path path = Paths.get("src/main/java/presentation/result.html");
+        StringBuilder htmlBuilder = new StringBuilder();
+        htmlBuilder.append("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n");
+        htmlBuilder.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
+        htmlBuilder.append("<title>Linter Results</title>\n</head>\n<body>\n<div class=\"container\">\n");
+        htmlBuilder.append("<h1>Linter Results</h1>\n<ul>\n");
+        for (Result result : results) {
+            htmlBuilder.append("<li>").append(result.toString()).append("</li>\n");
+        }
+        htmlBuilder.append("</ul>\n</div>\n</body>\n</html>");
+        Files.write(path, htmlBuilder.toString().getBytes());
+    }
+    private static void sendResponse(Socket client, String status, byte[] content, String redirectUrl) throws IOException {    
+        OutputStream clientOutput = client.getOutputStream();
+        clientOutput.write(("HTTP/1.1 " + status + "\r\n").getBytes());
+        clientOutput.write(("Content-Type: text/html" + "\r\n").getBytes());
+        clientOutput.write(("Location: " + redirectUrl + "\r\n").getBytes());
+        clientOutput.write("\r\n".getBytes());
+        clientOutput.write(content);
+        clientOutput.write("\r\n".getBytes());
+        clientOutput.flush();
+        client.close();
+    }
+    private static Path getFilePath(String path) {
+        if ("/".equals(path)) {
+            path = "src\\main\\java\\presentation\\index.html";   
+        }else if("/result".equals(path)){
+            path = "src\\main\\java\\presentation\\result.html";
+        }
+        return Paths.get(path);
+    }
     private static void resetData() {
         dataFilePath = null;
         checksToRun = null;
     }
-
-    private static void sendResponse(Socket client, String status, String contentType, byte[] content) throws IOException {    
-        // Send the response with the updated content
-        OutputStream clientOutput = client.getOutputStream();
-        clientOutput.write(("HTTP/1.1 " + status + "\r\n").getBytes());
-        clientOutput.write(("Content-Type: " + contentType + "\r\n").getBytes());
-        clientOutput.write("\r\n".getBytes());
-        clientOutput.write(content);
-        clientOutput.write("\r\n\r\n".getBytes());
-        clientOutput.flush();
-        client.close();
-    }
-
-    private static Path getFilePath(String path) {
-        if ("/".equals(path)) {
-            path = "src\\main\\java\\presentation\\index.html";   
-        }
-        return Paths.get(path);
-    }
-
-    private static String guessContentType(Path filePath) throws IOException {
-        return Files.probeContentType(filePath);
-    }
-    private static List<Result> runChecks(List<ClassModel> classes) {
-        LintCheck single = new SingletonCheck();
-        return single.runLintCheck(classes);
-    }
-    // @Override
-    // String getCheckToRun() {
-    //    return checksToRun;
-    // }
-
-    // @Override
-    // void displayChecks() {
-    //     // Implement logic to display the checks in the web UI
-    // }
-
-    // @Override
-    // void startDisplay() {
-    //     // Implement logic to start the web UI
-    // }
-
-    // @Override
-    // void close() {
-    //     // Implement logic to close the web UI
-    // }
-
-    // @Override
-    // String getFilePath() {
-    //     // Implement logic to get the file path from the web UI
-    //     return "path/to/file"; // For example, return a hardcoded file path
-    // }
-
-    // @Override
-    // void displayResults(List<String> results) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'displayResults'");
-    // }
 }

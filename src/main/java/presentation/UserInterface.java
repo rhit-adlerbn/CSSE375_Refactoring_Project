@@ -112,7 +112,7 @@ public abstract class UserInterface {
      * @param checkCommands
      * @return
      */
-    private List<Result> runChecks(List<Integer> checkCommands, List<ClassModel> classes) {
+    public static List<Result> runChecks(List<Integer> checkCommands, List<ClassModel> classes) {
         if(checkCommands.get(0) == 1) {
             checkCommands = new ArrayList<>();
             checkCommands.addAll(CHECKS.keySet());
@@ -132,8 +132,7 @@ public abstract class UserInterface {
      * @param filePath
      * @return
      */
-    private List<ClassModel> getClassesFromFile(String filePath){
-        
+    public static List<ClassModel> getClassesFromFile(String filePath){  
         return new ASMAdapter().parseASM(filePath);
     }
 
@@ -143,13 +142,12 @@ public abstract class UserInterface {
      * @param s
      * @return
      */
-    private List<Integer> convertInput(String s) throws IOException {
+    public static List<Integer> convertInput(String s) throws IOException {
         try {
             String[] keys = s.split("\\s+");
             return Arrays.stream(keys).map(Integer::parseInt).collect(Collectors.toList());
         } catch (NumberFormatException e) {
-            System.out.println("Illegal input. Restarting...");
-            runLinter();
+            System.out.println("Illegal input");
         }
         return null;
     }

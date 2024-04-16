@@ -3,9 +3,7 @@ package domain.model;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.FieldNode;
 
-import java.util.List;
-
-public class FieldModel {
+public class FieldModel extends Model{
     private final FieldNode node;
     public FieldModel(FieldNode node) {
         this.node = node;
@@ -13,12 +11,14 @@ public class FieldModel {
     /**
      * @return field name
      */
+    @Override
     public String getName() {
         return node.name;
     }
     /**
      * @return field description
      */
+    @Override
     public String getDesc() {
         return node.desc;
     }
@@ -70,9 +70,18 @@ public class FieldModel {
     /**
      * Changes the access of the node to private
      */
+    @Override
     public void privatize() {
         node.access &= ~(Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED);
         node.access |= Opcodes.ACC_PRIVATE;
+    }
+    /**
+     * Changes the access of the node to public
+     */
+    @Override
+    public void publicize() {
+        node.access &= ~(Opcodes.ACC_PRIVATE | Opcodes.ACC_PROTECTED);
+        node.access |= Opcodes.ACC_PUBLIC;
     }
 
     public String getSignature(){return node.signature;}
@@ -84,12 +93,4 @@ public class FieldModel {
     private boolean isAccessModifier(int opCode){
         return (node.access & opCode) != 0;
     }
-
-
-    /**
-     * @return is this field is primitive
-     */
-    private boolean isPrimitive() {return !(node.desc.startsWith("L") || node.desc.startsWith("["));}
-
-
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassModel {
-    private ClassNode node;
+    ClassNode node;
     private ArrayList<MethodModel> methods = new ArrayList<MethodModel>();
     private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();
     private ArrayList<String> interfaces = new ArrayList<String>();
