@@ -81,6 +81,7 @@ public abstract class ChatGPTCheck implements LintCheck{
         String lintChecks = chatGPT(query);
         String[] splitChecks = lintChecks.split(Pattern.quote("\\n"));
 
+        System.out.println(lintChecks);
         int classIndex = 0;
         for (String s: splitChecks) {
             if (!s.isEmpty()) {

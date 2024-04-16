@@ -12,7 +12,7 @@ public class ChatGPTSingletonCheck extends ChatGPTCheck{
                 "Determine if each class is a singleton instance in the following Java classes." +
                         "You will be provided classes in the format {class name : class representation.}" +
                         "Start the analysis of each class on a new line." +
-                        "Do not include any other new lines in your response"
+                        "Your response should have as many lines as classes provided"
         );
         for (ClassModel model: classes) {
             query.append("{")
