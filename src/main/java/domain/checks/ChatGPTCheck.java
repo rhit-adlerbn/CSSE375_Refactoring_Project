@@ -3,37 +3,26 @@ package domain.checks;
 import datasource.ASMAdapter;
 import domain.Result;
 import domain.model.ClassModel;
-import org.objectweb.asm.tree.ClassNode;
 
-import java.io.*;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChatGPTCheck implements LintCheck{
+public abstract class ChatGPTCheck implements LintCheck{
 
     private final String url = "https://api.openai.com/v1/chat/completions";
-    private final String apiKey = "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";
+    private final String apiKey = "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";
     private final String model = "gpt-3.5-turbo";
 
-    public static void main(String[] args) {
-        ChatGPTCheck gpt = new ChatGPTCheck();
-        ASMAdapter asm = new ASMAdapter();
-        List<ClassModel> models = asm.parseASM(
-                "C:\\Users\\garvinac\\CSSE375_Refactoring_Project\\src\\test\\resources\\CouplingTests"
-        );
-        List<Result> output = gpt.runLintCheck(models);
-        for (Result s : output) {
-            System.out.println(s.toString());
-        }
-    }
-
-    public String chatGPT(String prompt) {
-
+    private String chatGPT(String prompt) {
         String body = this.chatGPTPrompt(prompt);
 
         try {
@@ -82,19 +71,7 @@ public class ChatGPTCheck implements LintCheck{
         return response.substring(start, end);
     }
 
-    private String buildQuery(List<ClassModel> classes) {
-        StringBuilder query = new StringBuilder(
-                "Analyze and determine the coupling level of the following Java classes." +
-                        "They will be provided in the format {class name : class representation.}" +
-                        "Start each analysis with the class name in braces"
-        );
-        for (ClassModel model: classes) {
-            query.append(model.getName())
-                    .append(" : ")
-                    .append(model.toString().replace("\n", ""));
-        }
-        return query.toString();
-    }
+    abstract String buildQuery(List<ClassModel> classes);
 
     @Override
     public List<Result> runLintCheck(List<ClassModel> classes) {
@@ -102,13 +79,19 @@ public class ChatGPTCheck implements LintCheck{
 
         String query = buildQuery(classes);
         String lintChecks = chatGPT(query);
-        String[] splitChecks = lintChecks.split("[{]");
+        String[] splitChecks = lintChecks.split(Pattern.quote("\\n"));
+
+        int classIndex = 0;
         for (String s: splitChecks) {
             if (!s.isEmpty()) {
-                results.add(new Result("All Classes", this.getClass().getSimpleName() ,s.replace("}", "")));
+                results.add(new Result(classes.get(classIndex).getName(), this.getClass().getSimpleName(), s));
+                classIndex++;
             }
         }
 
+        if (results.size() != classes.size()) {
+            System.err.println("WARNING: Number of outputs does not match number of classes");
+        }
         return results;
     }
 }
