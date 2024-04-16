@@ -1,7 +1,7 @@
 package testclasses.CouplingTests;
 
-import testclasses.CouplingTestHelper1;
-import testclasses.CouplingTestHelper2;
+import testclasses.Other.CouplingTestHelper1;
+import testclasses.Other.CouplingTestHelper2;
 
 public class Test2 {
     private CouplingTestHelper2 littleCoupling;
