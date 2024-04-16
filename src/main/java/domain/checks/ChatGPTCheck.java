@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public abstract class ChatGPTCheck implements LintCheck{
 
     private final String url = "https://api.openai.com/v1/chat/completions";
-    private final String apiKey = "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";
+    private final String apiKey = "OPENAI SECRET KEY";
     private final String model = "gpt-3.5-turbo";
 
     private String chatGPT(String prompt) {
