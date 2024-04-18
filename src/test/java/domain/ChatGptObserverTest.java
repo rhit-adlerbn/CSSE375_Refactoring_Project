@@ -15,6 +15,8 @@ import java.util.List;
 public class ChatGptObserverTest {
     private final String filePath = "src/test/resources/ObserverPatternCheck";
 
+    private final boolean useChatGPTtests = false;
+
     ASMAdapter asm = new ASMAdapter();
     ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
 
@@ -22,7 +24,8 @@ public class ChatGptObserverTest {
     public void TestObserverOutput() {
         LintCheck check = new ChatGptObserverCheck();
         List<String> actual = new ArrayList<>();
-        for(Result res : check.runLintCheck(classesUnderTest)){
+        List<Result> results = check.runLintCheck(classesUnderTest);
+        for(Result res : results){
             actual.add(res.toString());
         }
 
@@ -31,5 +34,17 @@ public class ChatGptObserverTest {
             System.out.println("Response " + (i + 1) + ": " + actual.get(i));
         }
         Assert.assertEquals(actual.size(), classesUnderTest.size());
+
+        if (useChatGPTtests) {
+            ChatGPTTestHelper testHelper = new ChatGPTTestHelper();
+            String filterPrompt = "Is the class a subject, and observer, or neither? " +
+                    "Answer with subject, observer, or neither";
+            // Class 0 is a subject
+            Assert.assertTrue(testHelper.interpretResponse(results.get(0), filterPrompt, "subject"));
+            // Class 1 is an observer
+            Assert.assertTrue(testHelper.interpretResponse(results.get(1), filterPrompt, "observer"));
+            // Class 2 is neither
+            Assert.assertTrue(testHelper.interpretResponse(results.get(2), filterPrompt, "neither"));
+        }
     }
 }
