@@ -3,12 +3,11 @@ package domain.model;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 
-public class FieldInsnModel {
-    private final AbstractInsnNode node;
+public class FieldInsnModel extends AbstractInsnModel{
 
 
     public FieldInsnModel(AbstractInsnNode node) {
-        this.node = (FieldInsnNode) node;
+        super(node);
     }
 
     /**
@@ -17,7 +16,7 @@ public class FieldInsnModel {
      * @return is this insn accessing the field f
      */
     public boolean matchesField(FieldModel f, ClassModel owner) {
-        FieldInsnNode n = (FieldInsnNode) node;
+        FieldInsnNode n = (FieldInsnNode) super.node;
         return n.owner.equals(owner.getName())
                 && n.name.equals(f.getName())
                 && n.desc.equals(f.getDesc());
