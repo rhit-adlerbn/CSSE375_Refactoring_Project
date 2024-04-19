@@ -9,7 +9,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class AbstractInsnModel {
 
-    private AbstractInsnNode node;
+    protected AbstractInsnNode node;
     public AbstractInsnModel(AbstractInsnNode asmNode){
 
         this.node = asmNode;

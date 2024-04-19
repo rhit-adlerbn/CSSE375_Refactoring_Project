@@ -1,10 +1,12 @@
-package domain.checks;
+package domain;
 
 import datasource.ASMAdapter;
-import domain.Result;
+import domain.checks.ChatGPTCouplingCheck;
+import domain.checks.LintCheck;
 import domain.model.ClassModel;
+import org.junit.Assert;
+import org.testng.annotations.Test;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,40 +14,22 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
-public abstract class ChatGPTCheck implements LintCheck{
+public class ChatGPTTestHelper {
 
     private final String url = "https://api.openai.com/v1/chat/completions";
     private final String apiKey = "OPEN AI KEY";
     private final String model = "gpt-3.5-turbo";
 
-    private String chatGPT(List<String> prompts) {
-        StringBuilder overallPrompt = new StringBuilder();
+    public boolean interpretResponse(Result r, String filterPrompt, String checkFor) {
+        return chatGPT(r.toString() +  " " + filterPrompt).toLowerCase()
+                .contains(checkFor.toLowerCase());
+    }
 
-        for (String prompt : prompts) {
-            String body = this.chatGPTPrompt(prompt);
+    private String chatGPT(String prompt) {
 
-            try {
-                HttpURLConnection connection = this.chatGPTConnection(body);
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(
-                        connection.getInputStream()
-                ));
-
-                // This prompt could be read successfully
-                overallPrompt.append(prompt);
-                br.close();
-
-            } catch (IOException e) {
-                System.err.println("Prompt could not be read by ChatGPT");
-                e.printStackTrace();
-            }
-        }
-
-        String body = this.chatGPTPrompt(overallPrompt.toString());
+        String body = this.chatGPTPrompt(prompt);
 
         try {
             HttpURLConnection connection = this.chatGPTConnection(body);
@@ -93,28 +77,4 @@ public abstract class ChatGPTCheck implements LintCheck{
         return response.substring(start, end);
     }
 
-    abstract List<String> buildQuery(List<ClassModel> classes);
-
-    @Override
-    public List<Result> runLintCheck(List<ClassModel> classes) {
-        ArrayList<Result> results = new ArrayList<>();
-
-        List<String> query = buildQuery(classes);
-        String lintChecks = chatGPT(query);
-        String[] splitChecks = lintChecks.split(Pattern.quote("\\n"));
-
-        System.out.println(lintChecks);
-        int classIndex = 0;
-        for (String s: splitChecks) {
-            if (!s.isEmpty()) {
-                results.add(new Result(classes.get(classIndex).getName(), this.getClass().getSimpleName(), s));
-                classIndex++;
-            }
-        }
-
-        if (results.size() != classes.size()) {
-            System.err.println("WARNING: Number of outputs does not match number of classes");
-        }
-        return results;
-    }
 }

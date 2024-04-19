@@ -1,12 +1,12 @@
 package domain.model;
 
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
-public class MethodInsnModel {
-    private final MethodInsnNode node;
+public class MethodInsnModel extends AbstractInsnModel {
 
-    public MethodInsnModel(MethodInsnNode node) {
-        this.node =  node;
+    public MethodInsnModel(AbstractInsnNode node) {
+        super(node);
     }
 
     /**
@@ -23,5 +23,8 @@ public class MethodInsnModel {
     /**
      * @return whether the method's owner is an interface
      */
-    public boolean isInterfaceMethod() {return node.itf;}
+    public boolean isInterfaceMethod() {
+        MethodInsnNode n = (MethodInsnNode) super.node;
+        return n.itf;
+    }
 }
