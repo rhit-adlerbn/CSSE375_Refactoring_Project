@@ -1,6 +1,8 @@
 package domain.model;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -17,11 +19,10 @@ public class AbstractInsnModel {
 
 
     public VarInsModel getVar(){return new VarInsModel(this.node);}
-    //public int getSize(){return this.node.size();}
 
-    public FieldInsnModel getFieldInsnModel() {return new FieldInsnModel(this.node);}
+    public FieldInsnModel getFieldInsnModel() {return new FieldInsnModel((FieldInsnNode)this.node);}
 
-    public MethodInsnModel getMethodInsnModel() {return new MethodInsnModel(this.node);}
+    public MethodInsnModel getMethodInsnModel() {return new MethodInsnModel((MethodInsnNode)this.node);}
 
 
 

@@ -1,9 +1,9 @@
 package testclasses.observer;
 
-import testclasses.Observer;
-import testclasses.Subject;
-
 import java.util.ArrayList;
+
+import testclasses.Other.Observer;
+import testclasses.Other.Subject;
 
 public class Test implements Subject {
     private int ll;

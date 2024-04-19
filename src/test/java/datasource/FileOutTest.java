@@ -1,7 +1,9 @@
 package datasource;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +20,15 @@ import domain.model.ClassModel;
 
 public class FileOutTest {
     private final String filePath = "src/test/resources/singletonResources";
-    ArrayList<ClassModel> classesToCheck = new ASMAdapter().parseASM(filePath);
-    LintCheck check = new SingletonCheck();
-    String path = "files/output.csv";
+    ArrayList<ClassModel> classesToCheck = new ASMAdapter().parseASM(filePath);  
 
     @Test
-    public void namingTest_badConventions_expectWarning(){
-        List<Result> results = check.runLintCheck(classesToCheck);
-        FileOutput.saveResults(results);
+    public void fileOut_SaveResults(){
+        String savepath = "files/output.csv";
+        List<Result> results = new SingletonCheck().runLintCheck(classesToCheck);
+        FileOutput.saveResults(results,savepath);
 
-        try (CSVReader actual = new CSVReader(new FileReader(path))) {
+        try (CSVReader actual = new CSVReader(new FileReader(savepath))) {
 
            List<String[]> expectedLines = new ArrayList<>();
            expectedLines.add(new String[] {"Class tested","Test ran","Output"});
@@ -44,6 +45,26 @@ public class FileOutTest {
                 }
             }
                
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            assertTrue(false);
+        }
+    }
+    @Test
+    public void fileOut_SaveClass(){
+        ClassModel classToSave = classesToCheck.get(0);
+        String path = "src\\test\\resources\\FileOutResources\\NotSingleton1.class";
+        byte[] expected = classToSave.toBytes();
+        byte[] actual = new byte[expected.length];
+
+        FileOutput.saveClass(expected, path);
+
+        try(FileInputStream fis = new FileInputStream(path)){
+            fis.read(actual);
+            for(int i = 0; i< expected.length; i++){
+                assertEquals(expected[i], actual[i]);
+            } 
         }
         catch(Exception e){
             e.printStackTrace();

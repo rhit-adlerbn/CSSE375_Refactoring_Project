@@ -1,7 +1,6 @@
 package domain.model;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.VarInsnNode;
 
 public class VarInsModel {

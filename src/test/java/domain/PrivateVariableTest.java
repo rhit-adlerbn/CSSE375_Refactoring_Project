@@ -3,7 +3,6 @@ package domain;
 import datasource.ASMAdapter;
 import domain.checks.LintCheck;
 import domain.checks.PrivateVarCheck;
-import domain.checks.StrategyCheck;
 import domain.model.ClassModel;
 import org.junit.jupiter.api.Test;
 

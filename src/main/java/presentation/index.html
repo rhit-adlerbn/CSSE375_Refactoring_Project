@@ -11,7 +11,22 @@
     <div class="info">
         <p>These are the numbers associated with each lint check</p>
         <p>Available lint check options:</p>
-        <p id="lintChecks"></p>
+        <p id="lintChecks">
+            <ul>
+                <li>1: Run all checks</li>
+                <li>2: TemplateCheck</li>
+                <li>3: OCPCheck</li>
+                <li>4: InterfaceCheck</li>
+                <li>5: CouplingCheck</li>
+                <li>6: NamingConvCheck</li>
+                <li>7: ObserverPatternCheck</li>
+                <li>8: UnusedVariableCheck</li>
+                <li>9: SingletonCheck</li>
+                <li>10: PrincipleLeastKnowledgeCheck</li>
+                <li>11: PrivateVarCheck</li>
+                <li>12: StrategyCheck</li>
+             </ul>
+        </p>
         <p>Please enter the numbers of the checks you want to perform (separate with spaces):</p>
         <input type="text" id="filePath" placeholder="Enter File Path">
         <input type="text" id="checkNums" placeholder="Enter numbers for checks">
@@ -26,13 +41,18 @@
             const files = document.getElementById('filePath').value;
             const numbers = document.getElementById('checkNums').value;
 
-            const url = `http://localhost:8000/?files=${decodeURIComponent(files)}&numbers=${decodeURIComponent(numbers)}`;
-
+            const url = `http://localhost:8000/result?files=${decodeURIComponent(files)}&numbers=${decodeURIComponent(numbers)}`;
+          
             fetch(url)
-            .then(response => response.json())
+            .then(response => { 
+                if (response.redirected) {
+                    window.location.href = response.url; // Redirect to the new page
+                } else {
+                    return response.json(); // Continue processing the response
+                }
+            })
             .then(data => {
-                document.getElementById('results').innerText = data.join('\n');
-                
+                // Process the response data if needed
             })
             .catch(error => console.error('Error:', error));
         }

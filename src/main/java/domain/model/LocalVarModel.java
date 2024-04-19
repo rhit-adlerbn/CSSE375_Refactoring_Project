@@ -1,9 +1,6 @@
 package domain.model;
 
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.LocalVariableNode;
-
-import java.lang.reflect.Type;
 
 public class LocalVarModel {
     LocalVariableNode node;
