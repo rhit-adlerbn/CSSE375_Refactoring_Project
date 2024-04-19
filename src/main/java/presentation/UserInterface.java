@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import datasource.ASMAdapter;
 import datasource.FileOutput;
 import domain.Result;
+import domain.checks.AccessModifer;
 import domain.checks.CouplingCheck;
 import domain.checks.InterfaceCheck;
 import domain.checks.LintCheck;
@@ -28,6 +29,7 @@ import domain.model.ClassModel;
  * Handles domain access, implmenters are reponsible for display
  */
 public abstract class UserInterface {
+    private String resultPath = "files/output" + ".csv";
     private static final HashMap<Integer, LintCheck> CHECKS;
     static{
         CHECKS = new HashMap<Integer, LintCheck>();
@@ -42,6 +44,7 @@ public abstract class UserInterface {
         CHECKS.put(10, new PrincipleLeastKnowledgeCheck());
         CHECKS.put(11, new PrivateVarCheck());
         CHECKS.put(12, new StrategyCheck());
+        CHECKS.put(13, new AccessModifer());
     }
     /**
      * Main Function for running a linting UI
@@ -64,7 +67,7 @@ public abstract class UserInterface {
         
         displayResults(results);
 
-        FileOutput.saveResults(results);
+        FileOutput.saveResults(results, resultPath);
 
         close();
 

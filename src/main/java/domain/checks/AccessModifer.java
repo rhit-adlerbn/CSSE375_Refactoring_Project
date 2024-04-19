@@ -60,7 +60,7 @@ public class AccessModifer implements LintCheck{
         if(res.isEmpty()){
             res.add(new Result(className, CHECK_NAME, "found no access modifers to change"));
         }
-
+        subject.saveModelToFile();
         return res;
     }
     /**

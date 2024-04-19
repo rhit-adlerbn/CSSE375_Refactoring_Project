@@ -1,16 +1,20 @@
 package domain.model;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import datasource.FileOutput;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClassModel {
+    private final String SAVE_PATH = "files/ClassFiles/";
     ClassNode node;
     private ArrayList<MethodModel> methods = new ArrayList<MethodModel>();
     private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();
@@ -186,6 +190,13 @@ public class ClassModel {
     public List<FieldModel> getFields(){
         return this.fields;
     }
-
+    public byte[] toBytes(){
+        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        node.accept(classWriter);
+        return classWriter.toByteArray();
+    }
+    public void saveModelToFile(){
+        FileOutput.saveClass(toBytes(),SAVE_PATH + getName() + ".class");
+    }
 
 }
