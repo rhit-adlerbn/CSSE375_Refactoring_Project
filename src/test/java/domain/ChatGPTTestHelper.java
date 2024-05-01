@@ -19,7 +19,7 @@ import java.util.List;
 public class ChatGPTTestHelper {
 
     private final String url = "https://api.openai.com/v1/chat/completions";
-    private final String apiKey = "sk-proj-A0laHLgOtie27TwJf9xmT3BlbkFJlDoZoOD02BcU0ouD8jAe";
+    private final String apiKey = "OPEN AI KEY";
     private final String model = "gpt-3.5-turbo";
 
     public boolean interpretResponse(Result r, String filterPrompt, String checkFor) {
