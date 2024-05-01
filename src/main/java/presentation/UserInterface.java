@@ -62,7 +62,7 @@ public abstract class UserInterface {
         String checkNumber = getCheckToRun();
         List<Integer> checkCommands = convertInput(checkNumber);
 
-        List<Result> results = runChecks(checkCommands,classes);
+        List<Result> results = runChecks(checkCommands, classes);
         
         
         displayResults(results);

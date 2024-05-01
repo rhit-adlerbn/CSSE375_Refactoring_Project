@@ -1,11 +1,6 @@
 package testclasses.CouplingTests;
 
-import testclasses.*;
-import testclasses.Other.CouplingTestHelper1;
-import testclasses.Other.CouplingTestHelper2;
-import testclasses.Other.CouplingTestHelper3;
-import testclasses.Other.Observer;
-import testclasses.Other.Subject;
+import testclasses.Other.*;
 
 public class Test3 {
     private Observer little;

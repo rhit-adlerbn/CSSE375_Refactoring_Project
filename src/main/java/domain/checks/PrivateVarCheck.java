@@ -62,7 +62,7 @@ public class PrivateVarCheck implements LintCheck {
                 int s = instructions.getSize();
                 for(int i = 0; i < s; i++) {
                     AbstractInsnModel insn = instructions.get(i);
-                    if(insn.isFieldInsn() && insn.getFieldInsnModel().matches(f, subject)) {
+                    if(insn.isFieldInsn() && insn.getFieldInsnModel().matchesField(f, subject)) {
                         return true;
                     }
                 }
