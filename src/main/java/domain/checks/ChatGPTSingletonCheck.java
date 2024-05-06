@@ -7,6 +7,10 @@ import java.util.List;
 
 public class ChatGPTSingletonCheck extends ChatGPTCheck{
 
+    public ChatGPTSingletonCheck(String keyPath) {
+        super(keyPath);
+    }
+
     @Override
     List<String> buildQuery(List<ClassModel> classes) {
         List<String> query = new ArrayList<>();

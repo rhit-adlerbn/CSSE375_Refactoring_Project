@@ -7,6 +7,10 @@ import java.util.List;
 
 public class ChatGPTCouplingCheck extends ChatGPTCheck{
 
+    public ChatGPTCouplingCheck(String keyPath) {
+        super(keyPath);
+    }
+
     @Override
     List<String> buildQuery(List<ClassModel> classes) {
         List<String> query = new ArrayList<>();

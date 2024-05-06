@@ -2,25 +2,25 @@ package domain;
 
 import datasource.ASMAdapter;
 import domain.checks.ChatGPTCouplingCheck;
+import domain.checks.ChatGPTSingletonCheck;
+import domain.checks.ChatGptObserverCheck;
 import domain.checks.LintCheck;
 import domain.model.ClassModel;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ChatGPTTestHelper {
 
     private final String url = "https://api.openai.com/v1/chat/completions";
-    private final String apiKey = "OPEN AI KEY";
     private final String model = "gpt-3.5-turbo";
+    private String apiKey = "OPEN AI KEY";
 
     public boolean interpretResponse(Result r, String filterPrompt, String checkFor) {
         return chatGPT(r.toString() +  " " + filterPrompt).toLowerCase()
@@ -28,7 +28,7 @@ public class ChatGPTTestHelper {
     }
 
     private String chatGPT(String prompt) {
-
+        apiKey = this.getKey("files/key" + ".txt");
         String body = this.chatGPTPrompt(prompt);
 
         try {
@@ -49,6 +49,21 @@ public class ChatGPTTestHelper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getKey(String keyFilePath) {
+        File keyFile = new File(keyFilePath);
+        try {
+            Scanner scanner = new Scanner(keyFile);
+            String line = scanner.nextLine();
+            if (line.startsWith("sk-")) {
+                return line;
+            }
+        } catch (FileNotFoundException e) {
+            // We can run without keyfile existing
+            System.err.println("No ChatGPT key file found!");
+        }
+        return "";
     }
 
     private String chatGPTPrompt(String prompt) {
