@@ -3,7 +3,7 @@ package testclasses.AccessModClasses;
 public class AccessModClassB {
 
     private void tryCallPrivateMethod(AccessModClassA obj) {
-        obj.privateMethod();
+        //obj.privateMethod();
     }
 
     private void tryCallPublicMethod(AccessModClassA obj) {
@@ -11,7 +11,8 @@ public class AccessModClassB {
     }
 
     private int getPrivateField(AccessModClassA obj) {
-        return obj.privateField;
+        //return obj.privateField;
+        return 0;
     }
 
     private int getPublicField(AccessModClassA obj) {

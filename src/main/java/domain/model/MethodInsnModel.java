@@ -5,6 +5,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 
 public class MethodInsnModel extends AbstractInsnModel {
 
+
     public MethodInsnModel(AbstractInsnNode node) {
         super(node);
     }
@@ -15,9 +16,10 @@ public class MethodInsnModel extends AbstractInsnModel {
      * @return is this insn accessing the method m
      */
     public boolean matches(Model m, ClassModel owner) {
-        return node.owner.equals(owner.getName())
-                && node.name.equals(m.getName())
-                && node.desc.equals(m.getDesc());
+        MethodInsnNode n = (MethodInsnNode) super.node;
+        return n.owner.equals(owner.getName())
+                && n.name.equals(m.getName())
+                && n.desc.equals(m.getDesc());
     }
 
     /**

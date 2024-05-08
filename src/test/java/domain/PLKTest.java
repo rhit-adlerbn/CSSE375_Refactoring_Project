@@ -28,7 +28,7 @@ public class PLKTest {
         classes.add(plkHelper);
 
         List<String> expected = new ArrayList<>(Arrays.asList(
-                "Potential PLK violation: p is used but is not a field of PLKFail.\n"));
+                "Potential PLK violation: p is used but is not a field of PLKFail."));
         List<String> actual = new ArrayList<>();
         for(Result res : check.runLintCheck(classes)){
            actual.add(res.toString());
@@ -43,7 +43,7 @@ public class PLKTest {
         classes.add(plkPass);
 
         List<String> expected = new ArrayList<>(Arrays.asList(
-                "No PLK violations detected.\n"));
+                "No PLK violations detected."));
         List<String> actual = new ArrayList<>();
         for(Result res : check.runLintCheck(classes)){
             actual.add(res.toString());

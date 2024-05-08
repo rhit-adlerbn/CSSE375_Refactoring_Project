@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PackageLoader {
-    public static List<byte[]> loadPackage(String packagePath){
+    public static List<byte[]> loadPackage(String packagePath) throws IOException{
         ArrayList<byte[]> bytes = new ArrayList<>();
         Path dir = Paths.get(packagePath);
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
@@ -17,8 +17,7 @@ public class PackageLoader {
                 bytes.add(Files.readAllBytes(path)); //get the .class bytecode
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
+            throw e;
         }
         return bytes;
     }
