@@ -1,4 +1,4 @@
-package testclasses.Other;
+package testclasses.observer;
 
 public interface Subject {
 }
