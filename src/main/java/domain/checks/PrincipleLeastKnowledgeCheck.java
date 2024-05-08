@@ -17,7 +17,7 @@ public class PrincipleLeastKnowledgeCheck implements LintCheck {
         for(ClassModel c : classes) {
             results.addAll(classLevelCheck(c, classes));
         }
-        if(results.isEmpty()) results.add(new Result("All classes", testName,"No PLK violations detected.\n"));
+        if(results.isEmpty()) results.add(new Result("All classes", testName,"No PLK violations detected."));
         return results;
     }
 
@@ -29,7 +29,7 @@ public class PrincipleLeastKnowledgeCheck implements LintCheck {
             List<LocalVarModel> locVars = m.getLocalVars();
             for(LocalVarModel l : locVars) {
                 if(!l.getName().equals("this") && !isUserDefinedType(l, classes)) 
-                violations.add(new Result (className,testName, "Potential PLK violation: " + l.getName() + " is used but " +"is not a field of " + c.getName() + ".\n"));
+                violations.add(new Result (className,testName, "Potential PLK violation: " + l.getName() + " is used but " +"is not a field of " + c.getName() + "."));
             }
         }
         return violations;

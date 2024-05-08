@@ -23,7 +23,12 @@ public class ASMAdapter {
      */
     public ArrayList<ClassModel> parseASM(String folderPath) {
         ArrayList<ClassModel> classes = new ArrayList<>();
-        List<byte[]> bytecode = PackageLoader.loadPackage(folderPath);
+        List<byte[]> bytecode = new ArrayList<>();
+        try {
+            bytecode = PackageLoader.loadPackage(folderPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         for (byte[] classInst : bytecode) {
             ClassNode classNode = this.readClassNode(classInst);
             String representation = this.readTextRepresentation(classInst);

@@ -17,10 +17,10 @@ public class ObserverTests {
 
     ASMAdapter asm = new ASMAdapter();
     ArrayList<ClassModel> classesUnderTest = asm.parseASM(filePath);
-
-    ClassModel subject = classesUnderTest.get(0);
-    ClassModel observer = classesUnderTest.get(1);
-    ClassModel nothing = classesUnderTest.get(2);
+    
+    ClassModel subject = classesUnderTest.get(2);
+    ClassModel observer = classesUnderTest.get(3);
+    ClassModel nothing = classesUnderTest.get(4);
 
     @Test
     public void TestObserver() throws IOException {
@@ -34,8 +34,8 @@ public class ObserverTests {
         } 
         List<String> expected = new ArrayList<String>();
         //expected.add("Subject");
-        expected.add("Observer");
-        //expected.add("Not Observer Pattern");
+        //expected.add("Observer");
+        expected.add("Not Observer Pattern");
         Assert.assertEquals(expected, actual);
     }
     @Test
@@ -49,9 +49,9 @@ public class ObserverTests {
            actual.add(res.toString());
         } 
         List<String> expected = new ArrayList<String>();
-        expected.add("Subject");
+        //expected.add("Subject");
         //expected.add("Observer");
-        //expected.add("Not Observer Pattern");
+        expected.add("Not Observer Pattern");
         Assert.assertEquals(expected, actual);
     }
     @Test

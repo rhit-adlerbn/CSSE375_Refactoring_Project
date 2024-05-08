@@ -33,7 +33,7 @@ public class SingletionTest {
         assertEquals(expected, actual);
     }
     @Test
-    public void namingTest_Singleton(){
+    public void singletonTest_Singleton(){
         LintCheck check = new SingletonCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(singleton);

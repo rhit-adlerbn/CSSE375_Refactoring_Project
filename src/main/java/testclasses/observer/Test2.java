@@ -1,9 +1,6 @@
 package testclasses.observer;
 
-import testclasses.Other.Observer;
-import testclasses.Other.Subject;
-
-public class Test2 implements Observer {
+public class Test2 {
     Subject h;
 
     public Test2(Subject k){

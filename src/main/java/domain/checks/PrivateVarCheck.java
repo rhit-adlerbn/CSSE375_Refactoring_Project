@@ -21,7 +21,7 @@ public class PrivateVarCheck implements LintCheck {
             results.addAll(findViolations(c, classes));
         }
 
-        if(results.isEmpty()) results.add( new Result("All Classes", testName,"No private variable violations detected.\n"));
+        if(results.isEmpty()) results.add( new Result("All Classes", testName,"No private variable violations detected."));
         return results;
     }
 
@@ -41,7 +41,7 @@ public class PrivateVarCheck implements LintCheck {
         for(FieldModel f : fields) {
             if(!f.isPrivate() && !isAccessed(f, subject, allOtherClasses)){
                 String msg = "Field " + f.getName() + " from Class " + subject.getName()
-                + " is not private, but is never accessed by another class.\n";
+                + " is not private, but is never accessed by another class.";
                 violations.add(new Result(className,testName, msg));
             }
         }
@@ -62,7 +62,7 @@ public class PrivateVarCheck implements LintCheck {
                 int s = instructions.getSize();
                 for(int i = 0; i < s; i++) {
                     AbstractInsnModel insn = instructions.get(i);
-                    if(insn.isFieldInsn() && insn.getFieldInsnModel().matches(f, subject)) {
+                    if(insn.isFieldInsn() && insn.getFieldInsnModel().matchesField(f, subject)) {
                         return true;
                     }
                 }

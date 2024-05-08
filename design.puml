@@ -20,12 +20,6 @@ Package Presentation{
     - {static} createRunButton(): JButton
     - {static} createMainPage(): JFrame
 }
-+class WebUserInterface{
-    - {static} <u> PORT: int
-    -handleClient(client: Socket): void
-    -sendResponse(client: Socket, status: String,contentType: String, content: byte[], result: List<String>): void
-}
-WebUserInterface -u-|> UserInterface
 
 +class Main{
 +{static} Main(args: String[]): void
@@ -54,6 +48,18 @@ CommandLineUserInterface -u-|> UserInterface
 
 Package Domain{
 
+    +class Result{
+        -className : String
+        -testName : String
+        -testResult: String
+
+        +Result(className: String, test: String, result: String)
+        +getResults(): String[]
+        +toString(): String
+    }
+
+}
+
 
 Package Checks{
 +Interface LintCheck{
@@ -63,6 +69,28 @@ Package Checks{
 -class: ClassModel
 +NamingConvCheck(class: ClassModel)
 +runLintCheck(): List<String>
+}
+
++abstract ChatGPTCheck{
+-class: ClassModel
+-chatGPT(prompts: List<String> prompt): String
+-chatGPTPrompt(prompt: String): String
+-chatGPTConnection(body: String): HttpURLConnection
+-extractMessageFromJSONResponse(response: String): String
++abstract buildQuery(classes: List<ClassModel>): List<String>
++runLintCheck(): List<Result>
+}
+
++class ChatGPTCouplingCheck {
++buildQuery(classes: List<ClassModel>): List<String>
+}
+
++class ChatGPTSingletonCheck {
++buildQuery(classes: List<ClassModel>): List<String>
+}
+
++class ChatGPTObserverCheck {
++buildQuery(classes: List<ClassModel>): List<String>
 }
 
 +class CouplingCheck{
@@ -145,13 +173,22 @@ Package Checks{
 +class UnusedVariablesCheck{
 +UnusedVariablesCheck()
 
-+LintCheck(classes : List<ClassModel>): List<String>
++LintCheck(classes : List<ClassModel>): List<Result>
 +checkUnsuedVariables(class: ClassModel): String
 - containsMethods(class: ClassModel, list: ArrayList<String>): boolean
 - ImplementsInterface(class: ClassModel, interface: String): boolean
 - checkField(class: ClassModel, field: String): boolean
 }
 
++class AccessModifier{
+    +LintCheck(classes : List<ClassModel>): List<Result>
+    -accessCheck(subject: ClassModel,classes: List<ClassModel> )List<Result>
+    -isAccessed(element: Model, subject: ClassModel,allOtherClasses: List<ClassModel>): boolean
+    -match(name: String, m: Model): boolean
+} 
+
+
+AccessModifier ..|> LintCheck
 UnusedVariablesCheck ..|>LintCheck
 TemplateCheck ..|>LintCheck
 StrategyCheck ..|>LintCheck
@@ -163,13 +200,17 @@ PlantUML ..|>LintCheck
 ObserverPatternCheck ..|>LintCheck
 CouplingCheck ..|>LintCheck
 NamingConvCheck ..|> LintCheck
+ChatGPTCheck ..|>LintCheck
+ChatGPTCouplingCheck ..|>ChatGPTCheck
+ChatGPTSingletonCheck ..|>ChatGPTCheck
+ChatGPTObserverCheck ..|>ChatGPTCheck
 
 
 
 
 }
 
-Package Model{
+Package Models{
 
 +class ClassModel{
 -node: ClassNode
@@ -274,8 +315,17 @@ Package Model{
 +getDesc(): String
 +getIndex(): int
 }
++abstract class Model{
+    -node : Object
+    +getName(): String
+    +getDesc(): String
+    +privatze(): void
+    +isPrivate(): boolean
+    +publicize(): void
+}
 
-
+MethodModel --|> Model
+FieldModel --|> Model
 ClassModel -->"*" MethodModel
 ClassModel -->"*" FieldModel
 AbstractInsnModel ..>VarInsnModel
@@ -287,109 +337,46 @@ MethodInsnModel ..>MethodModel
 }
 
 
-
-
-}
-
-
 Package Data{
  +class ASMAdapter{
     +ASMAdapter()
-    +parseClases(files: List<String>): List<ClassModel>
+    +parseASM(folderPath: String): ArrayList<ClassModel>
+    +readClassNode(classInst: byte[]): ClassNode
+    +readTextRepresentation(classInst: byte[]): String
  }
  +class PackageLoader{
- +{static} LoadPackages(path: String):List<Byte[]>
+    +{static} LoadPackages(path: String):List<Byte[]>
  }
  +class FileOutput{
-    +{static} SaveResults(results: List<String>): void
+    +{static} saveResults(results: List<Result>, filepath String): void
+    +{static} saveClass(classBytes: byte[], filepath: String): void
  }
 }
 
-Package Java{
-    +class Pattern{
-    }
-    Package ASM{
-        +class Opcodes{
-        }
-        +class AbstractInsnNode{
-        }
-        +class ClassNode{
-        }
-        +class FieldInsnNode{
-        }
-        +class FieldNode{
-        }
-        +class InsnList{
-        }
-        +class MethodInsnNode{
-        }
-        +class MethodNode{
-        }
-        +class VarInsnNode{
-        }
-        +class LocalVariableNode{
-        }
 
-    }
-}
 
 ASMAdapter ..> ClassModel
-
-
-
 AbstractInsnModel ..> MethodInsnModel
-AbstractInsnModel -->"1" AbstractInsnNode
-
-ClassModel -->"1" ClassNode
-
-
-ClassModel ..> Opcodes
-
-FieldInsmModel -->"1" AbstractInsnNode
 FieldInsmModel ..> FieldModel
 FieldInsmModel ..> ClassModel
-FieldInsmModel ..> FieldInsnNode
-
-FieldModel -->"1" FieldNode
-FieldModel ..> Opcodes
-
-instructionModel -->"1" InsnList
 instructionModel ..> AbstractInsnModel
-
-LocalVarModel -->"1" LocalVariableNode
-
-MethodInsnModel -->"1" MethodInsnNode
-MethodInsnModel ..> AbstractInsnNode
 MethodInsnModel ..> ClassModel
-
-
-MethodModel -->"1" MethodNode
-MethodModel -->"1" InsnList
 MethodModel -->"*" LocalVarModel
 MethodModel ..> instructionModel
-MethodModel ..> Opcodes
-
-VarInsnModel -->"1" VarInsnNode
-VarInsnModel ..> AbstractInsnNode
-
-
 PTI ..> FieldModel
 PTI ..> MethodModel
 PTI ..> ClassModel
-
 NamingConvCheck ..> FieldModel
 NamingConvCheck ..> MethodModel
 NamingConvCheck ..> ClassModel
-
 SingletonCheck ..> FieldModel
 SingletonCheck ..> MethodModel
 SingletonCheck ..> ClassModel
 ASMAdapter ..>PackageLoader
 ASMAdapter ..> ClassModel
 Main ..>GraphicsUserInterface
-GraphicsUserInterface ..> CommandLineUserInterface
-UserInterface ..>LintCheck
-UserInterface ..>FileOutput
+GraphicsUserInterface ..>LintCheck
+CommandLineUserInterface ..>LintCheck
 UserInterface ..> ASMAdapter 
 UnusedVariablesCheck ..>ClassModel
 TemplateCheck ..>ClassModel
@@ -401,16 +388,14 @@ PLK ..>ClassModel
 PlantUML ..>ClassModel
 CouplingCheck ..>ClassModel
 NamingConvCheck ..> ClassModel
-
 PLK -[hidden]-> PVC
 PVC -[hidden]-> PTI
-
-
+LintCheck --> Result
 ObserverPatternCheck -d[hidden]-> NamingConvCheck
 NamingConvCheck -d[hidden]-> SingletonCheck
 StrategyCheck -d[hidden]-> PlantUML
 CouplingCheck -d[hidden]-> UnusedVariablesCheck
-
 CommandLineUserInterface ..> FileOutput
-
+AccessModifier ..> Model
+AccessModifier ..> ClassModel
 @enduml

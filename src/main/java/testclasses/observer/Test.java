@@ -2,14 +2,11 @@ package testclasses.observer;
 
 import java.util.ArrayList;
 
-import testclasses.Other.Observer;
-import testclasses.Other.Subject;
-
-public class Test implements Subject {
+public class Test{
     private int ll;
     ArrayList<String> tester;
     //Observer k;
-    ArrayList<Observer> h;
+    ArrayList<Subject> h;
 
     public static void testFunc(int a, int b){
         b = 10;

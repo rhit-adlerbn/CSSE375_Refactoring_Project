@@ -26,7 +26,7 @@ public class StrategyCheck implements LintCheck {
             results.addAll(classLevelCheck(c));
         }
 
-        if(results.isEmpty()) results.add(new Result("All classes",testName,"No Strategy Pattern violations detected.\n"));
+        if(results.isEmpty()) results.add(new Result("All classes",testName,"No Strategy Pattern violations detected."));
         return results;
     }
 
@@ -39,7 +39,7 @@ public class StrategyCheck implements LintCheck {
             InstructionModel instructions = m.getInstructions();
             if(violatesStrategyPattern(instructions)) {
                 violations.add(new Result(c.getName(), testName, "Potential Strategy Pattern violation: " +
-                        m.getName() + " in " + c.getName() + " calls methods on concrete objects\n"));
+                        m.getName() + " in " + c.getName() + " calls methods on concrete objects"));
             }
         }
 
