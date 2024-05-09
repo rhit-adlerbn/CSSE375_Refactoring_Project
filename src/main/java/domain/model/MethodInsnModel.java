@@ -1,10 +1,10 @@
 package domain.model;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 public class MethodInsnModel extends AbstractInsnModel {
+
 
     public MethodInsnModel(AbstractInsnNode node) {
         super(node);
@@ -15,7 +15,7 @@ public class MethodInsnModel extends AbstractInsnModel {
      * @param owner the owner of the method m
      * @return is this insn accessing the method m
      */
-    public boolean matches(MethodModel m, ClassModel owner) {
+    public boolean matches(Model m, ClassModel owner) {
         MethodInsnNode n = (MethodInsnNode) super.node;
         return n.owner.equals(owner.getName())
                 && n.name.equals(m.getName())

@@ -21,7 +21,7 @@ public class NamingConvTest {
     ClassModel goodConventions = classesUnderTest.get(1);
 
     @Test
-    public void namingTest_badConventions_expectWarning(){
+    public void namingTest_expectWarning(){
         LintCheck check = new NamingConvCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(badConventions);
@@ -37,7 +37,7 @@ public class NamingConvTest {
         assertEquals(expected, actual);
     }
     @Test
-    public void namingTest_goodConventions_expectNoWarning(){
+    public void namingTest_expectNoWarning(){
         LintCheck check = new NamingConvCheck();
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(goodConventions);

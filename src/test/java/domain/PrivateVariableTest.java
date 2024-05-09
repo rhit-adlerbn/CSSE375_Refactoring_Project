@@ -29,7 +29,7 @@ public class PrivateVariableTest {
         classes.add(pvPass);
 
         List<String> expected = new ArrayList<>(Arrays.asList(
-                "Field data from Class PVFail is not private, but is never accessed by another class.\n"));
+                "Field data from Class PVFail is not private, but is never accessed by another class."));
         List<String> actual = new ArrayList<>();
         for(Result res : check.runLintCheck(classes)){
             actual.add(res.toString());
@@ -43,7 +43,7 @@ public class PrivateVariableTest {
         ArrayList<ClassModel> classes = new ArrayList<>();
         classes.add(pvPass);
 
-        List<String> expected = new ArrayList<>(Arrays.asList("No private variable violations detected.\n"));
+        List<String> expected = new ArrayList<>(Arrays.asList("No private variable violations detected."));
         List<String> actual = new ArrayList<>();
         for(Result res : check.runLintCheck(classes)){
             actual.add(res.toString());
