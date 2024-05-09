@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassModel {
-    private final String SAVE_PATH = "files/ClassFiles/";
+    private final String SAVE_PATH = "files/";
     ClassNode node;
     private ArrayList<MethodModel> methods = new ArrayList<MethodModel>();
     private ArrayList<FieldModel> fields = new ArrayList<FieldModel>();

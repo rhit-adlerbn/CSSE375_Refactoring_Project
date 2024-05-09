@@ -14,27 +14,13 @@ import java.util.regex.Pattern;
 public abstract class ChatGPTCheck implements LintCheck{
 
     private final String url = "https://api.openai.com/v1/chat/completions";
-    private String apiKey = "OPEN AI KEY";
+    private String apiKey;
     private final String model = "gpt-3.5-turbo";
 
     public ChatGPTCheck(String keyPath) {
-        apiKey = this.getKey(keyPath);
+        apiKey = keyPath;
     }
 
-    private String getKey(String keyFilePath) {
-        File keyFile = new File(keyFilePath);
-        try {
-            Scanner scanner = new Scanner(keyFile);
-            String line = scanner.nextLine();
-            if (line.startsWith("sk-")) {
-                return line;
-            }
-        } catch (FileNotFoundException e) {
-            // We can run without keyfile existing
-            System.err.println("No ChatGPT key file found!");
-        }
-        return "";
-    }
 
     private String chatGPT(List<String> prompts) {
         StringBuilder overallPrompt = new StringBuilder();
