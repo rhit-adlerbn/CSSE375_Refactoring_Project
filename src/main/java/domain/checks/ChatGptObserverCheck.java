@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatGptObserverCheck extends ChatGPTCheck{
+    public ChatGptObserverCheck(String keyPath) {
+        super(keyPath);
+    }
+
     @Override
     List<String> buildQuery(List<ClassModel> classes) {
         List<String> query = new ArrayList<>();

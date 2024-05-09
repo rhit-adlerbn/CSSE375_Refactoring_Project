@@ -1,27 +1,13 @@
 package presentation;
 
+import java.io.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import datasource.ASMAdapter;
 import datasource.FileOutput;
 import domain.Result;
-import domain.checks.AccessModifer;
-import domain.checks.CouplingCheck;
-import domain.checks.InterfaceCheck;
-import domain.checks.LintCheck;
-import domain.checks.NamingConvCheck;
-import domain.checks.OCPCheck;
-import domain.checks.ObserverPatternCheck;
-import domain.checks.PrincipleLeastKnowledgeCheck;
-import domain.checks.PrivateVarCheck;
-import domain.checks.SingletonCheck;
-import domain.checks.StrategyCheck;
-import domain.checks.TemplateCheck;
-import domain.checks.UnusedVariableCheck;
+import domain.checks.*;
 import domain.model.ClassModel;
 
 /**
@@ -30,6 +16,7 @@ import domain.model.ClassModel;
  */
 public abstract class UserInterface {
     private String resultPath = "files/output" + ".csv";
+    private static final String keyPath = "files/key" + ".txt";
     private static final HashMap<Integer, LintCheck> CHECKS;
     static{
         CHECKS = new HashMap<Integer, LintCheck>();
@@ -45,15 +32,29 @@ public abstract class UserInterface {
         CHECKS.put(11, new PrivateVarCheck());
         CHECKS.put(12, new StrategyCheck());
         CHECKS.put(13, new AccessModifer());
+
+        File keyFile = new File(keyPath);
+        try {
+            Scanner scanner = new Scanner(keyFile);
+            String line = scanner.nextLine();
+            if (line.startsWith("sk-")) {
+                CHECKS.put(14, new ChatGPTCouplingCheck(line));
+                CHECKS.put(15, new ChatGptObserverCheck(line));
+                CHECKS.put(16, new ChatGPTSingletonCheck(line));
+            }
+        } catch (FileNotFoundException e) {
+            // We can run without keyfile existing
+            System.err.println("No ChatGPT key file found!");
+        }
     }
     /**
      * Main Function for running a linting UI
      */
-     public void runLinter() throws IOException {
-        
+    public void runLinter() throws IOException {
+
         startDisplay();
-        
-        
+
+
         String filePath = getFilePath();
         List<ClassModel> classes = getClassesFromFile(filePath);
 
@@ -62,9 +63,9 @@ public abstract class UserInterface {
         String checkNumber = getCheckToRun();
         List<Integer> checkCommands = convertInput(checkNumber);
 
-        List<Result> results = runChecks(checkCommands,classes);
-        
-        
+        List<Result> results = runChecks(checkCommands, classes);
+
+
         displayResults(results);
 
         FileOutput.saveResults(results, resultPath);
@@ -75,7 +76,7 @@ public abstract class UserInterface {
 
     /**
      * Gets a list of checks to run
-     * @return spaced 
+     * @return spaced
      */
     abstract String getCheckToRun();
 
@@ -111,7 +112,7 @@ public abstract class UserInterface {
     abstract void close();
 
     /**
-     * Runs the coressponding cheks 
+     * Runs the coressponding cheks
      * @param checkCommands
      * @return
      */
@@ -123,7 +124,7 @@ public abstract class UserInterface {
 
         List<Result> results = new ArrayList<>();
         for(Integer i : checkCommands) {
-            
+
             results.addAll(CHECKS.get(i).runLintCheck(classes));
         }
 
@@ -135,11 +136,11 @@ public abstract class UserInterface {
      * @param filePath
      * @return
      */
-    public static List<ClassModel> getClassesFromFile(String filePath){  
+    public static List<ClassModel> getClassesFromFile(String filePath){
         return new ASMAdapter().parseASM(filePath);
     }
 
-     /**
+    /**
      * Converts an input string to a list of Integers
      * Restriction: Numbers in string must be space-separated
      * @param s
