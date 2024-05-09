@@ -3,21 +3,38 @@ package domain.checks;
 import domain.Result;
 import domain.model.ClassModel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public abstract class ChatGPTCheck implements LintCheck{
 
     private final String url = "https://api.openai.com/v1/chat/completions";
-    private final String apiKey = "OPEN AI KEY";
+    private String apiKey = "OPEN AI KEY";
     private final String model = "gpt-3.5-turbo";
+
+    public ChatGPTCheck(String keyPath) {
+        apiKey = this.getKey(keyPath);
+    }
+
+    private String getKey(String keyFilePath) {
+        File keyFile = new File(keyFilePath);
+        try {
+            Scanner scanner = new Scanner(keyFile);
+            String line = scanner.nextLine();
+            if (line.startsWith("sk-")) {
+                return line;
+            }
+        } catch (FileNotFoundException e) {
+            // We can run without keyfile existing
+            System.err.println("No ChatGPT key file found!");
+        }
+        return "";
+    }
 
     private String chatGPT(List<String> prompts) {
         StringBuilder overallPrompt = new StringBuilder();
